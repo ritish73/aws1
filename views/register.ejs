@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="/stylesheets/style-sign-in-up.css">
 </head>
 <body>
+
+
     <div class="flash">
         <div class="f" role="alert">
-            <%= message %>
+            <% if(successmessage.length){ %>
+                <%= successmessage %>
+            <% } else if(errormessage.length){ %>
+                <%=errormessage %>
+            <% } %>
         </div> 
     </div>
 
@@ -25,13 +31,13 @@
                     <h2 class="title">Sign in</h2>
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                        <input type="text" name="username" placeholder="username">
+                        <input type="text" name="username" placeholder="username" required>
                     </div>
 
 
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
-                        <input type="password" name="password"  placeholder="password">
+                        <input type="password" name="password"  placeholder="password" required>
                     </div>
 
 
@@ -57,18 +63,18 @@
                     <h2 class="title">Sign up</h2>
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                        <input type="text" name="username" placeholder="username">
+                        <input type="text" name="username" placeholder="username" required>
                     </div>
 
                     <div class="input-field">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" placeholder="email">
+                        <input type="email" name="email" placeholder="email" required>
                     </div>
 
 
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
-                    <input type="password" name="password" id="password" placeholder="password">
+                    <input type="password" name="password" id="password" placeholder="password" required>
                     </div>
 
 

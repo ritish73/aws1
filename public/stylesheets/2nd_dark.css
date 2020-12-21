@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 *,
@@ -13,38 +15,16 @@ html
 {
     font-family: 'poppins',cursive;
     font-size: 12px;
-     background-color: rgba(0, 0, 0, 0.932);
-    background-image: url(/images/sameer_12draft.jpeg);
+    background: black;
+    background-image: url(./sameer_14draft.jpeg);
     cursor: pointer;
     overflow-x: hidden;
-    
-
 }
 
 body
 {
-    min-height: 100vh;
     overflow-x: hidden;
-}
 
-
-.side-box h2:hover
-{
-    text-decoration: underline;
-}
-
-
-.blog-post__article-img
-{
-    width: 100%;
-    display: block;
-    background-size: cover;
-    background-position: center;
-}
-
-.blog-post__img img
-{
-    background-size: cover;
 }
 
 .all-engineering-articles
@@ -54,235 +34,7 @@ body
     padding-right: 0 1.5rem;
     position: relative;
     top: 17rem;
-    left: 2rem;
-}
-
-.table-all
-{
-    width: 900px;
-    margin: 0px auto 0;
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    grid-column-gap: 2rem;
-    box-sizing: border-box;
-}
-
-.author-name .author-content button
-{
-    background: none;
-    outline: none;
-    border: none;
-}
-
-.search-box button
-{
-    background: none;
-    outline: none;
-    border: none;
-}
-
-
-.blog-post
-{
-    width: 100%;
-    max-width: 28rem;
-    height: 34rem;
-    padding: 1.5rem;
-    background:rgba(209, 208, 208, 0.911) ;
-    box-shadow: 0 1.4rem 8rem rgba(1, 1,1, 0.4);
-    display: flex;
-    align-items: center;
-    border-radius: 0.8rem;
-    margin-bottom: 9rem;
-    z-index: 10;
-}
-
-.blog-post__img 
-{
-    min-width: 100%;
-    max-width: 100%;
-    height: 13rem;
-    transform: translate(0,-12rem);
-    position: relative;
-    margin-bottom: 1.2rem;
-    background-image: cover;
-}
-
-.blog-post__img img
-{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: .8rem;
-    background-size: cover;
-}
-
-.blog-post__img::before
-{
-    content: '';
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-shadow: .5rem .5rem 3rem 1px rgba(1, 1, 1, 0.699);
-    border-radius: .8rem;
-    background-size: cover;
-}
-
-.blog-post__info
-{
-    position: relative;
-    top: 65px;
-    left: -24rem;
-}
-
-.blog-post__date
-{
-    display: inline-block;
-}
-
-.blog-post__date span
-{
-    display: block;
-    color: black;
-    font-size: .9rem;
-    font-weight: 600;
-    /* margin-bottom: 0 0; */
-}
-
-.author-name
-{
-    color: black;
-}
-
-.author-content
-{
-    display: inline-block;
-    list-style: none;
-}
-
-.author-content .li 
-{
-    display: inline-block;
-    list-style: none;
-}
-
- .save-to-later
-{
-    color: black;
-    margin-left: 24rem;
-    transform: translateY(-4.2rem);
-    cursor: pointer;
-
-}
-
-.name-aut
-{
-    display: inline-block;
-    padding: 0.4rem 1rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    color: black;
-    width: auto;
-    background: #ab2d24;
-    /* background-image: linear-gradient(to right,#4fa4ec 0%,#00f2fe 74%); */
-    border-radius: .8rem;
-    text-decoration: none;
-    margin-left: 14rem;
-    transform: translateY(-2.5rem);
-    cursor: pointer;
-
-}
-
-
-.blog-post__title
-{
-    font-size: 1.1rem;
-    margin: -1.8rem 0 1rem;
-    text-transform: uppercase;
-    color: black;
-    border-bottom: 1.5px solid black;
-}
-
-.blog-post__text
-{
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    display: block;
-    text-align: justify;
-    min-width: 250px;
-    max-width: 250px;
-    color: black;
-}
-
-.blog-post__cta
-{
-    display: inline-block;
-    padding: 0.4rem 1rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    color: white;
-    background: #ab2d24;
-    /* background-image: linear-gradient(to right,#4fa4ec 0%,#00f2fe 74%); */
-    border-radius: .8rem;
-    text-decoration: none;
-    margin-right: 5.5rem;
-}
-
-.blog-post__cta:hover
-{
-    color: black;
-}
-.name-aut:hover
-{
-    color: white;
-    
-}
-
-.save-to-later:hover
-{
-     background-color: rgba(255, 255, 255, 0.911); 
-}
-
-.count 
-{
-    margin-right: 0;
-}
-
-
-
-.btns-on-blogcard
-{
-    display: inline-block;
-    color: black;
-    list-style: none;
-}
-
-.btns-on-blogcard button
-{
-    background: none;
-    outline: none;
-    text-decoration: none;
-    border: none;
-
-}
-
-.btns-blog
-{
-    display: inline-block;
-    margin-right: 1.1rem;
-    cursor: pointer;
-    
-}
-
-.fa-hand-peace
-{
-    color: black; 
+    left: 13rem;
 }
 
 
@@ -290,7 +42,7 @@ body
 .vertical-nav-bar
 {
     position: absolute;
-    top: 50%;
+    top: 60%;
     transform: translateY(-50%);
     /* position: fixed; */
 }
@@ -351,6 +103,7 @@ body
 
 }
 
+
 .top-horiz-bar
 {
     display: block;
@@ -377,35 +130,22 @@ body
     left: 5rem;
 }
 
-/* .top-name-logo
-{
-    position: relative;
-    font-size: 30px;
-    align-items: center;
-    top: 10px;
-    left: 60px;
-    color: white;
-} */
-
-
-
-
-
 .next-page
 {
     position: relative;
     display: block;
-    width: 900px;
+    width: 800px;
     border-top: 2px solid white;
     font-size: 15px;
-    margin-top: 200px;
-    margin-left: 100px;
+    margin-top: 50px;
     
 }
 
+
+
 .next-page span
 {
-    margin-left: 570px;
+    margin-left: 520px;
     display:inline;
     cursor: pointer;
     font-size: 17px;
@@ -443,8 +183,6 @@ body
 {
     color: white;
 }
-
-
 
 .search-box
 {
@@ -524,15 +262,12 @@ body
     color: black;
 }
 
-
-
-
-        .side-box
+ .side-box
         {
           
             position: relative;
-            right: 80px;
-            top: -2rem;
+            right: 220px;
+            top: 0rem;
             float: right;
             border: 2px solid black;
             border-top: 5px solid black;
@@ -617,10 +352,182 @@ body
 
         main
         {
-            margin-bottom: 100px;
+            margin-bottom: 300px;
         }
 
+        .side-box h2:hover
+        {
+            text-decoration: underline;
+        }
+
+
+        
+
+
+       .article-heading-3p #articleheading-date
+       {
+           font-size: 1em;
+       }
+
        
+       .article-content
+       {
+           display: grid;
+           grid-template-columns: repeat(1,1fr);
+           height: auto;
+           width: 800px;
+           background:  rgba(209, 208, 208, 0.911);
+           border-radius: 5px;
+           text-align: justify;
+           justify-content: center;
+           padding: 30px;
+           margin-bottom: 20px;
+       }
+
+       .article-content .article-heading-3p
+       {
+           
+           font-size: 1.825em;
+           text-transform: uppercase;
+           border-bottom: 4px solid #ab2d24;
+           margin-bottom: 30px;
+           color: black;
+           height: auto;
+           width: 100%;
+
+       }
+
+       .overall-prop
+       {
+           margin-bottom: 13px;
+       }
+
+       .article-content .article-para-3p
+       {
+           color: black;
+           font-size: 1.325em;
+           padding: auto;
+           width: 100%;
+       }
+
+       .similar-articles
+       {
+        display: grid;
+        grid-template-columns: repeat(1,1fr);
+        box-sizing: border-box;
+       }
+
+       .all-griding
+       {
+        display: grid;
+        grid-template-columns: repeat(6,1fr);
+       }
+
+       .similar-articles .overall-heading
+       {
+           display: block;
+           border-radius: 5px;
+           padding-left: 10px;
+           width: 800px;
+           background-color:rgba(209, 208, 208, 0.911);
+           font-size: 1.725em;
+           color: black;
+           border-bottom: 4px solid #ab2d24;
+           text-transform: uppercase;
+           padding: 10px 10px;
+           margin-bottom: 20px;
+           
+       }
+
+       .similar-blog
+       {
+           position: relative;
+           width: 250px;
+           height: 150px;  
+          background-color: rgba(209, 208, 208, 0.911) ;
+          border-radius: 5px;
+          margin-bottom:15px;
+          padding: 0px 0px 0px 0px;
+          padding-bottom: 20px;
+          margin-right: 20px;
+       }
+
+       .similar-article-heading
+       {
+           display: block;
+           float: right;
+           display: inline-block;
+           width:110px;
+           height: 0px;
+           text-align:justify ;
+           font-size: 0.75em;
+           padding-right: 15px;
+       }
+
+       .similar-article-image
+       {
+            border-radius: 5px;
+            float: left;
+            height: 100%;
+       }
+
+      
+
+       .similar-button button
+       {
+           position: relative;
+           top: 110px;
+           right:10px;
+           float: right;
+           border: none;
+           text-decoration: none;
+           padding: 5px;
+           background:#ab2d24 ;
+           color: white;
+           font-weight: 600;
+           border-radius: 5px;
+           margin-top: 5px;
+           cursor: pointer;
+       }
+
+
+       #channel-name
+       {
+           padding: 5px;
+           background: #ab2d24;
+           color: black;
+           border: none;
+           cursor: pointer;
+           border-radius: 5px;
+           text-transform: uppercase;
+           font-weight: 600;
+       }
+
+       #susbscribe-id-plus
+       {
+           cursor: pointer;
+       }
+
+       #entity-save-subscribe
+       {
+           float: right;
+       }
+
+       #author-linkedin
+       {
+           margin: 0 5px;
+           padding: 0 5px;
+           cursor: pointer;
+           background: #0E76A8;
+           border-radius: 5px;
+
+       }
+
+       #author-linkedin i
+       {
+           color: white;
+           background: #0E76A8;
+       }
 
        footer
        {
@@ -770,7 +677,7 @@ body
          outline-color: #ab2d24;
        }
 
-       .right form textarea
+       .right form textarea,
        {
           height: 95px;
        }
@@ -828,28 +735,7 @@ body
        }
 
 
-       /* @media screen and (max-width:1800px)
-       {
-           .side-box
-           {
-               max-width: 500px;
-               min-width: 500px;
-           }
 
-           .side-box h2
-           {
-               align-items: center;
-               justify-content: center;
-           }
-
-           .blog-post
-           {
-               max-width:29rem ;
-               height: 37rem;
-           }
-
-
-       } */
 
        @media screen and (max-width:1440px)
        {
@@ -860,7 +746,7 @@ body
                min-width: 380px;
                align-items: center;
                justify-content: center;
-               right: 100px;
+               right: 180px;
            }
 
            .blog-post
@@ -876,7 +762,7 @@ body
 
            .all-engineering-articles
            {
-               left: 6rem;
+               left: 12.5rem;
            }
 
 
@@ -892,7 +778,7 @@ body
 
            .vertical-nav-bar
            {
-               top: 60%;
+               top: 70%;
            }
 
            .blog-post
@@ -908,13 +794,13 @@ body
 
            .all-engineering-articles
            {
-               left: 7.5rem;
+               left: 12.5rem;
                
            }
 
            .next-page
            {
-               margin-left: 140px;
+               margin-left: 0px;
                width: 800px;
            }
 
@@ -936,13 +822,7 @@ body
 
            .vertical-nav-bar
            {
-               top: 60%;
-           }
-
-           .blog-post
-           {
-               max-width:30.5rem ;
-               height: 35rem;
+               display: none;
            }
 
            .table-all
@@ -953,30 +833,86 @@ body
 
            .all-engineering-articles
            {
-               left: 18.5rem;
+               left: 5rem;
            }
 
-           .blog-post__info
-           {
-            top: 67px;
-            left: -26rem;
-           }
 
            .next-page
            {
-               margin-left: 140px;
-               width: 500px;
+               margin-left: 00px;
+               width: 640px;
            }
 
            .next-page span 
            {
-               margin-left: 240px;
+               margin-left: 320px;
            }
 
            .main-content
            {
                grid-template-columns:repeat(2,1fr) ;
            }
+
+           .article-content
+           {
+               height: auto;
+               width: 640px; 
+           }
+
+
+           .all-griding
+           {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+           }
+
+
+
+
+          .similar-articles .overall-heading
+       {
+           padding-left: 10px;
+           width: 640px;
+           margin-bottom: 20px;
+           
+       }
+
+       .similar-blog
+       {
+           position: relative;
+           width: 250px;
+           height: 150px;  
+          margin-bottom:15px;
+          padding: 0px 0px 0px 0px;
+          padding-bottom: 20px;
+          margin-right: 5px;
+       }
+
+       .similar-article-heading
+       {
+           width:110px;
+           height: 0px;
+           padding-right: 15px;
+       }
+
+       .similar-article-image
+       {
+            float: left;
+            height: 100%;
+       }
+
+      
+
+       .similar-button button
+       {
+           top: 110px;
+           right:10px;
+           margin-top: 5px;
+           cursor: pointer;
+       }
+
+
+
 
        }
 
@@ -998,38 +934,22 @@ body
                display: none;
            }
 
-           .blog-post
-           {
-               max-width:28rem ;
-               height: 36rem;
-           }
-
-           .table-all
-           {
-               grid-template-columns: repeat(1,1fr);
-               grid-column-gap: 0rem;
-           }
 
            .all-engineering-articles
            {
-               left: 3.2rem;
+               left: 1.2rem;
            }
 
-           .blog-post__info
-           {
-            top: 67px;
-            left: -25rem;
-           }
 
            .next-page
            {
                margin-left: 10px;
-               width: 400px;
+               width: 370px;
            }
 
            .next-page span 
            {
-               margin-left: 130px;
+               margin-left: 100px;
            }
 
            .main-content
@@ -1038,15 +958,99 @@ body
           }
 
           .search-box:hover > .search-txt
-{
-    width: 120px;
-    padding:2px;
-}
+           {
+            width: 120px;
+            padding:2px;
+           }
 
-.search-txt
-{
-    font-size: 10px;
-}
+          .search-txt
+          {
+              font-size: 10px;
+        }
+
+
+        .article-content
+           {
+               height: auto;
+               width: 400px; 
+           }
+
+
+           .all-griding
+           {
+            display: grid;
+            grid-template-columns: repeat(1,1fr);
+           }
+
+
+
+
+          .similar-articles .overall-heading
+       {
+           padding-left: 10px;
+           width: 400px;
+           margin-bottom: 20px;
+           
+       }
+
+
+       .similar-blog
+       {
+           position: relative;
+           width: 250px;
+           height: 150px;  
+          margin-bottom:15px;
+          padding: 0px 0px 0px 0px;
+          padding-bottom: 20px;
+          margin-right: 5px;
+       }
+
+       .similar-article-heading
+       {
+           width:110px;
+           height: 0px;
+           padding-right: 15px;
+       }
+
+       .similar-article-image
+       {
+            float: left;
+            height: 100%;
+       }
+
+      
+
+       .similar-button button
+       {
+           top: 110px;
+           right:10px;
+           margin-top: 5px;
+           cursor: pointer;
+       }
+
+       #channel-name
+       {
+           padding: 3px;
+           font-weight: 600;
+           margin-left: 11px;
+           margin-top: 10px;
+       }
+
+       #author-linkedin
+       {
+           margin: 0 5px;
+           padding: 0 5px;
+       }
+
+       #entity-save-subscribe
+       {
+           float: left;
+       }
+
+       
+
+
+    }
 
 
 
@@ -1068,27 +1072,9 @@ body
                display: none;
            }
 
-           .blog-post
-           {
-               max-width:28rem ;
-               height: 36rem;
-           }
-
-           .table-all
-           {
-               grid-template-columns: repeat(1,1fr);
-               grid-column-gap: 0rem;
-           }
-
            .all-engineering-articles
            {
-               left: 1.8rem;
-           }
-
-           .blog-post__info
-           {
-            top: 67px;
-            left: -25rem;
+               left: 0.7rem;
            }
 
            .next-page
@@ -1119,6 +1105,89 @@ body
 }
 
 
+.article-content
+           {
+               height: auto;
+               width: 360px; 
+           }
+
+
+           .all-griding
+           {
+            display: grid;
+            grid-template-columns: repeat(1,1fr);
+           }
+
+
+
+
+          .similar-articles .overall-heading
+       {
+           padding-left: 10px;
+           width: 360px;
+           margin-bottom: 20px;
+           
+       }
+
+
+       .similar-blog
+       {
+           position: relative;
+           width: 250px;
+           height: 150px;  
+          margin-bottom:15px;
+          padding: 0px 0px 0px 0px;
+          padding-bottom: 20px;
+          margin-right: 5px;
+       }
+
+       .similar-article-heading
+       {
+           width:110px;
+           height: 0px;
+           padding-right: 15px;
+       }
+
+       .similar-article-image
+       {
+            float: left;
+            height: 100%;
+       }
+
+      
+
+       .similar-button button
+       {
+           top: 110px;
+           right:10px;
+           margin-top: 5px;
+           cursor: pointer;
+       }
+
+       #channel-name
+       {
+           padding: 3px;
+           font-weight: 600;
+           margin-top: 10px;
+           margin-left: 11px;
+           
+       }
+
+       #author-linkedin
+       {
+           margin: 0 5px;
+           padding: 0 5px;
+       }
+
+       #entity-save-subscribe
+       {
+           float: left;
+       }
+
+       
+
+
+
        }
 
        @media screen and (max-width:320px)
@@ -1139,28 +1208,13 @@ body
                display: none;
            }
 
-           .blog-post
-           {
-               max-width:25rem ;
-               height: 36rem;
-           }
-
-           .table-all
-           {
-               grid-template-columns: repeat(1,1fr);
-               grid-column-gap: 0rem;
-           }
+          
 
            .all-engineering-articles
            {
-               left: 0.8rem;
+               left: 0.3rem;
            }
 
-           .blog-post__info
-           {
-            top: 67px;
-            left: -23rem;
-           }
 
            .next-page
            {
@@ -1194,14 +1248,95 @@ body
     margin-left: 23rem;
 }
 
+.article-content
+           {
+               height: auto;
+               width: 312px; 
+           }
 
 
-}
+           .all-griding
+           {
+            display: grid;
+            grid-template-columns: repeat(1,1fr);
+           }
+
+
+
+
+          .similar-articles .overall-heading
+       {
+           padding-left: 10px;
+           width: 311px;
+           margin-bottom: 20px;
+           
+       }
+
+
+       .similar-blog
+       {
+           position: relative;
+           width: 250px;
+           height: 150px;  
+          margin-bottom:15px;
+          padding: 0px 0px 0px 0px;
+          padding-bottom: 20px;
+          margin-right: 5px;
+       }
+
+       .similar-article-heading
+       {
+           width:110px;
+           height: 0px;
+           padding-right: 15px;
+       }
+
+       .similar-article-image
+       {
+            float: left;
+            height: 100%;
+       }
+
+      
+
+       .similar-button button
+       {
+           top: 110px;
+           right:10px;
+           margin-top: 5px;
+           cursor: pointer;
+       }
+
+       #channel-name
+       {
+           padding: 3px;
+           font-weight: 600;
+           margin-top: 10px;
+           margin-left: 11px;
+           
+       }
+
+       #author-linkedin
+       {
+           margin: 0 5px;
+           padding: 0 5px;
+       }
+
+       #entity-save-subscribe
+       {
+           float: left;
+       }
+
+
+
+       }
+
+
+       
+      
 
 
 
 
        
-
-
 

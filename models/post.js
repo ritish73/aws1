@@ -16,6 +16,7 @@ var postSchema = new mongoose.Schema({
   content: String,
   subject: String, // currently we have 4 subjects so one out of 4 subjects will be stored here
   likes: {type:Number,default:0},
+  shares: {type:Number,default:0},
   // likes: {
   //   id:{
   //     type: mongoose.Schema.Types.ObjectId,
@@ -29,18 +30,15 @@ var postSchema = new mongoose.Schema({
   isReviewedByAuditor: {type: Boolean, default: false},
   filename: {type: String},
   author: {
-    id:{
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
-    },
-    username: {
-      type: String
-    }
   },
-  publish_date: {
-    type: String, 
-    default: Date.now
+  authorName: String,
+
+  publishDate:{
+    type: Date
   },
+  
   publishDay: String,
   slug: {
     type: String,

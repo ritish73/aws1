@@ -6,7 +6,7 @@
   <title>BackBenchers</title>
 </head>
 <body>
-  <h1>unreviewed posts of all the subjects are here </h1>
+  <h1>unreviewed posts of all the subjects are here</h1>
   <% if(currentUser !== null && currentUser.role === "admin" ){ %>
     <p><%=currentUser.username%> with <%=currentUser.role%> role is logged in!</p>
   <br><br><br>
@@ -16,7 +16,7 @@
       <h1>Post Number is : <%=posts[i].postNumber%></h1>
       <h1> <%=posts[i].title%> </h1> 
       <h3> <%=posts[i].publishDay%> <%=posts[i].publish_date%> </h3>
-      <h3>published by <%=posts[i].author.username%></h3>
+      <h3>published by <%=posts[i].authorName%></h3>
       <h4>this post is of <%=posts[i].subject%></h4>
 
       <p><%-posts[i].sanitizedHtml%> </p>
@@ -47,7 +47,7 @@
 
       <!-- here we put the operations on these posts by th admins or auditors -->
       <a href="/posts/<%=posts[i]._id%>/edit">Edit this post</a>
-      <form action="/<%=posts[i]._id%>?_method=DELETE" method="POST">
+      <form action="/<%=posts[i].slug%>?_method=DELETE" method="POST">
         <button type="submit">Delete post</button>
       </form>
       <p id="reviewstatus"></p>
@@ -95,7 +95,6 @@
       if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200 ) {
           var resJson = JSON.parse(httpRequest.responseText)
-          console.log(resJson.reviewed)
           status.innerHTML = "resJson.reviewed"
         } else {
           alert('There was a problem with the request.');

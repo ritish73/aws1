@@ -1,6 +1,11 @@
   <%- include("./partials/header1.ejs") %>
   <link rel="stylesheet" href="/stylesheets/home-page.css">
   <%- include("./partials/header2.ejs") %>
+  <% if(successmessage){ %>
+      <h2><%=successmessage%></h2>
+  <% } else { %>
+    <h2><%=successmessage%></h2>
+  <% } %>
   <section class="landing-page pin">
     <!--  
             
@@ -188,13 +193,12 @@
                     <h1 class="two-1">#recommended</h1>
                     <div class="card-1 card">
                         <div class="content">
-                            <h2 class="blogname">venture
+                            <h2 class="blogname"><%=berecommendedpost.post.title%>
                             <img class="writerpic2" src="https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" alt="writer pic">
                             </h2>
-                            <p class="para-blog">Founded almost 30 years <br> ago, Zdnet is a business <br> technology news website <br> that provides news , <br>
-                                analysis, and research <br> on the the latest IT trends, <br> issues and events for the <br> technology professionals.
+                            <p class="para-blog"><%=berecommendedpost.post.sanitizedHtml.substring(0,50)%>
                             </p>
-                            <a class="fullbtn" href="#">Read more</a>
+                            <a class="fullbtn" href="/posts/business-economics/<%=berecommendedpost.post.slug%>">Read more</a>
                             
                             <!-- <a class="comments" href="#"><i class="far fa-comment-alt fa-2x"></i></a> -->
                             <a class="share-btn" href="#"><i class="fas fa-share fa-2x"></i><span class="show-shares">108</span></a>
@@ -256,13 +260,12 @@
                     <h1 class="two-2">#recommended</h1>
                     <div class="card-2 card">
                         <div class="content">
-                            <h2 class="blogname">venture
+                            <h2 class="blogname"><%=crecommendedpost.post.title%>
                             <img class="writerpic2" src="https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" alt="writer pic">
                             </h2>
-                            <p class="para-blog">Founded almost 30 years <br> ago, Zdnet is a business <br> technology news website <br> that provides news , <br>
-                                analysis, and research <br> on the the latest IT trends, <br> issues and events for the <br> technology professionals.
+                            <p class="para-blog"><%=crecommendedpost.post.sanitizedHtml.substring(0,50) %>
                             </p>
-                            <a class="fullbtn" href="#">Read more</a>
+                            <a class="fullbtn" href="/posts/commerce/<%=crecommendedpost.post.slug%>">Read more</a>
                             
                             <!-- <a class="comments" href="#"><i class="far fa-comment-alt fa-2x"></i></a> -->
                             <a class="share-btn" href="#"><i class="fas fa-share fa-2x"></i><span class="show-shares">108</span></a>
@@ -289,7 +292,7 @@
                 </div>
             
             </div>
-            <a class="explore-2 explore" href="<%=hostname%>/posts/commerce?page=1">explore more......</a>
+            <a class="explore-2 explore" href="/posts/commerce?page=1">explore more......</a>
             
         </section>
         
@@ -307,7 +310,7 @@
                             <h2 class="blogname"><%=etrendingpost.post.title %>
                             <img class="writerpic" src="https://i.pinimg.com/474x/25/5b/3a/255b3a6ed74b44ca24ece91eed73cd13.jpg" alt="writer pic">
                         </h2>
-                            <p class="para-blog"><%=epopularpost.post.sanitizedHtml.substring(0,50)%>
+                            <p class="para-blog"><%=etrendingpost.post.sanitizedHtml.substring(0,50)%>
                                 </p>
                             <a class="fullbtn" href="/posts/engineering/<%=etrendingpost.post.slug%>">Read more</a>
                             ass="far fa-comment-alt fa-2x"></i></a> -->
@@ -321,13 +324,12 @@
                     <h1 class="two-3">#recommended</h1>
                     <div class="card-3 card">
                         <div class="content">
-                            <h2 class="blogname">venture
+                            <h2 class="blogname"><%=erecommendedpost.post.title %>
                             <img class="writerpic2" src="https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" alt="writer pic">
                             </h2>
-                            <p class="para-blog">Founded almost 30 years <br> ago, Zdnet is a business <br> technology news website <br> that provides news , <br>
-                                analysis, and research <br> on the the latest IT trends, <br> issues and events for the <br> technology professionals.
+                            <p class="para-blog"><%=erecommendedpost.post.sanitizedHtml.substring(0,50)%>
                             </p>
-                            <a class="fullbtn" href="#">Read more</a>
+                            <a class="fullbtn" href="/posts/engineering/<%=erecommendedpost.post.slug%>">Read more</a>
                            
                             <!-- <a class="comments" href="#"><i class="far fa-comment-alt fa-2x"></i></a> -->
                             <a class="share-btn" href="#"><i class="fas fa-share fa-2x"></i><span class="show-shares">108</span></a>
@@ -354,7 +356,7 @@
                 </div>
             
             </div>
-            <a class="explore-3 explore" href="<%=hostname%>/posts/engineering?page=1" >explore more......</a>
+            <a class="explore-3 explore" href="/posts/engineering?page=1" >explore more......</a>
             
         </section>
         
@@ -387,13 +389,12 @@
                     <h1 class="two-4">#recommended</h1>
                     <div class="card-4 card">
                         <div class="content">
-                            <h2 class="blogname">venture
+                            <h2 class="blogname"><%= pdrecommendedpost.post.title%>
                             <img class="writerpic2" src="https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max" alt="writer pic">
                             </h2>
-                            <p class="para-blog">Founded almost 30 years <br> ago, Zdnet is a business <br> technology news website <br> that provides news , <br>
-                                analysis, and research <br> on the the latest IT trends, <br> issues and events for the <br> technology professionals.
+                            <p class="para-blog"><%= pdrecommendedpost.post.sanitizedHtml.substring(0,50) %>
                             </p>
-                            <a class="fullbtn" href="#">Read more</a>
+                            <a class="fullbtn" href="/posts/personality-development/<%=pdrecommendedpost.post.slug%>">Read more</a>
                             
                             <!-- <a class="comments" href="#"><i class="far fa-comment-alt fa-2x"></i></a> -->
                             <a class="share-btn" href="#"><i class="fas fa-share fa-2x"></i><span class="show-shares">108</span></a>
@@ -422,7 +423,7 @@
                 </div>
             
             </div>
-            <a class="explore-4 explore" href="<%=hostname%>/posts/personality-development?page=1">explore more......</a>
+            <a class="explore-4 explore" href="/posts/personality-development?page=1">explore more......</a>
             
             
         </section>

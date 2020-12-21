@@ -8,6 +8,11 @@
     <title>personal info</title>
 </head>
 <body>
+    <% if(successmessage){ %>
+        <h2><%=successmessage%></h2>
+    <% } else { %>
+      <h2><%=successmessage%></h2>
+    <% } %>
 
     <div class="container">
 
@@ -33,25 +38,32 @@
 
                 <form action="/publish/personal-info" method="POST" class="sign-in-form">
 
-
                     <h2 class="title">Personal info</h2>
 
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                    <input type="text" name="info[name]" id="" placeholder="Full name">
+                    <input type="text" name="info[name]" placeholder="Full name">
                     </div>
-
 
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
-                    <input type="date" name="info[date]" id="" placeholder="Date of birth">
+                    <input type="date" name="info[date]" placeholder="Date of birth">
                     </div>
                     
-                    <div class="gender">
-                    <input class="gen-btns" type="radio" name="info[gender]">Male
-                    <input  class="gen-btns" type="radio" name="info[gender]">Female
-                    <input  class="gen-btns" type="radio" name="info[gender]">others
-                </div>
+                <!-- <div class="gender">
+                    <input class="gen-btns" type="radio" name="gen">Male
+                    <input  class="gen-btns" type="radio" name="gen">Female
+                    <input  class="gen-btns" type="radio" name="gen">others
+                </div> -->
+
+
+                <select name="info[gender]" class="option" id="">
+                    <i class="fas fa-user-tie"></i>
+                <option disabled="disabled" selected="selected" value="">gender</option>
+                <option value="male">male</option>
+                <option value="female">female</option>
+                <option value="Others">Others</option>
+                </select>  
 
                 <div class="input-field">
                     <i class="fas fa-address-book"></i>
@@ -63,8 +75,8 @@
                     <!-- <input type="text" name="" id="" placeholder="Profession"> -->
                     <!-- <h4 class="name">Profession</h4> -->
                    
-                    <select name="info[profession]" class="option" id="">
-                        <i class="fas fa-user-tie"></i>
+                <select name="info[profession]" class="option" id="">
+                    <i class="fas fa-user-tie"></i>
                     <option disabled="disabled" selected="selected" value="">Profession</option>
                     <option value="Self earning">Self earning</option>
                     <option value="Student">Student</option>

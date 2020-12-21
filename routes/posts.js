@@ -12,6 +12,10 @@ var Viewed = require('../models/viewed.js');
 var Popular = require('../models/popular.js');
 var moment = require('moment');
 var locus = require('locus');
+const auth  = require("../middleware/auth.js");
+const check = require("../controllers/checkAuthcontroller");
+var deleteObj = require("../controllers/deleteController")
+var showObj = require("../controllers/showPageController")
 const { route } = require("./users.js");
 var middlewareObj = require("../middleware/index")
 var storage = multer.diskStorage({
@@ -37,71 +41,95 @@ var upload = multer({
   fileFilter: multerFilter
 });
 
-router.get("/business-economics", (req,res)=>{
-  console.log(req.query)
+
+
+
+
+
+
+
+
+
+
+
+router.get("/business-economics", check ,async (req,res)=>{
   var popularposts = [];
   var recommendedPosts = [];
-  Recommended.find({subject: 'business-economics'}).populate("post").exec((err,posts)=>{
-    if(err) console.log(err)
+  var  tc=0,pc=0,rc=0;
+  var r = await Recommended.find({});
+  var array = [];
+  // console.log("r length : ", r.length)
+  for(var i=0; i<r.length; i++){
+    // console.log(r[i].rank)
+    array.push(r[i].rank);
+  }
+  console.log("array of recommended posts : " ,array)
+
+  await Recommended.find({subject: 'business-economics'}).populate('post').exec(async (err,posts)=>{
+    if(err) res.send(err)
     else{
       recommendedPosts = posts;
+      console.log("recommended posts : " ,posts)
+      // rc = posts.length;
+      rc = (posts.length>=3)?3:posts.length;
     }
   })
-  Popular.find({subject: 'business-economics'}).populate("post").exec((err,posts)=>{
+  await Popular.find({subject: 'business-economics'}).populate("post").exec(async (err,posts)=>{
     if(err) console.log(err)
     else{
-      popularposts = posts;
+      popularposts = await posts;
+      pc = posts.length
+      pc = (posts.length>=3)?3:posts.length;
     }
   })
 
   if(req.query.search){
+    if(!req.query.page){
+      req.query.page = 1;
+    }
     var noMatch;
 // gives search results on author name, content and title of the post
-    const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
-    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "business-economics"}, function(err,allposts){
-      if(err) console.log(err)
+    const regex = await new RegExp(escapeRegex(req.query.search), 'gi') 
+    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "business-economics", isReviewedByAdmin: true}, function(err,allposts){
+      if(err) res.send(err)
       else{
         
         if(allposts.length<1){
           noMatch = "No posts matched the search results , please try again"
         }
-        Trending.find({subject: 'business-economics'},(err,trendingPosts)=>{
+        Trending.find({subject: 'business-economics'}).populate('post').exec((err,trendingPosts)=>{
           if(err) console.log(err)
           else {
-            // console.log(trendingPosts)
-            res.render("business-economics", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts, recommendedPosts: recommendedPosts});
-          }
-        })
-        
-      }
-    })
-    
-  } else{
-    Post.find({subject: "business-economics"}, function(err,allposts){
-      if(err) {
-        console.log(err);
-        res.statusCode = 500;
-        res.end('error');
-      }
-      else{
-        Trending.find({subject: 'business-economics'}).populate("post").exec((err,trendingPosts)=>{
-          if(err) console.log(err)
-          else {
-            // console.log("****************************",popularposts , "*********************************")
+
+
+            tc = trendingPosts.length;
+            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
             let pageoffset = req.query.page-1;
             let len = allposts.length;
-            let val = pageoffset*8;
+            let val = pageoffset*10;
             let limit=0;
             var page = parseInt(req.query.page);
             var nextpage = page+1;
 
             console.log("next",nextpage, " page : ",page)
             let start = val;
-            if(len-val <= 7){
-               limit = len;
-            } else {
-              limit = val+7;
+            var showsidebox=true, shownextbutton=false;
+            // impoertant
+            // len-val gives number of cards to be shown on a particular page
+            if(len-val <= 2){
+              showsidebox=false;
             }
+            if(len-val>10){
+              shownextbutton=true;
+            }
+            if(len-val <= 9){
+               limit = len-1;
+            } else {
+              limit = val+9;
+            }
+
+
+            console.log(tc,rc,pc)
             res.render("business-economics", {
               posts: allposts, 
               noMatch: noMatch, 
@@ -113,6 +141,72 @@ router.get("/business-economics", (req,res)=>{
               limit: limit,
               nextpage: nextpage,
               page:page,
+              showsidebox:showsidebox,
+              shownextbutton: shownextbutton,
+              array: array,
+              trendingCount: tc,
+              recommendedCount: rc,
+              popularCount: pc
+            });
+          }
+        })
+        
+      }
+    })
+    
+  } else{
+    Post.find({subject: "business-economics", isReviewedByAdmin: true}, function(err,allposts){
+      if(err) {
+        res.send(err);
+      }
+      else{
+        Trending.find({subject: 'business-economics'}).populate("post").exec(async (err,trendingPosts)=>{
+          if(err) console.log(err)
+          else {
+            tc = trendingPosts.length;
+            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+            // console.log("****************************",popularposts , "*********************************")
+            let pageoffset = req.query.page-1;
+            let len = allposts.length;
+            let val = pageoffset*10;
+            let limit=0;
+            var page = parseInt(req.query.page);
+            var nextpage = page+1;
+
+            console.log("next",nextpage, " page : ",page)
+            let start = val;
+            var showsidebox=true, shownextbutton=false;
+            // impoertant
+            // len-val gives number of cards to be shown on a particular page
+            if(len-val <= 2){
+              showsidebox=false;
+            }
+            if(len-val>10){
+              shownextbutton=true;
+            }
+            if(len-val <= 9){
+               limit = len-1;
+            } else {
+              limit = val+9;
+            }
+            console.log(tc,rc,pc)
+            res.render("business-economics", {
+              posts: allposts, 
+              noMatch: noMatch, 
+              message: req.flash('success'), 
+              trendingPosts: await trendingPosts, 
+              popularPosts: await popularposts, 
+              recommendedPosts: await recommendedPosts,
+              start: start, 
+              limit: limit,
+              nextpage: nextpage,
+              page:page,
+              showsidebox:showsidebox,
+              shownextbutton: shownextbutton,
+              array: array,
+              trendingCount: tc,
+              recommendedCount: rc,
+              popularCount: pc
             });
           }
         })
@@ -121,32 +215,113 @@ router.get("/business-economics", (req,res)=>{
   }
 })
 
-router.get("/commerce", (req,res)=>{
-  console.log(req.query)
+
+
+
+
+
+
+
+
+
+
+
+router.get("/commerce", check ,async (req,res)=>{
   var popularposts = [];
-  Popular.find({subject: 'commerce'}).populate("post").exec((err,posts)=>{
+  var recommendedPosts = [];
+  var  tc=0,pc=0,rc=0;
+  var r = await Recommended.find({});
+  var array = [];
+  // console.log("r length : ", r.length)
+  for(var i=0; i<r.length; i++){
+    // console.log(r[i].rank)
+    array.push(r[i].rank);
+  }
+  console.log("array of recommended posts : " ,array)
+
+  await Recommended.find({subject: 'commerce'}).populate("post").exec(async (err,posts)=>{
+    if(err) res.send(err)
+    else{
+      recommendedPosts = posts;
+      console.log("recommended posts : " ,recommendedPosts)
+      rc = posts.length;
+      rc = (posts.length>=3)?3:posts.length;
+    }
+  })
+  await Popular.find({subject: 'commerce'}).populate("post").exec(async (err,posts)=>{
     if(err) console.log(err)
     else{
-      popularposts = posts;
+      popularposts = await posts;
+      pc = posts.length
+      pc = (posts.length>=3)?3:posts.length;
     }
   })
 
   if(req.query.search){
+    if(!req.query.page){
+      req.query.page = 1;
+    }
     var noMatch;
 // gives search results on author name, content and title of the post
-    const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
-    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "commerce"}, function(err,allposts){
-      if(err) console.log(err)
+    const regex = await new RegExp(escapeRegex(req.query.search), 'gi') 
+    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "commerce", isReviewedByAdmin: true}, function(err,allposts){
+      if(err) res.send(err)
       else{
         
         if(allposts.length<1){
           noMatch = "No posts matched the search results , please try again"
         }
-        Trending.find({subject: 'commerce'},(err,trendingPosts)=>{
+        Trending.find({subject: 'commerce'}).populate('post').exec((err,trendingPosts)=>{
           if(err) console.log(err)
           else {
-            console.log(trendingPosts)
-            res.render("commerce", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+
+
+            tc = trendingPosts.length;
+            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+            let pageoffset = req.query.page-1;
+            let len = allposts.length;
+            let val = pageoffset*10;
+            let limit=0;
+            var page = parseInt(req.query.page);
+            var nextpage = page+1;
+
+            console.log("next",nextpage, " page : ",page)
+            let start = val;
+            var showsidebox=true, shownextbutton=false;
+            // impoertant
+            // len-val gives number of cards to be shown on a particular page
+            if(len-val <= 2){
+              showsidebox=false;
+            }
+            if(len-val>10){
+              shownextbutton=true;
+            }
+            if(len-val <= 9){
+               limit = len-1;
+            } else {
+              limit = val+9;
+            }
+
+
+            console.log(tc,rc,pc)
+            res.render("commerce", {
+              posts: allposts, 
+              noMatch: noMatch, 
+              message: req.flash('success'), 
+              trendingPosts: trendingPosts, 
+              popularPosts: popularposts, 
+              recommendedPosts: recommendedPosts,
+              start: start, 
+              limit: limit,
+              nextpage: nextpage,
+              page:page,
+              showsidebox:showsidebox,
+              shownextbutton: shownextbutton,
+              array: array,
+              trendingCount: tc,
+              recommendedCount: rc,
+              popularCount: pc
+            });
           }
         })
         
@@ -154,19 +329,59 @@ router.get("/commerce", (req,res)=>{
     })
     
   } else{
-    Post.find({subject: "commerce"}, function(err,allposts){
+    Post.find({subject: "commerce", isReviewedByAdmin: true}, function(err,allposts){
       if(err) {
-        console.log(err);
-        res.statusCode = 500;
-        res.end('error');
+        res.send(err);
       }
       else{
-        console.log("these are all posts of commerce while loading the commerce show page", allposts)
-        Trending.find({subject: 'commerce'}).populate("post").exec((err,trendingPosts)=>{
+        Trending.find({subject: 'commerce'}).populate("post").exec(async (err,trendingPosts)=>{
           if(err) console.log(err)
           else {
-            console.log("****************************",popularposts , "*********************************")
-            res.render("commerce", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+            tc = trendingPosts.length;
+            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+            // console.log("****************************",popularposts , "*********************************")
+            let pageoffset = req.query.page-1;
+            let len = allposts.length;
+            let val = pageoffset*10;
+            let limit=0;
+            var page = parseInt(req.query.page);
+            var nextpage = page+1;
+
+            console.log("next",nextpage, " page : ",page)
+            let start = val;
+            var showsidebox=true, shownextbutton=false;
+            // impoertant
+            // len-val gives number of cards to be shown on a particular page
+            if(len-val <= 2){
+              showsidebox=false;
+            }
+            if(len-val>10){
+              shownextbutton=true;
+            }
+            if(len-val <= 9){
+               limit = len-1;
+            } else {
+              limit = val+9;
+            }
+            console.log(tc,rc,pc)
+            res.render("commerce", {
+              posts: allposts, 
+              noMatch: noMatch, 
+              message: req.flash('success'), 
+              trendingPosts:  trendingPosts, 
+              popularPosts:  popularposts, 
+              recommendedPosts:  recommendedPosts,
+              start: start, 
+              limit: limit,
+              nextpage: nextpage,
+              page:page,
+              showsidebox:showsidebox,
+              shownextbutton: shownextbutton,
+              array: array,
+              trendingCount: tc,
+              recommendedCount: rc,
+              popularCount: pc
+            });
           }
         })
       }
@@ -175,33 +390,115 @@ router.get("/commerce", (req,res)=>{
 })
 
 
-// show page of engineering blogs
-router.get("/engineering", (req,res)=>{
-  console.log(req.query)
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get("/engineering", check ,async (req,res)=>{
   var popularposts = [];
-  Popular.find({subject: 'engineering'}).populate("post").exec((err,posts)=>{
+  var recommendedPosts = [];
+  var  tc=0,pc=0,rc=0;
+  var r = await Recommended.find({});
+  var array = [];
+  // console.log("r length : ", r.length)
+  for(var i=0; i<r.length; i++){
+    // console.log(r[i].rank)
+    array.push(r[i].rank);
+  }
+  console.log("array of recommended posts : " ,array)
+
+  await Recommended.find({subject: 'engineering'}).populate("post").exec(async (err,posts)=>{
+    if(err) res.send(err)
+    else{
+      recommendedPosts = await posts;
+      rc = posts.length;
+      rc = (posts.length>=3)?3:posts.length;
+      console.log("rc : ", rc)
+    }
+  })
+  await Popular.find({subject: 'engineering'}).populate("post").exec(async (err,posts)=>{
     if(err) console.log(err)
     else{
-      popularposts = posts;
+      popularposts = await posts;
+      pc = posts.length
+      pc = (posts.length>=3)?3:posts.length;
     }
   })
 
   if(req.query.search){
+    if(!req.query.page){
+      req.query.page = 1;
+    }
     var noMatch;
 // gives search results on author name, content and title of the post
-    const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
-    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "engineering"}, function(err,allposts){
-      if(err) console.log(err)
+    const regex = await new RegExp(escapeRegex(req.query.search), 'gi') 
+    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "engineering", isReviewedByAdmin: true}, function(err,allposts){
+      if(err) res.send(err)
       else{
         
         if(allposts.length<1){
           noMatch = "No posts matched the search results , please try again"
         }
-        Trending.find({subject: 'engineering'},(err,trendingPosts)=>{
+        Trending.find({subject: 'engineering'}).populate('post').exec((err,trendingPosts)=>{
           if(err) console.log(err)
           else {
-            console.log(trendingPosts)
-            res.render("engineering", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+
+
+            tc = trendingPosts.length;
+            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+            let pageoffset = req.query.page-1;
+            let len = allposts.length;
+            let val = pageoffset*10;
+            let limit=0;
+            var page = parseInt(req.query.page);
+            var nextpage = page+1;
+
+            console.log("next",nextpage, " page : ",page)
+            let start = val;
+            var showsidebox=true, shownextbutton=false;
+            // impoertant
+            // len-val gives number of cards to be shown on a particular page
+            if(len-val <= 2){
+              showsidebox=false;
+            }
+            if(len-val>10){
+              shownextbutton=true;
+            }
+            if(len-val <= 9){
+               limit = len-1;
+            } else {
+              limit = val+9;
+            }
+
+
+            console.log(tc,rc,pc)
+            res.render("engineering", {
+              posts: allposts, 
+              noMatch: noMatch, 
+              message: req.flash('success'), 
+              trendingPosts: trendingPosts, 
+              popularPosts: popularposts, 
+              recommendedPosts: recommendedPosts,
+              start: start, 
+              limit: limit,
+              nextpage: nextpage,
+              page:page,
+              showsidebox:showsidebox,
+              shownextbutton: shownextbutton,
+              array: array,
+              trendingCount: tc,
+              recommendedCount: rc,
+              popularCount: pc
+            });
           }
         })
         
@@ -209,18 +506,59 @@ router.get("/engineering", (req,res)=>{
     })
     
   } else{
-    Post.find({subject: "engineering"}, function(err,allposts){
+    Post.find({subject: "engineering", isReviewedByAdmin: true}, function(err,allposts){
       if(err) {
-        console.log(err);
-        res.statusCode = 500;
-        res.end('error');
+        res.send(err);
       }
       else{
-        Trending.find({subject: 'engineering'}).populate("post").exec((err,trendingPosts)=>{
+        Trending.find({subject: 'engineering'}).populate("post").exec(async (err,trendingPosts)=>{
           if(err) console.log(err)
           else {
-            console.log("****************************",popularposts , "*********************************")
-            res.render("engineering", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+            tc = trendingPosts.length;
+            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+            // console.log("****************************",popularposts , "*********************************")
+            let pageoffset = req.query.page-1;
+            let len = allposts.length;
+            let val = pageoffset*10;
+            let limit=0;
+            var page = parseInt(req.query.page);
+            var nextpage = page+1;
+
+            console.log("next",nextpage, " page : ",page)
+            let start = val;
+            var showsidebox=true, shownextbutton=false;
+            // impoertant
+            // len-val gives number of cards to be shown on a particular page
+            if(len-val <= 2){
+              showsidebox=false;
+            }
+            if(len-val>10){
+              shownextbutton=true;
+            }
+            if(len-val <= 9){
+               limit = len-1;
+            } else {
+              limit = val+9;
+            }
+            console.log(tc,rc,pc)
+            res.render("engineering", {
+              posts: allposts, 
+              noMatch: noMatch, 
+              message: req.flash('success'), 
+              trendingPosts: await trendingPosts, 
+              popularPosts: await popularposts, 
+              recommendedPosts: await recommendedPosts,
+              start: start, 
+              limit: limit,
+              nextpage: nextpage,
+              page:page,
+              showsidebox:showsidebox,
+              shownextbutton: shownextbutton,
+              array: array,
+              trendingCount: tc,
+              recommendedCount: rc,
+              popularCount: pc
+            });
           }
         })
       }
@@ -228,33 +566,108 @@ router.get("/engineering", (req,res)=>{
   }
 })
 
-// personality development posts page
-router.get("/personality-development", (req,res)=>{
-  console.log(req.query)
+
+
+
+
+
+
+
+router.get("/personality-development", check ,async (req,res)=>{
   var popularposts = [];
-  Popular.find({subject: 'personality-development'}).populate("post").exec((err,posts)=>{
+  var recommendedPosts = [];
+  var  tc=0,pc=0,rc=0;
+  var r = await Recommended.find({});
+  var array = [];
+  // console.log("r length : ", r.length)
+  for(var i=0; i<r.length; i++){
+    // console.log(r[i].rank)
+    array.push(r[i].rank);
+  }
+  console.log("array of recommended posts : " ,array)
+
+  await Recommended.find({subject: 'personality-development'}).populate("post").exec(async (err,posts)=>{
+    if(err) res.send(err)
+    else{
+      recommendedPosts = await posts;
+      rc = posts.length;
+      rc = (posts.length>=3)?3:posts.length;
+    }
+  })
+  await Popular.find({subject: 'personality-development'}).populate("post").exec(async (err,posts)=>{
     if(err) console.log(err)
     else{
-      popularposts = posts;
+      popularposts = await posts;
+      pc = posts.length;
+      pc = (posts.length>=3)?3:posts.length;
     }
   })
 
   if(req.query.search){
+    if(!req.query.page){
+      req.query.page = 1;
+    }
     var noMatch;
 // gives search results on author name, content and title of the post
-    const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
-    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "personality-development"}, function(err,allposts){
-      if(err) console.log(err)
+    const regex = await new RegExp(escapeRegex(req.query.search), 'gi') 
+    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "personality-development", isReviewedByAdmin: true}, function(err,allposts){
+      if(err) res.send(err)
       else{
         
         if(allposts.length<1){
           noMatch = "No posts matched the search results , please try again"
         }
-        Trending.find({subject: 'personality-development'},(err,trendingPosts)=>{
+        Trending.find({subject: 'personality-development'}).populate('post').exec((err,trendingPosts)=>{
           if(err) console.log(err)
           else {
-            console.log(trendingPosts)
-            res.render("personality-development", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+
+
+            tc = trendingPosts.length;
+            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+            let pageoffset = req.query.page-1;
+            let len = allposts.length;
+            let val = pageoffset*10;
+            let limit=0;
+            var page = parseInt(req.query.page);
+            var nextpage = page+1;
+
+            console.log("next",nextpage, " page : ",page)
+            let start = val;
+            var showsidebox=true, shownextbutton=false;
+            // impoertant
+            // len-val gives number of cards to be shown on a particular page
+            if(len-val <= 2){
+              showsidebox=false;
+            }
+            if(len-val>10){
+              shownextbutton=true;
+            }
+            if(len-val <= 9){
+               limit = len-1;
+            } else {
+              limit = val+9;
+            }
+
+
+            console.log(tc,rc,pc)
+            res.render("personality-development", {
+              posts: allposts, 
+              noMatch: noMatch, 
+              message: req.flash('success'), 
+              trendingPosts: trendingPosts, 
+              popularPosts: popularposts, 
+              recommendedPosts: recommendedPosts,
+              start: start, 
+              limit: limit,
+              nextpage: nextpage,
+              page:page,
+              showsidebox:showsidebox,
+              shownextbutton: shownextbutton,
+              array: array,
+              trendingCount: tc,
+              recommendedCount: rc,
+              popularCount: pc
+            });
           }
         })
         
@@ -262,435 +675,544 @@ router.get("/personality-development", (req,res)=>{
     })
     
   } else{
-    Post.find({subject: "personality-development"}, function(err,allposts){
+    Post.find({subject: "personality-development", isReviewedByAdmin: true}, function(err,allposts){
       if(err) {
-        console.log(err);
-        res.statusCode = 500;
-        res.end('error');
+        res.send(err);
       }
       else{
-        Trending.find({subject: 'personality-development'}).populate("post").exec((err,trendingPosts)=>{
+        Trending.find({subject: 'personality-development'}).populate("post").exec(async (err,trendingPosts)=>{
           if(err) console.log(err)
           else {
-            console.log("****************************",popularposts , "*********************************")
-            res.render("personality-development", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+            tc = trendingPosts.length;
+            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+            // console.log("****************************",popularposts , "*********************************")
+            let pageoffset = req.query.page-1;
+            let len = allposts.length;
+            let val = pageoffset*10;
+            let limit=0;
+            var page = parseInt(req.query.page);
+            var nextpage = page+1;
+
+            console.log("next",nextpage, " page : ",page)
+            let start = val;
+            var showsidebox=true, shownextbutton=false;
+            // impoertant
+            // len-val gives number of cards to be shown on a particular page
+            if(len-val <= 2){
+              showsidebox=false;
+            }
+            if(len-val>10){
+              shownextbutton=true;
+            }
+            if(len-val <= 9){
+               limit = len-1;
+            } else {
+              limit = val+9;
+            }
+            console.log(tc,rc,pc)
+            res.render("personality-development", {
+              posts: allposts, 
+              noMatch: noMatch, 
+              message: req.flash('success'), 
+              trendingPosts: await trendingPosts, 
+              popularPosts: await popularposts, 
+              recommendedPosts: await recommendedPosts,
+              start: start, 
+              limit: limit,
+              nextpage: nextpage,
+              page:page,
+              showsidebox:showsidebox,
+              shownextbutton: shownextbutton,
+              array: array,
+              trendingCount: tc,
+              recommendedCount: rc,
+              popularCount: pc
+            });
           }
         })
       }
     })
   }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.get("/commerce", (req,res)=>{
+//   console.log(req.query)
+//   var popularposts = [];
+//   Popular.find({subject: 'commerce'}).populate("post").exec((err,posts)=>{
+//     if(err) console.log(err)
+//     else{
+//       popularposts = posts;
+//     }
+//   })
+
+//   if(req.query.search){
+//     var noMatch;
+// // gives search results on author name, content and title of the post
+//     const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
+//     Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "commerce"}, function(err,allposts){
+//       if(err) console.log(err)
+//       else{
+        
+//         if(allposts.length<1){
+//           noMatch = "No posts matched the search results , please try again"
+//         }
+//         Trending.find({subject: 'commerce'},(err,trendingPosts)=>{
+//           if(err) console.log(err)
+//           else {
+//             console.log(trendingPosts)
+//             res.render("commerce", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+//           }
+//         })
+        
+//       }
+//     })
+    
+//   } else{
+//     Post.find({subject: "commerce"}, function(err,allposts){
+//       if(err) {
+//         console.log(err);
+//         res.statusCode = 500;
+//         res.end('error');
+//       }
+//       else{
+//         console.log("these are all posts of commerce while loading the commerce show page", allposts)
+//         Trending.find({subject: 'commerce'}).populate("post").exec((err,trendingPosts)=>{
+//           if(err) console.log(err)
+//           else {
+//             console.log("****************************",popularposts , "*********************************")
+//             res.render("commerce", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+//           }
+//         })
+//       }
+//     })
+//   }
+// })
+
+
+// // show page of engineering blogs
+// router.get("/engineering", (req,res)=>{
+//   console.log(req.query)
+//   var popularposts = [];
+//   Popular.find({subject: 'engineering'}).populate("post").exec((err,posts)=>{
+//     if(err) console.log(err)
+//     else{
+//       popularposts = posts;
+//     }
+//   })
+
+//   if(req.query.search){
+//     var noMatch;
+// // gives search results on author name, content and title of the post
+//     const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
+//     Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "engineering"}, function(err,allposts){
+//       if(err) console.log(err)
+//       else{
+        
+//         if(allposts.length<1){
+//           noMatch = "No posts matched the search results , please try again"
+//         }
+//         Trending.find({subject: 'engineering'},(err,trendingPosts)=>{
+//           if(err) console.log(err)
+//           else {
+//             console.log(trendingPosts)
+//             res.render("engineering", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+//           }
+//         })
+        
+//       }
+//     })
+    
+//   } else{
+//     Post.find({subject: "engineering"}, function(err,allposts){
+//       if(err) {
+//         console.log(err);
+//         res.statusCode = 500;
+//         res.end('error');
+//       }
+//       else{
+//         Trending.find({subject: 'engineering'}).populate("post").exec((err,trendingPosts)=>{
+//           if(err) console.log(err)
+//           else {
+//             console.log("****************************",popularposts , "*********************************")
+//             res.render("engineering", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+//           }
+//         })
+//       }
+//     })
+//   }
+// })
+
+// // personality development posts page
+// router.get("/personality-development", (req,res)=>{
+//   console.log(req.query)
+//   var popularposts = [];
+//   Popular.find({subject: 'personality-development'}).populate("post").exec((err,posts)=>{
+//     if(err) console.log(err)
+//     else{
+//       popularposts = posts;
+//     }
+//   })
+
+//   if(req.query.search){
+//     var noMatch;
+// // gives search results on author name, content and title of the post
+//     const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
+//     Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "personality-development"}, function(err,allposts){
+//       if(err) console.log(err)
+//       else{
+        
+//         if(allposts.length<1){
+//           noMatch = "No posts matched the search results , please try again"
+//         }
+//         Trending.find({subject: 'personality-development'},(err,trendingPosts)=>{
+//           if(err) console.log(err)
+//           else {
+//             console.log(trendingPosts)
+//             res.render("personality-development", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+//           }
+//         })
+        
+//       }
+//     })
+    
+//   } else{
+//     Post.find({subject: "personality-development"}, function(err,allposts){
+//       if(err) {
+//         console.log(err);
+//         res.statusCode = 500;
+//         res.end('error');
+//       }
+//       else{
+//         Trending.find({subject: 'personality-development'}).populate("post").exec((err,trendingPosts)=>{
+//           if(err) console.log(err)
+//           else {
+//             console.log("****************************",popularposts , "*********************************")
+//             res.render("personality-development", {posts: allposts, noMatch: noMatch, message: req.flash('success'), trendingPosts: trendingPosts, popularPosts: popularposts});
+//           }
+//         })
+//       }
+//     })
+//   }
+// })
 
 // publish a new post
-router.get("/new",isLoggedIn, (req,res)=>{
-  res.render("new")
-})
+// router.get("/new",isLoggedIn, (req,res)=>{
+//   res.render("new")
+// })
 
 
 // this is of no use now
 // post request for creating new post 
-router.post("/",isLoggedIn, (req,res)=>{
+// router.post("/",isLoggedIn, (req,res)=>{
 
-  console.log("inside post rote of creating new post");
+//   console.log("inside post rote of creating new post");
 
-  function count(){
-    console.log("inside count function ,post rote of creating new post");
+//   function count(){
+//     console.log("inside count function ,post rote of creating new post");
 
-    let countTotalArticles=0;
-    Post.count({}, function(err, result) {
-      if (err) {
-          console.log(err);
-      } else {
-        console.log("inside admin portal", result)
-        countTotalArticles = result;
-        next(countTotalArticles);
-      }
-    });
-  }
+//     let countTotalArticles=0;
+//     Post.count({}, function(err, result) {
+//       if (err) {
+//           console.log(err);
+//       } else {
+//         console.log("inside admin portal", result)
+//         countTotalArticles = result;
+//         next(countTotalArticles);
+//       }
+//     });
+//   }
 
-  function next(countTotalArticles){
-    console.log("inside next function, post rote of creating new post");
+//   function next(countTotalArticles){
+//     console.log("inside next function, post rote of creating new post");
 
-    console.log("*******************************")
-    // console.log(req);
-    console.log("*******************************")
-    var newpost = new Post()
-    newpost.title = req.body.post.title;
-    newpost.content = req.body.post.content;
-    newpost.subject = req.body.post.subject;
-    newpost.publish_date = convertDate().toString();
-    newpost.author.id = req.user._id;
-    newpost.author.username = req.user.username;
-    newpost.publishDay = moment().format('dddd');
-    newpost.postNumber = countTotalArticles+1;
-    Post.create(newpost, function(err, post){
-      if(err) console.log(err)
-      else{
-        console.log(post);
-        User.findById(req.user._id).populate("posts").exec(function(err,user){
-          if(err) console.log(err)
-          else {
-            console.log("user who just created post is found ");
-            // console.log(user)
-            user.posts.push(post);
-            user.save((err,user)=>{
-              if(err) console.log(err)
-              else {
-                // console.log(user)
+//     console.log("*******************************")
+//     // console.log(req);
+//     console.log("*******************************")
+//     var newpost = new Post()
+//     newpost.title = req.body.post.title;
+//     newpost.content = req.body.post.content;
+//     newpost.subject = req.body.post.subject;
+//     newpost.publish_date = convertDate().toString();
+//     newpost.author.id = req.user._id;
+//     newpost.author.username = req.user.username;
+//     newpost.publishDay = moment().format('dddd');
+//     newpost.postNumber = countTotalArticles+1;
+//     Post.create(newpost, function(err, post){
+//       if(err) console.log(err)
+//       else{
+//         console.log(post);
+//         User.findById(req.user._id).populate("posts").exec(function(err,user){
+//           if(err) console.log(err)
+//           else {
+//             console.log("user who just created post is found ");
+//             // console.log(user)
+//             user.posts.push(post);
+//             user.save((err,user)=>{
+//               if(err) console.log(err)
+//               else {
+//                 // console.log(user)
                 
-                res.redirect('/posts/' + req.body.post.subject+'?page=1')
-              }
-            })
+//                 res.redirect('/posts/' + req.body.post.subject+'?page=1')
+//               }
+//             })
             
-          }
-        })
-      } 
-    })
+//           }
+//         })
+//       } 
+//     })
 
-  }  
+//   }  
 
-  count();
+//   count();
 
-})
+// })
 
 
 // show page of an business-economics blog
-router.get("/business-economics/:slug", function(req,res){
+// router.get("/business-economics/:slug", function(req,res){
 
-  // callback hell
-  var theuser = req.user;
-  var theslug = req.params.slug;
-  middlewareObj.calculateViewes(theuser , theslug , res, middlewareObj.findSimilar);
+//   // callback hell
+//   var theuser = req.user;
+//   var theslug = req.params.slug;
+//   middlewareObj.calculateViewes(theuser , theslug , res, middlewareObj.findSimilar);
 
 
+// })
+    
+
+
+
+// show page of an commerce blog
+router.get("/business-economics/:slug", check , async function(req,res){
+  var rc=0,tc=0,pc=0;
+  await showObj.recordViews(req).then((v)=>{
+    console.log(v)
+  })
+  var getRecommendedArticles ;
+  await showObj.getRecommendedArticles('business-economics')
+  .then((posts)=>{
+    getRecommendedArticles = posts;
+    rc = (posts.length>=3)?3:posts.length
+  })
+  var getTrendingArticles ;
+  await showObj.getTrendingArticles('business-economics')
+  .then((posts)=>{
+    getTrendingArticles = posts;
+    tc = (posts.length>=3)?3:posts.length
+  })
+  var getPopularArticles; 
+  await showObj.getPopularArticles('business-economics')
+  .then((posts)=>{
+    getPopularArticles = posts;
+    pc = (posts.length>=3)?3:posts.length
+  })
+
+  var getSimilarArticles; 
+  await showObj.getSimilarArticles(req.params.slug, 'business-economics')
+  .then((posts)=>{
+    getSimilarArticles = posts;
+  })
+
+  var post = await Post.findOne({slug: req.params.slug});
+  var displaydate = post.publishDate.toDateString();
+  console.log("........................................", getSimilarArticles.length)
+  var limit = (getSimilarArticles.length<=3)?getSimilarArticles.length:3;
+  res.render("show", {
+    post: post,
+    popularPosts: getPopularArticles,
+    trendingPosts: getTrendingArticles,
+    recommendedPosts: getRecommendedArticles,
+    similarArticles: getSimilarArticles,
+    displaydate: displaydate,
+    limit: limit,
+    trendingCount: tc,
+    recommendedCount: rc,
+    popularCount: pc
+  });
 })
-    
-      
-    
+
 
 
 
 
 // show page of an commerce blog
-router.get("/commerce/:slug", function(req,res){
+router.get("/commerce/:slug", check , async function(req,res){
 
-  if(req.user){
-    
-    User.findById(req.user._id).populate({
-      path: 'viewed_posts',
-      populate: {
-        path: 'post',
-        model: 'Post'
-      }
-    }).exec((err,user)=>{
+  await showObj.recordViews(req).then((v)=>{
+    console.log(v)
+  })
+  var getRecommendedArticles ;
+  await showObj.getRecommendedArticles('commerce')
+  .then((posts)=>{
+    getRecommendedArticles = posts;
+    rc = (posts.length>=3)?3:posts.length
+  })
+  var getTrendingArticles ;
+  await showObj.getTrendingArticles('commerce')
+  .then((posts)=>{
+    getTrendingArticles = posts;
+    tc = (posts.length>=3)?3:posts.length
+  })
+  var getPopularArticles; 
+  await showObj.getPopularArticles('commerce')
+  .then((posts)=>{
+    getPopularArticles = posts;
+    pc = (posts.length>=3)?3:posts.length
+  })
 
-      if(err) console.log(err) 
-      else {
-        Post.findOne({slug: req.params.slug},(err,post)=>{
+  var getSimilarArticles; 
+  await showObj.getSimilarArticles(req.params.slug, 'commerce')
+  .then((posts)=>{
+    getSimilarArticles = posts;
+  })
 
-          if(err) console.log(err)
-          else {
-            var index = 0;
-            var already = false;
-            console.log(already)
-            postid = post._id;
-            console.log("this is the id of current post : ", postid);
-            for(var i=0; i<user.viewed_posts.length; i++){
-              if(postid.equals(user.viewed_posts[i].post._id)){
-                console.log("jnvosdnvonsdov  : ", user.viewed_posts[i].post._id)
-                index = i;
-                already = true;
-                console.log(already);
-                break;
-              }
-            }
-
-            if(already){
-              Viewed.findOne({_id: user.viewed_posts[index]._id},(err,view)=>{
-                if(err) console.log(err)
-                else{
-
-                  view.hitsByUser += 1;
-                  console.log("user.viewed_posts[index].hitsByUser : ",view.hitsByUser)
-                  post.views += 1;
-                  console.log("user.viewed_posts[index].post.views : ",post.views)
-                  if(user.viewed_posts[index].viewsByUser < 4){
-                    view.viewsByUser += 1;
-                    console.log("user.viewed_posts[index].viewsByUser : ",view.viewsByUser)
-                    post.actualViews += 1;
-                    console.log("user.viewed_posts[index].post.actualViews : ",post.actualViews)
-                    post.save()
-                    view.save();
-                  }
-                }
-              })
-          
-            }
-             else if(!already){
-              var viewed = new Viewed();
-              viewed.post = post;
-              viewed.save((err,viewed)=>{
-                if(err) console.log(err)
-                else{
-                  user.viewed_posts.push(viewed);
-                  user.save((err,thisuser)=>{
-                    // console.log(util.inspect(thisuser, {depth: null}))
-                    if(err) console.log(err);
-                    else{
-                      viewed.hitsByUser += 1;
-                      console.log("user.viewed_posts[index].hitsByUser : ",viewed.hitsByUser);
-                      post.views += 1;
-                      console.log("user.viewed_posts[index].post.views : ",post.views);
-                      if(user.viewed_posts[index].viewsByUser < 4){
-                        viewed.viewsByUser += 1;
-                        console.log("user.viewed_posts[index].viewsByUser : ",viewed.viewsByUser)
-                        post.actualViews += 1;
-                        console.log("user.viewed_posts[index].post.actualViews : ",post.actualViews)
-                        post.save()
-                        viewed.save();
-                      }
-                    }
-
-                  });
-                }
-              })
-            }
-          }
-          res.render("show", {post: post});
-        })
-      }
-
-    })
-     
-  } else {
-    Post.findOne({slug: req.params.slug},(err,post)=>{
-      if(err) console.log(err)
-      else{
-        post.views += 1;
-        post.actualViews += 1;
-        console.log("post.views : ", post.views,"\n post.actualViews : ", post.actualViews);
-        post.save();
-      }
-      res.render("show", {post: post});
-    })
-  }
-
-})
-
-
-// show page of an engineering blog
-router.get("/engineering/:slug", function(req,res){
-
-  if(req.user){
-    
-    User.findById(req.user._id).populate({
-      path: 'viewed_posts',
-      populate: {
-        path: 'post',
-        model: 'Post'
-      }
-    }).exec((err,user)=>{
-
-      if(err) console.log(err) 
-      else {
-        Post.findOne({slug: req.params.slug},(err,post)=>{
-
-          if(err) console.log(err)
-          else {
-            var index = 0;
-            var already = false;
-            console.log(already)
-            postid = post._id;
-            console.log("this is the id of current post : ", postid);
-            for(var i=0; i<user.viewed_posts.length; i++){
-              if(postid.equals(user.viewed_posts[i].post._id)){
-                console.log("jnvosdnvonsdov  : ", user.viewed_posts[i].post._id)
-                index = i;
-                already = true;
-                console.log(already);
-                break;
-              }
-            }
-
-            if(already){
-              Viewed.findOne({_id: user.viewed_posts[index]._id},(err,view)=>{
-                if(err) console.log(err)
-                else{
-
-                  view.hitsByUser += 1;
-                  console.log("user.viewed_posts[index].hitsByUser : ",view.hitsByUser)
-                  post.views += 1;
-                  console.log("user.viewed_posts[index].post.views : ",post.views)
-                  if(user.viewed_posts[index].viewsByUser < 4){
-                    view.viewsByUser += 1;
-                    console.log("user.viewed_posts[index].viewsByUser : ",view.viewsByUser)
-                    post.actualViews += 1;
-                    console.log("user.viewed_posts[index].post.actualViews : ",post.actualViews)
-                    post.save()
-                    view.save();
-                  }
-                }
-              })
-          
-            }
-             else if(!already){
-              var viewed = new Viewed();
-              viewed.post = post;
-              viewed.save((err,viewed)=>{
-                if(err) console.log(err)
-                else{
-                  user.viewed_posts.push(viewed);
-                  user.save((err,thisuser)=>{
-                    // console.log(util.inspect(thisuser, {depth: null}))
-                    if(err) console.log(err);
-                    else{
-                      viewed.hitsByUser += 1;
-                      console.log("user.viewed_posts[index].hitsByUser : ",view.hitsByUser);
-                      post.views += 1;
-                      console.log("user.viewed_posts[index].post.views : ",post.views);
-                      if(user.viewed_posts[index].viewsByUser < 4){
-                        view.viewsByUser += 1;
-                        console.log("user.viewed_posts[index].viewsByUser : ",view.viewsByUser)
-                        post.actualViews += 1;
-                        console.log("user.viewed_posts[index].post.actualViews : ",post.actualViews)
-                        post.save()
-                        view.save();
-                      }
-                    }
-
-                  });
-                }
-              })
-            }
-          }
-          res.render("show", {post: post});
-        })
-      }
-
-    })
-     
-  } else {
-    Post.findOne({slug: req.params.slug},(err,post)=>{
-      if(err) console.log(err)
-      else{
-        post.views += 1;
-        post.actualViews += 1;
-        console.log("post.views : ", post.views,"\n post.actualViews : ", post.actualViews);
-        post.save();
-      }
-      res.render("show", {post: post});
-    })
-  }
-
+  var post = await Post.findOne({slug: req.params.slug});
+  var displaydate = post.publishDate.toDateString();
+  console.log("........................................", getSimilarArticles.length)
+  var limit = (getSimilarArticles.length<=3)?getSimilarArticles.length:3;
+  res.render("show", {
+    post: post,
+    popularPosts: getPopularArticles,
+    trendingPosts: getTrendingArticles,
+    recommendedPosts: getRecommendedArticles,
+    similarArticles: getSimilarArticles,
+    displaydate: displaydate,
+    limit: limit,
+    trendingCount: tc,
+    recommendedCount: rc,
+    popularCount: pc
+  });
 })
 
 
 
-// show page of an personality-development blog
-router.get("/personality-development/:slug", function(req,res){
 
-  if(req.user){
-    
-    User.findById(req.user._id).populate({
-      path: 'viewed_posts',
-      populate: {
-        path: 'post',
-        model: 'Post'
-      }
-    }).exec((err,user)=>{
+// show page of an commerce blog
+router.get("/engineering/:slug", check , async function(req,res){
 
-      if(err) console.log(err) 
-      else {
-        Post.findOne({slug: req.params.slug},(err,post)=>{
+  await showObj.recordViews(req).then((v)=>{
+    console.log(v)
+  })
+  var getRecommendedArticles ;
+  await showObj.getRecommendedArticles('engineering')
+  .then((posts)=>{
+    getRecommendedArticles = posts;
+    rc = (posts.length>=3)?3:posts.length
+  })
+  var getTrendingArticles ;
+  await showObj.getTrendingArticles('engineering')
+  .then((posts)=>{
+    getTrendingArticles = posts;
+    tc = (posts.length>=3)?3:posts.length
+  })
+  var getPopularArticles; 
+  await showObj.getPopularArticles('engineering')
+  .then((posts)=>{
+    getPopularArticles = posts;
+    pc = (posts.length>=3)?3:posts.length
+  })
 
-          if(err) console.log(err)
-          else {
-            var index = 0;
-            var already = false;
-            console.log(already)
-            postid = post._id;
-            console.log("this is the id of current post : ", postid);
-            for(var i=0; i<user.viewed_posts.length; i++){
-              if(postid.equals(user.viewed_posts[i].post._id)){
-                console.log("jnvosdnvonsdov  : ", user.viewed_posts[i].post._id)
-                index = i;
-                already = true;
-                console.log(already);
-                break;
-              }
-            }
+  var getSimilarArticles; 
+  await showObj.getSimilarArticles(req.params.slug, 'engineering')
+  .then((posts)=>{
+    getSimilarArticles = posts;
+  })
 
-            if(already){
-              Viewed.findOne({_id: user.viewed_posts[index]._id},(err,view)=>{
-                if(err) console.log(err)
-                else{
-
-                  view.hitsByUser += 1;
-                  console.log("user.viewed_posts[index].hitsByUser : ",view.hitsByUser)
-                  post.views += 1;
-                  console.log("user.viewed_posts[index].post.views : ",post.views)
-                  if(user.viewed_posts[index].viewsByUser < 4){
-                    view.viewsByUser += 1;
-                    console.log("user.viewed_posts[index].viewsByUser : ",view.viewsByUser)
-                    post.actualViews += 1;
-                    console.log("user.viewed_posts[index].post.actualViews : ",post.actualViews)
-                    post.save()
-                    view.save();
-                  }
-                }
-              })
-          
-            }
-             else if(!already){
-              var viewed = new Viewed();
-              viewed.post = post;
-              viewed.save((err,viewed)=>{
-                if(err) console.log(err)
-                else{
-                  user.viewed_posts.push(viewed);
-                  user.save((err,thisuser)=>{
-                    // console.log(util.inspect(thisuser, {depth: null}))
-                    if(err) console.log(err);
-                    else{
-                      viewed.hitsByUser += 1;
-                      console.log("user.viewed_posts[index].hitsByUser : ",view.hitsByUser);
-                      post.views += 1;
-                      console.log("user.viewed_posts[index].post.views : ",post.views);
-                      if(user.viewed_posts[index].viewsByUser < 4){
-                        view.viewsByUser += 1;
-                        console.log("user.viewed_posts[index].viewsByUser : ",view.viewsByUser)
-                        post.actualViews += 1;
-                        console.log("user.viewed_posts[index].post.actualViews : ",post.actualViews)
-                        post.save()
-                        view.save();
-                      }
-                    }
-
-                  });
-                }
-              })
-            }
-          }
-          res.render("show", {post: post});
-        })
-      }
-
-    })
-     
-  } else {
-    Post.findOne({slug: req.params.slug},(err,post)=>{
-      if(err) console.log(err)
-      else{
-        post.views += 1;
-        post.actualViews += 1;
-        console.log("post.views : ", post.views,"\n post.actualViews : ", post.actualViews);
-        post.save();
-      }
-      res.render("show", {post: post});
-    })
-  }
-
+  var post = await Post.findOne({slug: req.params.slug});
+  var displaydate = post.publishDate.toDateString();
+  console.log("........................................", getSimilarArticles.length)
+  var limit = (getSimilarArticles.length<=3)?getSimilarArticles.length:3;
+  res.render("show", {
+    post: post,
+    popularPosts: getPopularArticles,
+    trendingPosts: getTrendingArticles,
+    recommendedPosts: getRecommendedArticles,
+    similarArticles: getSimilarArticles,
+    displaydate: displaydate,
+    limit: limit,
+    trendingCount: tc,
+    recommendedCount: rc,
+    popularCount: pc
+  });
 })
+
+
+
+
+
+
+// show page of an commerce blog
+router.get("/personality-development/:slug", check , async function(req,res){
+
+  await showObj.recordViews(req).then((v)=>{
+    console.log(v)
+  })
+  var getRecommendedArticles ;
+  await showObj.getRecommendedArticles('personality-development')
+  .then((posts)=>{
+    getRecommendedArticles = posts;
+    rc = (posts.length>=3)?3:posts.length
+  })
+  var getTrendingArticles ;
+  await showObj.getTrendingArticles('personality-development')
+  .then((posts)=>{
+    getTrendingArticles = posts;
+    tc = (posts.length>=3)?3:posts.length
+  })
+  var getPopularArticles; 
+  await showObj.getPopularArticles('personality-development')
+  .then((posts)=>{
+    getPopularArticles = posts;
+    pc = (posts.length>=3)?3:posts.length
+  })
+
+  var getSimilarArticles; 
+  await showObj.getSimilarArticles(req.params.slug, 'personality-development')
+  .then((posts)=>{
+    getSimilarArticles = posts;
+  })
+
+  var post = await Post.findOne({slug: req.params.slug});
+  var displaydate = post.publishDate.toDateString();
+  console.log("........................................", getSimilarArticles.length)
+  var limit = (getSimilarArticles.length<=3)?getSimilarArticles.length:3;
+  res.render("show", {
+    post: post,
+    popularPosts: getPopularArticles,
+    trendingPosts: getTrendingArticles,
+    recommendedPosts: getRecommendedArticles,
+    similarArticles: getSimilarArticles,
+    displaydate: displaydate,
+    limit: limit,
+    trendingCount: tc,
+    recommendedCount: rc,
+    popularCount: pc
+  });
+})
+
+
+
+
+
 
 
 
@@ -721,8 +1243,8 @@ router.get("/personality-development/:slug", function(req,res){
 
 
 // increment like of particular article in database
-router.get('/liked/:slug', (req,res)=>{
-
+router.get('/liked/:slug', check,(req,res)=>{
+  
   // Post.updateOne({slug: req.params.slug}, {$inc: {likes:1}}, (err,likedpost)=>{
   //   if(err) console.log(err)
   //   else{
@@ -760,12 +1282,10 @@ router.get('/liked/:slug', (req,res)=>{
                 console.log(user)
               }
             })
-            res.json({likes: post.likes,
-                      message: 'pushed the post to likedposts array of the user'
+            res.json({message: "you have liked this post"
                     })
           } else {
-            res.json({likes: post.likes,
-                      message: 'user already liked the post'
+            res.json({message: "you can only like this post once"
                     })
           }
         }
@@ -779,20 +1299,18 @@ router.get('/liked/:slug', (req,res)=>{
 })
 
 
-router.get('/findPostIdAndUser/:slug', (req,res)=>{
+router.get('/findPostIdAndUser/:slug', check, async (req,res)=>{
+  
   var CurPost_id=undefined;
   var curuser=undefined;
   var obj = {
-    CurPost_id: null,
     curuser: req.user
   }
   console.log("req made by ajax to find post and user on the show page")
-
-  
-  Post.findOne({slug: req.params.slug}, (err,foundpost)=>{
+  Post.findOne({slug: req.params.slug}, async (err,foundpost)=>{
     if(err) console.log(err)
     else{
-      obj.CurPost_id = foundpost._id;
+      obj.CurPost_id = await foundpost._id;
       res.json(obj);
     }
   })
@@ -831,13 +1349,21 @@ router.post("/upload/file/:num", upload.single('photo') , (req,res,next)=>{
 })
 
 // DELETE ROUTE OF A POST BY ADMIN
-router.get("/delete/:slug", (req,res)=>{
-  Post.findOneAndRemove({slug: req.params.slug}, (err,deletedpost)=>{
+router.get("/delete/:slug", auth , async (req,res)=>{
+
+  await deleteObj.deleteposteverywhere(res,req)
+  await deleteObj.deleteforauthor(res,req)
+  .then(()=>{
+    console.log("deleted")
+  })
+  Post.findOneAndRemove({slug: req.params.slug}, async (err,deletedpost)=>{
     if(err) console.log(err)
     else{
       console.log(deletedpost);
-      middlewareObj.popular();
-      middlewareObj.trending();
+      await middlewareObj.popular();
+      await middlewareObj.trending();
+      await middlewareObj.recommended();
+
     }
   })
 })
@@ -848,13 +1374,7 @@ router.get("/allblogs",(req,res)=>{
 
 
 
-// middleware for checking if user is logged in 
-function isLoggedIn(req, res, next){
-	if(req.isAuthenticated()){
-		return next();
-	}
-	res.redirect("/register_or_login");
-}
+
 
 function convertDate(given_date){
   var formatted_date = moment(given_date).format('YYYY-MM-DD');
@@ -865,7 +1385,6 @@ function convertDate(given_date){
 function escapeRegex(string) {
   return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
-
 
 
 module.exports = router;

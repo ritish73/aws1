@@ -1,28 +1,261 @@
-<!DOCTYPE html>
+
+
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BackBenchers</title>
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Backbenchers</title>
+      <link rel="shortcut icon" type="image/x-icon" href="/images/1_logo.png" />
+      <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+      <link rel="stylesheet" href="/stylesheets/2nd_dark.css">
+  </head>
+  <body>
 
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f3979a7285fa93a"></script>
 
-</head>
-
-<body>
+      
+      <header>
   
-  <h1> <%= post.title %> </h1>
-  <h3> <%= post.publish_date %> </h3> 
-  <h5> published by <%= post.author.username %></h5>
-  <p> <%- post.sanitizedHtml %></p>
-  <button id="save-to-later">save later</button>
+          <div class="top-horiz-bar">
+              <div class="logo-section-in-bar">
+                  <img class="top-img-logo" src="/images/final_2.png" alt="logo-pic" height="60px" width="60px">
+                  <img class="top-img2-logo" src="/images/5.png" alt="logo-pic" height="60rem" width="145rem">
+                  
+              </div>
+      
+      
+              <div class="other-icons">
+      
+
+                <form method="get" action="/posts/business-economics">
+                  <div class="search-box">
+                      
+                      <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
+                      <button>
+                          <i class="fas fa-search"></i>
+                      </button>
+                  
+                  </div>
+              </form>
+
+              <div class="person-account">
+                  <span class="account-info" href="#">
+                    <% if(currentUser){ %>
+                      <a href="/dashboard" class="finall"> <%=currentUser.username%></a>
+                    <% } else { %>
+                        <a href="/register_or_login" class="finall"> Sign-in/up</a>
+                    <% } %>
+                  </span>
+              </div>
+              </div>
+      
+              </div>
+          
+      
+      
+      <div class="vertical-nav-bar">
+        <a href="/">Home<span><i class="fas fa-home"></i></span></a>
+        <a href="/blogs">Blogs<span><i class="fas fa-user-graduate"></i></span></a>
+        <a href="/publish">Authors<span><i class="fas fa-pencil-alt"></i></span></a>
+        <a href="/contactus">Contact US<span><i class="fas fa-phone-alt"></i></span></a>
+        <a href="/aboutus">About Us<span><i class="fas fa-users"></i></span></a>
+        <a href="https://www.facebook.com/BackBenchers-105240558097832">Facebook<span><i class="fab fa-facebook-f"></i></span></a>
+        <a href="#">Instagram<span><i class="fab fa-instagram"></i></span></a>
+        <a href="https://www.linkedin.com/in/back-benchers-94a049202/">Linkedin<span><i class="fab fa-linkedin-in"></i></span></a>
+          
+         
+      </div>
+  
+  </header>
+  
+  <main>
+  
+      
+      
+          <div class="all-engineering-articles">
+
+
+            
+              <div class="side-box">
+                  <div class="one-of-3-heading">
+                      <h2 class="side-box-heading-one">Trending</h2>
+                      <% for(var i=0;i<trendingCount;i++){ %>
+      
+                        <div class="sub-part-section">
+                          <h2 class="title-side-box"><a href="/posts/<%=trendingPosts[i].post.subject%>/<%=trendingPosts[i].post.slug%>"><%=trendingPosts[i].post.title%></a></h2>
+                          <div class="date-side-box">
+                              <span><%=trendingPosts[i].post.publishDay%></span>
+                          </div>
+                        </div>
+                      <% } %> 
+                  </div>
+      
+      
+                  <div class="two-of-3-heading">
+                      <h2 class="side-box-heading-two">Recommended</h2>
+                      <% for(var i=0;i<recommendedCount;i++){ %>
+                        <div class="sub-part-section">
+                            <h2 class="title-side-box"><a href="/posts/<%=recommendedPosts[i].post.subject%>/<%=recommendedPosts[i].post.slug%>"><%=recommendedPosts[i].post.title%></a></h2>
+                            <div class="date-side-box">
+                                <span><%=recommendedPosts[i].post.publishDay%></span>
+                            </div>
+                        </div>
+                      <% } %>  
+                  </div>
+      
+      
+                  <div class="three-of-3-heading">
+                      <h2 class="side-box-heading-three">Popular</h2>
+                      <% for(var i=0;i<popularCount;i++){ %>
+                        <div class="sub-part-section">
+                            <h2 class="title-side-box">
+                                <a href="/posts/<%=popularPosts[i].post.subject%>/<%=popularPosts[i].post.slug%>"><%=popularPosts[i].post.title%></a></h2>
+                            <div class="date-side-box">
+                                <span><%=popularPosts[i].post.publishDay%></span>
+                            </div>
+                        </div>
+                      <% } %>
+                  </div>
+              </div>
+              
+  
+             <div class="central-part-total">
+              <div class="article-content">
+                  <h2 class="article-heading-3p"> <%= post.title %> </h2>
+                  <h3 class="overall-prop"> - <%=post.authorName%>  <span><a href="/posts/<%=post._id%>/edit">Edit this post</a></span>   <span id="last-page-date"> <span id="author-linkedin"><i class="fab fa-linkedin-in"></i></span>  |  <%=displaydate%></span> <span id="entity-save-subscribe"><span><button id="channel-name"><%=post.authorName%></button></span><span id="susbscribe-id-plus">  <button id="save-to-later"> <i class="fas fa-plus "></i> </button> </span></span></h3>
+              
+                  <p class="article-para-3p"><%- post.sanitizedHtml %></p>
+              </div>
+  
+  
+  
+  
+  
+  
+              <div class="similar-articles">
+                  <h2 class="overall-heading">Similar articles</h2>
+  
+                  <div class="all-griding">
+                    <% for(var i=0; i<limit; i++){ %>
+                      <div class="column">
+                          <div class="similar-blog">
+                              <div class="similar-article-heading">
+                                  <h2><%=similarArticles[i].title%></h2>
+                              </div>
+                              <div class="similar-article-image">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQYs6x530rsToLKIxPZy69gkmLtHaAJr0kSiA&usqp=CAU" alt="" height="auto" width="135px">
+                              </div>
+                              <div class="similar-button">
+                                  <button><a href="/posts/<%=similarArticles[i].subject%>/<%=similarArticles[i].slug%>">Read more</a></button>
+                              </div>
+                          </div>
+                      </div>
+                    <% } %>
+                  </div>
+  
+                </div>
+  
+  
+  
+              </div>
+  
+  
+      
+             <!-- <div class="next-page">
+              <h2 class="new-page-blogs">-Page 1 of 1- <span class="next-page-btn"><a href="">Next page</a></span></h2>
+          </div>
+   -->
+                 
+  
+  
+              </div>
+          </section> 
+          </main>
+  
+  
+  
+          <footer>
+              <div class="main-content">
+                  <div class="left box">
+                      <div class="content">
+                          <div class="logo-footer-img">
+                          <img src="/images/2.png" alt="logo" height="250px" width="250px">
+                      </div>
+                          <div class="social">
+                              <a href="#"><span class="fab fa-facebook-f"></span></a>
+                              <a href="#"><span class="fab fa-instagram"></span></a>
+                              <a href="#"><span class="fab fa-linkedin-in"></span></a>
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class="center box">
+                      <h2>Quick links</h2>
+                      <div class="content">
+                          <ul class="links">
+                          <li><a href="#"> > Home</a></li>
+                          <li><a href="#"> > Business & Economics</a></li>
+                          <li><a href="#"> > Commerce</a></li>
+                          <li><a href="#"> > Engineering</a></li>
+                          <li><a href="#"> > Personality Devlopment</a></li>
+                          </ul>
+                      </div>
+                  </div>
+  
+                  <div class="center-right box">
+                      <h2>Company</h2>
+                      <div class="content">
+                          <ul class="links">
+                          <li><a href="#"> > About Us</a></li>
+                          <li><a href="#"> > Contact Us</a></li>
+                          <li><a href="#"> > Terms and conditions</a></li>
+                          <li><a href="#"> > Privacy Policy</a></li>
+                          </ul>
+                      </div>
+                  </div>
+  
+                  
+  
+                  <div class="right box">
+                      <h2>Any queries ?</h2>
+                      <div class="content">
+                          <form action="#">
+                              <div class="email">
+                                  <div class="text">Email *</div>
+                                  <input type="email" required>
+                              </div>
+                              <div class="msg">
+                                  <div class="text">Message *</div>
+                                  <textarea  cols="25" rows="2"></textarea>
+                              </div>
+                              <div class="btn">
+                                  <button type="submit">Send</button>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+  
+              <div class="bottom">
+                  <center>
+                      <span class="credits">Created by <a href="#">Backbenchers</a> | </span>
+                      <span class="far fa-copyright"></span><span> 2020 All rights reserved.</span>
+                  </center>
+              </div>
+          </footer>
+  </body>
+  </html>
+
+
+
+  <!-- <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f3979a7285fa93a"></script> -->
+  <!-- <button id="save-to-later">save later</button>
   
   <button type="button" id="like">like</button> 
   
   <span class="likescount"><%= post.likes %></span>
   <button id="share"><a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/engineering/<%= post._id %>" data-action="share/whatsapp/share" target="_blank"> share on whatsapp </a></button>
 
-  <div id="message"></div>  
+  <div id="message"></div>   -->
   <script>
 
       var currentUser;
@@ -44,17 +277,7 @@
         saveToLater.addEventListener('click', savetolater);
         var sharepostButton = document.querySelector('#share');
         var sharelink = document.querySelector('#share a');
-        sharepostButton.addEventListener('click',sharePost);
-
-        
-        if(currentUser === undefined){
-          // sharepostButton.disabled = true;
-          // saveToLater.disabled = true;
-          // likebutton.disabled = true;
-          // sharelink.ClassName += "disableClick";
-        }
-
-        
+        sharepostButton.addEventListener('click',sharePost);  
 
         function like(){
         
@@ -162,12 +385,12 @@
         httpRequest.send();
       }
 
-      function findPostAndUserRequest(){
+      async function findPostAndUserRequest(){
           if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
               var respJson = JSON.parse(httpRequest.responseText)
-              currentPost = respJson.CurPost_id;
-              currentUser = respJson.curuser;
+              currentPost = await respJson.CurPost_id;
+              currentUser = await respJson.curuser;
               console.log(currentPost, currentUser)
             } else {
               alert('There was a problem with the request.');

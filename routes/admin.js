@@ -1,42 +1,22 @@
-
 var express = require("express");
 var router  = express.Router();
 var Post = require('../models/post.js');
 var User = require('../models/user.js');
 
 var Trending = require('../models/trending.js');
+var Query = require('../models/query.js');
 var Popular = require('../models/popular.js');
 var Recommended = require('../models/recommended.js');  
+var deleteObj = require("../controllers/deleteController")
 var moment = require('moment');
 var locus = require('locus')
 var middleware = require("../middleware/index");
 const { unwatchFile } = require("fs");
 const middlewareObj = require("../middleware/index");
 const Ip = require("../models/ip.js");
+const auth = require("../middleware/auth.js");
 
-
-
-router.get('/save_me', async (req,res)=>{
-  var newuser = {}
-  newuser.username = 'rescue';
-  newuser.email =  'rescue45@gmail.com';
-  newuser.role = 'admin';
-  var password = 'pass';
-  await User.register(new User(newuser), password, function(err, user){
-    if(err) {
-      res.send(err);
-    } else{
-      passport.authenticate("local")(req,res,function(){
-        res.redirect("/adminportal");
-      });
-    }
-  });
-})
-
-
-
-
-router.get('/adminportal', middleware.isLoggedIn, middleware.isAdmin,(req,res)=>{
+router.get('/adminportal', auth , middleware.isAdmin, (req,res)=>{
   var ip = req.headers['x-forwarded-for'] || 
      req.connection.remoteAddress || 
      req.socket.remoteAddress ||
@@ -55,19 +35,18 @@ router.get('/adminportal', middleware.isLoggedIn, middleware.isAdmin,(req,res)=>
 
 })
 
-router.get('/auditorportal', middleware.isLoggedIn, middleware.isAuditor,(req,res)=>{
+router.get('/auditorportal', auth, middleware.isAuditor,(req,res)=>{
   res.render('auditorportal');
 })
 
-router.get('/unreviewedposts',  middleware.isAdmin, (req,res)=>{
-
+router.get('/unreviewedposts', auth,  middleware.isAdmin, async (req,res)=>{
   let countTotalArticles=0;
-  Post.countDocuments({}, function(err, result) {
+  Post.countDocuments({}, async function(err, result) {
     if (err) {
        console.log(err);
     } else {
       console.log("inside admin portal", result)
-      countTotalArticles = result;
+      countTotalArticles = await result;
     }
   });
 
@@ -86,7 +65,7 @@ router.get('/unreviewedposts',  middleware.isAdmin, (req,res)=>{
   }) 
 })
 
-router.get('/unreviewedposts_auditor',  middleware.isAuditor, (req,res)=>{
+router.get('/unreviewedposts_auditor',  auth, middleware.isAuditor, (req,res)=>{
 
   User.findById(req.user._id).populate("auditors_checklist").exec(function(err,user){
     if(err) console.log(err)
@@ -98,38 +77,71 @@ router.get('/unreviewedposts_auditor',  middleware.isAuditor, (req,res)=>{
   
 })
 
-router.get('/createusers',  middleware.isAdmin , (req,res)=>{
+router.get('/createusers', auth,  middleware.isAdmin , (req,res)=>{
   res.render('register_Admin')
 })
 
-router.post("/register-user-by-admin", middleware.isAdmin, (req,res)=>{
-  var user = {
-    username: req.body.username,
-    email: req.body.email,
-    role: req.body.role
-  }
-  User.register(new User(user), req.body.password, (err,user)=>{
-    if(err) console.log(err)
-    else{
-      res.redirect('/adminportal')
-    }
-  })
+router.post("/register-user-by-admin", auth,  middleware.isAdmin, async (req,res)=>{
+  
+
+
+  var numberofusers;
+    User.countDocuments({}, async (err, num)=>{
+      if(err) console.log(err)
+      else{
+        console.log(num)
+        numberofusers = await num;
+        // var validpass = validatePass(req.body.password)
+        var validpass = {};
+        validpass.status = 1;
+        var uid = await numberofusers + 1;
+        if(validpass.status){
+
+          const myfunction = async ()=>{
+            var user = new User();
+            
+            user.username =  req.body.username;
+            user.password =  req.body.password;
+            user.email =  req.body.email;
+            user.bb_id =  uid;
+            await user.hashPassword()
+            user.save().then(async ()=>{
+              console.log(user);
+              res.status(200).send(user);
+            }).catch((e)=>{
+              console.log(e);
+              res.status(400).redirect("/register_or_login?=an error occured while creating your account");
+            })
+          }
+          myfunction();
+
+        } else {
+          console.log("user creation unsuccessful")
+          res.render('register',{message: "unsuccessful registration"})
+        }
+      }
+      
+    
+    })
+
+
+
 })
 
-router.get("/posts/:id/edit", (req,res)=>{
+router.get("/posts/:id/edit", auth, middleware.isAuditor, (req,res)=>{
   Post.findById(req.params.id, function(err, post){
 		res.render("edit", {post: post});
 	});
 })
 
-router.put("/posts/:id", middleware.isAuditor, (req,res)=>{
-  Post.findByIdAndUpdate(req.params.id, req.body.post,(err,updatedpost)=>{
+router.put("/posts/:id", auth , middleware.isAuditor, (req,res)=>{
+  Post.findByIdAndUpdate(req.params.id, req.body.post,async (err,updatedpost)=>{
     if(err) console.log(err)
     else{
-      updatedpost.title = req.body.post.title;
-      updatedpost.content = req.body.post.content;
-      updatedpost.subject = req.body.post.subject;
-      updatedpost.save();
+      updatedpost.title = await req.body.post.title;
+      updatedpost.content = await req.body.post.content;
+      updatedpost.subject = await req.body.post.subject;
+      await updatedpost.save();
       // var subject = updatedpost.subject;
       return res.redirect("/unreviewedposts_auditor")
       
@@ -139,57 +151,48 @@ router.put("/posts/:id", middleware.isAuditor, (req,res)=>{
 })
 
 // delete route of a post         
-router.delete("/:id", (req,res)=>{
-  // var subject;
-  // var author;
-  // Post.findById(req.params.id,(err,deletedpost)=>{
-  //   if(err) console.log(err)
-  //   else{
-  //     subject = deletedpost.subject;
-  //     author = deletedpost.author;
-  //   }
-  // })
-  Post.findByIdAndRemove(req.params.id, (err,post)=>{
+router.delete("/:slug", auth, middleware.isAdmin,async (req,res)=>{
+  await deleteObj.deleteposteverywhere(res,req)
+  await deleteObj.deleteforauthor(res,req)
+  .then(()=>{
+    console.log("deleted")
+  })
+  
+  Post.findOneAndRemove({slug: req.params.slug}, async (err,post)=>{
     if(err) console.log(err)
     else {
       res.redirect("/unreviewedposts")
+      await middlewareObj.popular();
+      await middlewareObj.trending();
+      await middlewareObj.recommended();
     }
   })
 })
 
-router.get('/approvepostbyauditor/:slug',(req,res)=>{
-  Post.findOne({slug: req.params.slug}, (err,foundpost)=>{
+router.get('/approvepostbyauditor/:slug', auth  , middleware.isAuditor , (req,res)=>{
+  Post.findOne({slug: req.params.slug}, async (err,foundpost)=>{
     if(err) console.log(err)
     else{
       foundpost.isReviewedByAuditor = true;
-      foundpost.save()
+      await foundpost.save()
       console.log("foundpost reviewed with title " + foundpost.slug , foundpost.isReviewedByAuditor)
       res.json({reviewed: true})
     }
   })
 })
 
-router.get('/approvepostbyadmin/:slug',(req,res)=>{
+router.get('/approvepostbyadmin/:slug',  auth , middleware.isAuditor , async (req,res)=>{
   console.log("entered the route approved post by admin")
-  Post.findOne({slug: req.params.slug}, (err,foundpost)=>{
-    if(err) console.log(err)
-    else{
-      
-      foundpost.isReviewedByAdmin = true;
-      foundpost.save((err,post)=>{
-        if(err) console.log(err)
-        else{
-          console.log(post , " is made true by admin and saved to database")
-        }
-      })
-      
-      console.log("foundpost reviewed with title " + foundpost.slug , foundpost.isReviewedByAdmin)
-      res.json({reviewed: true})
-    }
-  })
+  var foundpost = await Post.findOne({slug: req.params.slug});
+  foundpost.isReviewedByAdmin = true;
+  // await foundpost.markModified('isReviewedByAdmin');
+  await foundpost.save();
+  console.log("foundpost reviewed with title " + foundpost.slug , foundpost.isReviewedByAdmin)
+  res.json({reviewed: true, post: foundpost})
+  console.log("................. after : ", foundpost)
 })
 
-router.get("/sendToAuditor/:name/:postslug",(req,res)=>{
+router.get("/sendToAuditor/:name/:postslug",  auth , middleware.isAuditor , (req,res)=>{
   
   console.log("request made to search auditors")
   var message='already';
@@ -197,7 +200,7 @@ router.get("/sendToAuditor/:name/:postslug",(req,res)=>{
     if(err) console.log(err)
     else{
       console.log("foundpost is " + foundpost)
-      User.findOne({username: req.params.name}).populate("auditors_checklist").exec(function(err,auditor){
+      User.findOne({username: req.params.name}).populate("auditors_checklist").exec(async function(err,auditor){
         if(err) console.log(err)
         else {
           var check = false;
@@ -209,13 +212,13 @@ router.get("/sendToAuditor/:name/:postslug",(req,res)=>{
           }
           console.log("value of check after : " + check)
           if(!check){
-            auditor.auditors_checklist.push(foundpost);
+            await auditor.auditors_checklist.push(foundpost);
             message = "post received by "+auditor.username+ " successfully"
           } else{
             message = "post already given to " + auditor.username
           }
           
-          auditor.save((err,auditor)=>{
+          await auditor.save((err,auditor)=>{
             if(err) console.log(err)
             else {
               console.log(auditor)
@@ -234,7 +237,7 @@ router.get("/sendToAuditor/:name/:postslug",(req,res)=>{
 })
 
 
-router.get("/reviewedByAuditors", (req,res)=>{
+router.get("/reviewedByAuditors", auth, middleware.isAuditor,(req,res)=>{
   Post.find({isReviewedByAuditor: true},(err,posts)=>{
     if(err) console.log(err)
     else{
@@ -274,7 +277,7 @@ router.get("/clear/:slug", (req,res)=>{
 
       if(err) console.log(err)
       else{
-          Post.findOne({slug: req.params.slug}, (err,post)=>{
+          Post.findOne({slug: req.params.slug}, async (err,post)=>{
           if(err) console.log(err)
           else{
             for(var i=0;i<user.auditors_checklist.length;i++){
@@ -283,7 +286,7 @@ router.get("/clear/:slug", (req,res)=>{
                 break;
               }
             }
-            user.save((err,user)=>{
+            await user.save((err,user)=>{
               if(err) console.log(err)
               else{
                 console.log("auditor post is deleted and user is saved again");
@@ -296,10 +299,10 @@ router.get("/clear/:slug", (req,res)=>{
   }
 })
 
-router.get("/updateTrending",(req,res)=>{
+router.get("/updateTrending", auth, middleware.isAdmin ,async (req,res)=>{
   var obj = {
   }
-  middleware.trending(func());
+  await middleware.trending(func());
   
   
 
@@ -320,10 +323,10 @@ function func(){
 }
 })
 
-router.get("/updatePopular",(req,res)=>{
+router.get("/updatePopular", auth, middleware.isAdmin, async (req,res)=>{
 
   var obj = {};
-  middleware.popular(func());
+  await middleware.popular(func());
   function func(){
   Popular.find({}).populate("post").exec((err,posts)=>{
     if(err){
@@ -340,10 +343,10 @@ router.get("/updatePopular",(req,res)=>{
 })
 
 
-router.get("/updateRecommended",(req,res)=>{
+router.get("/updateRecommended",auth, middleware.isAdmin,async (req,res)=>{
 
   var obj = {};
-  middleware.popular(func());
+  await middleware.recommended(func());
   function func(){
   Recommended.find({}).populate("post").exec((err,posts)=>{
     if(err){
@@ -360,7 +363,7 @@ router.get("/updateRecommended",(req,res)=>{
 })
 
 
-router.get('/showips',(req,res)=>{
+router.get('/showips',auth, middleware.isAdmin, (req,res)=>{
   Ip.find({}, (err,allips)=>{
     if(err) console.log(err)
     else{
@@ -369,10 +372,18 @@ router.get('/showips',(req,res)=>{
   })
 })
 
-router.post('/updateRecommended/:slug/:subject/:page', (req,res)=>{
+router.post('/updateRecommended/:slug/:subject/:page',auth, middleware.isAdmin,async  (req,res)=>{
   var pos = req.body.position;
-  if(pos<=0 || pos>10){
-    res.json({message: "enter a valid position between 1 to 10"})
+  var r = await Recommended.find({});
+  var array = [];
+  console.log("r length : ", r.length)
+  for(var i=0; i<r.length; i++){
+    console.log(r[i].rank)
+    array.push(r[i].rank);
+  }
+  console.log("array of recommended posts : " ,array)
+  if(pos<1 || pos>100){
+    res.json({message: "enter a valid position between 1 to 100"})
   } else {
     Post.findOne({slug: req.params.slug},(err,post)=>{
       if(err) console.log(err)
@@ -402,6 +413,12 @@ router.post('/updateRecommended/:slug/:subject/:page', (req,res)=>{
       }
     })
   }
+})
+
+router.get("/showqueries", async(req,res)=>{
+  var q = await Query.find({});
+  
+  res.render("query",{query: q})
 })
 
 module.exports = router;

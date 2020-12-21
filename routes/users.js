@@ -1,10 +1,12 @@
 var express = require("express");
-
+var app = express();
+var moment = require("moment");
 var FacebookStrategy = require("passport-facebook").Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 var router  = express.Router();
 var async = require('async')
 var crypto = require('crypto')
+var flash = require('connect-flash')
 var nodemailer = require('nodemailer')
 var passport = require("passport");
 var Post = require('../models/post.js');
@@ -12,13 +14,32 @@ var User = require('../models/user.js');
 var Ip = require('../models/ip.js');
 const Trending = require("../models/trending.js");
 const Popular = require("../models/popular.js");
-const e = require("express");
 const Recommended = require("../models/recommended.js");
 const middlewareObj = require("../middleware/index.js");
+const auth = require("../middleware/auth.js");
+const check = require("../controllers/checkAuthcontroller");
+const dashboardObj = require("../controllers/dashboardcontroller.js");
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken");
 const ejsLint = require('ejs-lint');
-router.get("/", function(req, res){
+
+// app.use((req,res,next)=>{
+//   res.locals.successmessage = req.flash('success')
+//   res.locals.errormessage = req.flash('error')
+//   res.locals.warningmessage = req.flash('warning')
+//   next();
+// })
+
+
+router.get("/" , function(req, res){
+  console.log("in home : ",req.user)
+  var message=undefined;
+  if(req.query.message){
+    message = req.query.message;
+  }
+  // console.log("all user ids :", "google_id : ",req.user.google_id," fb_id : ",req.user.fb_id," bb_id : ",req.user.bb_id);
   var obj = new Object();
-  
+  console.log("req.user and req.is authenticated  : " ,req.isAuthenticated(), req.user )
   var call  = async function(){
     await middlewareObj.getPostsHomePage(obj);
     // console.log("<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>",obj);
@@ -26,21 +47,34 @@ router.get("/", function(req, res){
       var ctrendingpost = obj.ctrendingpost
       var etrendingpost = obj.etrendingpost
       var pdtrendingpost = obj.pdtrendingpost
+
       var bepopularpost = obj.bepopularpost
       var cpopularpost = obj.cpopularpost
       var epopularpost = obj.epopularpost
       var pdpopularpost = obj.pdpopularpost
+
+      var berecommendedpost = obj.berecommendedpost
+      var crecommendedpost = obj.crecommendedpost
+      var erecommendedpost = obj.erecommendedpost
+      var pdrecommendedpost = obj.pdrecommendedpost
       res.render("home", 
     {
       betrendingpost: betrendingpost,
       ctrendingpost: ctrendingpost,
       etrendingpost: etrendingpost,
       pdtrendingpost: pdtrendingpost,
+
       bepopularpost: bepopularpost,
       cpopularpost: cpopularpost,
       epopularpost: epopularpost,
       pdpopularpost: pdpopularpost,
-      // async: true
+
+      berecommendedpost: berecommendedpost,
+      crecommendedpost: crecommendedpost,
+      erecommendedpost: erecommendedpost,
+      pdrecommendedpost: pdrecommendedpost,
+      message: req.flash('success')
+      // async: true 
     }
     
     );
@@ -79,8 +113,8 @@ router.get("/privacyPolicy", function(req, res){
   res.render("about");
 });
 
-router.get("/dashboard", (req,res)=>{
-  res.render("dashboard")
+router.get("/blogs",(req,res)=>{
+  res.render('allblogspage')
 })
 
 router.get('/myposts',(req,res)=>{
@@ -98,7 +132,7 @@ router.get('/myposts',(req,res)=>{
   })
 })
 
-router.get('/findUser', (req,res)=>{
+router.get('/findUser', auth, (req,res)=>{
   var CurrentUser
   console.log("request made by ajax to find user")
   if(req.user === null){
@@ -108,13 +142,32 @@ router.get('/findUser', (req,res)=>{
   }
 })
 
-router.get("/savetolater/:slug", (req,res)=>{
+router.get('/addFollower/:authname', auth , async (req,res)=>{
+  console.log("req.params.authname = " + req.params.authname)
+  console.log("hhhhhhhhhhhhhhhhh")
+  // add currentuser to follower list of this author
+  req.flash('success','now you are following this author')
+  await middlewareObj.addFollower(res,req)
+  .then((message)=>{
+    res.json({"message" : message})
+  })
+  
+})
+
+router.get('/sharePost/:slug', auth, async (req,res)=>{
+
+  await middlewareObj.sharePost(req);
+  var thepost = await Post.findOne({slug:req.params.slug});
+  res.json({value: thepost.shares});
+})
+
+router.get("/savetolater/:slug", check ,(req,res)=>{
   console.log("request made")
   console.log(req.user)
     Post.findOne({slug: req.params.slug}, (err,foundpost)=>{
       if(err) console.log(err)
       else if(req.user){
-        User.findById(req.user._id).populate("saved_for_later").exec(function(err,user){
+        User.findById(req.user._id).populate("saved_for_later").exec(async function(err,user){
           if(err) console.log(err)
           else {
             
@@ -131,18 +184,18 @@ router.get("/savetolater/:slug", (req,res)=>{
   
             if(!ispushed){
               console.log("post pushed to save to later posts of : " + req.user.username)
-              user.saved_for_later.push(foundpost);
-              user.save((err,user)=>{
+              await user.saved_for_later.push(foundpost);
+              await user.save((err,user)=>{
                 if(err) console.log(err)
                 else {
                   console.log("after length: " + user.saved_for_later.length)
                   console.log("this is the user who wants to add to watch later list", user)
-                  res.json({sl: user.saved_for_later ,message: 'saved to later successfully'});
+                  res.json({message: 'saved to later successfully'});
                 }
               })
               
             } else {
-              res.json({sl: user.saved_for_later ,message: 'you have already saved this post'});
+              res.json({message: 'you have already saved this post'});
             }
             
   
@@ -153,8 +206,6 @@ router.get("/savetolater/:slug", (req,res)=>{
         res.json({message : "you need to login to save this post"})
       }
     })
-  
-  
 })
 
 
@@ -167,65 +218,31 @@ passport.use(new FacebookStrategy(
   {
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/callback",
+    callbackURL: "http://localhost/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'name', 'gender', 'picture.type(large)', 'email']
   }, 
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile)
-    // asynchronous
-    process.nextTick(function() {
-
-      // find the user in the database based on their facebook id
-      User.findOne( {fb_id: profile.id} , function(err, user) {
-
-          // if there is an error, stop everything and return that
-          // ie an error connecting to the database
-          if (err)
-              return done(err);
-
-          // if the user is found, then log them in
-          if (user) {
-              console.log("user found")
-              console.log(user)
-              return done(null, user); // user found, return that user
-          } else {
-              var numberofusers = middlewareObj.countUsers();
-              // if there is no user found with that facebook id, create them
-              var newUser  = new User();
-
-              // set all of the facebook information in our user model
-              newUser.fb_id    = profile.id; // set the users facebook id                   
-              newUser.fb_token = profile.token; // we will save the token that facebook provides to the user                    
-              newUser.username  = profile.name.givenName + profile.name.familyName; // look at the passport user profile to see how names are returned
-              newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-              newUser.bb_id = numberofusers+1;
-              // newUser.gender = profile.gender
-              // newUser.pic = profile.photos[0].value
-              // save our user to the database
-              newUser.save(function(err) {
-                  if (err)
-                      throw err;
-
-                  // if successful, return the new user
-                  return done(null, newUser);
-              });
-          }
-
-      });
-
-  })
-
-    // console.log(profile)
-    // return done(null,profile);
+    middlewareObj.helperFacebookAuth(accessToken, refreshToken, profile, done);
   }))
 
 router.get("/auth/facebook", passport.authenticate('facebook',{ scope:'email'}));
 
 router.get("/auth/facebook/callback",passport.authenticate('facebook',{
-  successRedirect: "/good",
-  failureRedirect: "/failed"
-})
+  failureRedirect: "/register_or_login?message=an error occured while authentication with facebook'"
+}), async(req,res)=>{
+  if(req.user){
+    if(req.user.fb_id) {
+     res.cookie('_fb_token' ,req.user.fb_id);
+    } else if(req.user.google_id){
+      res.cookie('_google_token', req.user.google_id)
+    }
+  }
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
 )
+
+
 
 
 // Google Authentication
@@ -233,51 +250,30 @@ router.get("/auth/facebook/callback",passport.authenticate('facebook',{
 passport.use(new GoogleStrategy({
   clientID: "562343987437-hhntpe0uh3qt19lgca4shh8fttrvgkpv.apps.googleusercontent.com",
   clientSecret: "aaPbLLz1nanGc2nQoOe07PEh",
-  callbackURL: "http://localhost:3000/google/callback"
+  callbackURL: "http://localhost/google/callback"
 },
 // api key AIzaSyCn8rZMwbOxiTAU08ObK9dFPuz-p53PbMU
 function(accessToken, refreshToken, profile, done) {
-    console.log(profile)
-    User.findOne({google_id: profile.id}, (err,user)=>{
-      if(err) console.log(err)
-      if(user){
-        console.log("the user we already have who registered using google auth is: ")
-        console.log(user)
-        return done(null,user)
-      } else {
-        var numberofusers = middlewareObj.countUsers();
-        var newuser = new User()
-        newuser.google_id = profile.id
-        newuser.email = profile.emails[0].value
-        newuser.username = profile.name.givenName + profile.name.familyName
-        newuser.bb_id = numberofusers+1;
-        newuser.save((err)=>{
-          if(err) {
-            console.log("an error was encountered while saving the user to database who used google authentication: ");
-            console.log(err.errors.username.properties);
-            console.log(err.errors.email.properties);
-            return done(err,null);      // here i want to redirect user to login page 
-          }
-          else{
-            return done(null,newuser)
-          }
-        })
-      }
-    })
-    // return done(null, profile);
+  middlewareObj.helperGoogleAuth(accessToken, refreshToken, profile, done);
   })
 );
 
 
+
 router.get('/google',passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/register_or_login?message=an error occured while authentication with google' }),
   function(req, res) {
 
-    
-
+    if(req.user){
+     if(req.user.fb_id) {
+      res.cookie('_fb_token' ,req.user.fb_id);
+    } else if(req.user.google_id){
+      res.cookie('_google_token', req.user.google_id)
+    }
+  }
     // Successful authentication, redirect home.
-    res.redirect('/good');
+    res.redirect('/');
   });
 
 
@@ -297,10 +293,10 @@ router.get("/good", isLoggedIn,(req,res)=>{
 
 // register nw user get and post routes
 router.get("/register_or_login", (req,res)=>{
-	res.render("register", {message: ""});
+	res.render("register");
 });
 
-router.post("/register",(req,res)=>{
+router.post("/register_old",(req,res)=>{
   var numberofusers;
   
     User.countDocuments({},(err, num)=>{
@@ -311,22 +307,29 @@ router.post("/register",(req,res)=>{
         var validpass = validatePass(req.body.password)
         var uid = numberofusers + 1;
         if(validpass.status){
-          var user = {
-            username: req.body.username,
-            email: req.body.email,
-            bb_id: uid
-          }
-          User.register(new User(user), req.body.password, function(err, user){
-            if(err) {
-              console.log(err);
+
+          const myfunction = async ()=>{          
+            // const isMatch = await bcrypt.compare(password, hashedPassword); //return a boolean value
+            var user = new User();
             
-              res.redirect("/register_or_login");
-            } else{
+            user.username =  req.body.username;
+            user.password =  req.body.password;
+            user.email =  req.body.email;
+            user.bb_id =  uid;
+            
+            user.save().then(()=>{
+              console.log(user);
+              res.status(200);
               passport.authenticate("local-user")(req,res,function(){
                 res.redirect("/");
-              });
-            }
-          });
+              })
+            }).catch((e)=>{
+              console.log(e);
+              res.status(400).redirect("/register_or_login");
+            })
+          }
+          myfunction();
+
         } else {
           console.log("user creation unsuccessful")
           // for(var i=0;i<validpass.message.length;i++){
@@ -340,7 +343,190 @@ router.post("/register",(req,res)=>{
     });
 })
 
-router.post("/login", passport.authenticate("local-user" , {
+
+
+
+
+
+
+router.post("/register",(req,res)=>{
+  var numberofusers;
+    User.countDocuments({},(err, num)=>{
+      if(err) console.log(err)
+      else{
+        console.log(num)
+        numberofusers = num;
+        var validpass = validatePass(req.body.password)
+        // var validpass = {};
+        // validpass.status = 1;
+        var uid = numberofusers + 1;
+        if(validpass.status){
+
+          const myfunction = async ()=>{
+            var user = new User();
+            
+            user.username =  req.body.username;
+            user.password =  req.body.password;
+            user.email =  req.body.email;
+            user.bb_id =  uid;
+            await user.hashPassword()
+            user.save().then(async ()=>{
+              console.log(user);
+              const token = await user.generateAuthToken();
+              res.cookie('bearer_token', token,{
+                httpOnly: true,
+                path: '/'
+              });
+              res.status(200).send(user);
+            }).catch((e)=>{
+              console.log(e);
+              req.flash('error','an error occured while creating your account')
+              res.status(400).redirect("/register_or_login");
+            })
+          }
+          myfunction();
+
+        } else {
+          console.log("user creation unsuccessful")
+          // for(var i=0;i<validpass.message.length;i++){
+          //   validpass.message[i] = req.flash('error',validpass.message[i])
+          // }
+          res.render('register',{message: validpass.message})
+        }
+      }
+    });
+})
+
+router.post("/login" , async (req,res)=>{
+  try{
+    
+    const token = await req.cookies.bearer_token;
+    // console.log("token from cookiee : ", token);
+    const user = await User.findByCredentials(req.body.username, req.body.password);
+    console.log(user)
+    // console.log("user: ", user);
+    if(user){
+      console.log("all user ids :", "google_id : ",user.google_id," fb_id : ",user.fb_id," bb_id : ",user.bb_id);
+      // console.log( "req.token: " ,req.token)
+      if(!token){
+        // this case occors if jwt cookie is deleted on the client side
+        // delete previous tokens
+        console.log(user.tokens.length)
+        user.tokens.length = 0;
+        console.log("after  deleting: " ,user.tokens.length)
+        await user.save();
+        // create token
+        const newtoken = await user.generateAuthToken();
+        console.log("token: ", newtoken);
+        await res.cookie('bearer_token', newtoken,{
+          httpOnly: true,
+          path: '/'
+        });
+        req.user = user;
+        req.flash('success','logged in successfully')
+        res.redirect('/')
+      } else{
+        // first check that is that token of the same user who provided credits
+        if(token in user.tokens){
+          console.log("token in user.tokens.token")
+          // verify token
+          console.log('token already present')
+          console.log(token);
+          const decoded = await jwt.verify(token, 'thisisjwtsecret');
+          console.log("decoded" ,decoded)
+          const userwithtoken = await User.findOne({_id  : decoded._id, 'tokens.token': token});
+          console.log( "userwithtoken : ",userwithtoken)
+          if(!userwithtoken){
+            throw new Error('user was not found with jwt token in the cookie');
+          } else{
+            req.user = await userwithtoken;
+            console.log('token verified')
+            req.flash('success','logged in successfully')
+            res.redirect('/')
+          }
+        } else {
+          // create token for this user and delete previous token from the cookie
+          const newtoken = await user.generateAuthToken();
+          console.log("token: ", newtoken);
+          await res.clearCookie('bearer_token');
+          await res.cookie('bearer_token', newtoken,{
+            httpOnly: true,
+            path: '/'
+          });
+          req.user = user;
+          req.flash('success','logged in successfully')
+          res.redirect('/')
+        } 
+      } 
+    } else{
+      console.log('user not found with provided credentials');
+      req.flash('error','error while logging in')
+      return res.redirect('/register_or_login')
+    }
+    
+  } catch(e){
+    console.log("an error occured : ", e)
+    req.flash('error','error while logging in')
+    res.redirect('/register_or_login')
+  }
+})
+
+
+router.get("/logout", auth, async (req,res)=>{
+  try{
+
+    if(req.user.google_id || req.user.fb_id){
+      console.log("logging out google or fb user");
+      if(req.user.google_id || req.cookies._google_token){
+        res.clearCookie('_google_token');
+      }
+      if(req.user.fb_id || req.cookies._fb_token){
+        res.clearCookie('_fb_token');
+      }
+      res.clearCookie('connect.sid')
+      req.user = await null;
+      req.session = await null;
+      req.logout();
+      req.flash('success', 'you were logged out successfully')
+      res.redirect("/")
+    } else {
+      // console.log("tokens : ", req.user.tokens)
+      req.user.tokens = await req.user.tokens.filter((token)=>{
+        // console.log(" comparing tokens and deleting while logging out ",  token.token.localeCompare(req.token));
+        return token.token !== req.token;
+      });
+      await req.user.save((err,user)=>{
+        if(err) console.log(err)
+        else{
+          console.log("user was saved successfully after deleting the jwt from the database");
+        }
+      });
+      res.clearCookie('bearer_token');
+      req.flash('success', 'you were logged out successfully')
+      res.redirect('/') 
+    }
+   } catch(err){
+      res.status(500).send({"error": 'there was an error logging you out'});
+    }
+})
+
+
+
+router.post("/updateUser", auth, async (req,res)=>{
+  var user = await User.findById(req.user._id);
+  user.username = req.body.username
+  user.fullName = req.body.fullName
+  user.email = req.body.email
+  user.gender = req.body.gender
+  user.profession = req.body.profession
+  await user.save()
+  req.flash('success', 'your account details are changed')
+  res.redirect("/dashboard")
+})
+
+
+
+router.post("/login_old", passport.authenticate("local-user" , {
 	
 	failureRedirect: "/register_or_login"
 }), (req, res)=>{
@@ -354,8 +540,6 @@ router.post("/login", passport.authenticate("local-user" , {
   }
 
 });
-
-
 
 
 
@@ -397,12 +581,13 @@ router.post("/login", passport.authenticate("local-user" , {
 
 
 //logout user route
-router.get("/logout" ,(req,res)=>{
+router.get("/logout_old" ,(req,res)=>{
   
   console.log("req.user",req.user);
 	req.logout();
 	res.send("logged you out");
 });
+
 
 
 
@@ -640,6 +825,9 @@ function validatePass(password){
   }
   
 }
+
+
+
 
 
 

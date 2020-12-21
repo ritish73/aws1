@@ -3,7 +3,7 @@ var trendingSchema = new mongoose.Schema({
   rank: {
     type: Number
   },
-  views:{
+  actualViews:{
     type: Number
   },
   subject:{

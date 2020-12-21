@@ -48,6 +48,8 @@ var userRoutes = require('./routes/users.js')
 var postRoutes = require('./routes/posts.js')
 var adminRoutes = require('./routes/admin.js');
 var publishRoutes = require('./routes/publish.js')
+var queryRoutes = require('./routes/query.js')
+var dashboardRoutes = require('./routes/dashboard.js')
 const middlewareObj = require("./middleware");
 const { profile } = require("console");
 app.use(require("express-session")({
@@ -62,12 +64,6 @@ app.set("view engine" , "ejs");
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride('_method'))
-passport.use('local-user', new LocalStrategy(User.authenticate()));
-// passport.use('admin-user', new LocalStrategy(Admin.authenticate()));
-// passport.use('author-user', new LocalStrategy(Author.authenticate()));
-
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
 passport.serializeUser(function(user, done) {
   // console.log("user id in serialize user is")
   // console.log(user.id)
@@ -78,28 +74,6 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(user, done) {
   done(null,user)
-  // User.findById(id, (err,user)=>)
-  //   User.findOne({google_id: id}, (err,user)=>{
-    
-  //     if(!user){
-      
-  //       User.findById(id, (err,user)=>{
-  //         console.log("user id in deserialize user is")
-  //         // console.log(user.id)
-  //         console.log("and the user is")
-  //         console.log(user)
-  //         done(err,user)
-  //       }) 
-
-  //     } else {
-  //     console.log("user id in deserialize user is")
-  //     // console.log(user.id)
-  //     console.log("and the user is")
-  //     console.log(user)
-  //     done(err,user)
-  //     }
-    
-  // })
   
   
 });
@@ -113,6 +87,9 @@ app.use(function (req, res, next) {
   res.locals.currentUser = req.user || null;
   res.locals.portnumber = PORT;
   res.locals.hostname = process.env.APP_URL || `localhost:3000`;
+  res.locals.successmessage = req.flash('success')
+  res.locals.errormessage = req.flash('error')
+  res.locals.warningmessage = req.flash('warning')
   // res.locals.hostname = `localhost:3000`;
   next();
 });
@@ -121,7 +98,8 @@ app.use("/posts",postRoutes)
 app.use("/",userRoutes)
 app.use("/",adminRoutes)
 app.use("/publish",publishRoutes)
-
+app.use("/query",queryRoutes)
+app.use("/",dashboardRoutes)
 
 // cookies
 app.get("/private", (req, res) => {

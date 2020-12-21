@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
-    <link rel="stylesheet" href="/stylesheets/personality-development.css">
+    <link rel="stylesheet" href="/stylesheets/business-economics.css">
     <title>Blog card</title>
 </head>
 <body>
@@ -15,12 +15,10 @@
     #messagebox{
         background-color: #ab2d24; 
     }
-   
     </style>
+    <div id="md"><h2 id="messagebox"></h2></div>
     
-    <div id="md"><h2 id="messagebox"><%=successmessage%></h2></div>
     
-   
     <header>
         
     <div class="top-horiz-bar">
@@ -34,7 +32,7 @@
 
 
         <div class="other-icons">
-        <form method="get" action="/posts/personality-development">
+        <form method="get" action="/posts/business-economics">
             <div class="search-box">
                 
                 <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
@@ -77,52 +75,6 @@
 <main>
 
     <div class="all-engineering-articles">
-
-        <% if(showsidebox === true){ %>
-        <div class="side-box">
-            <div class="one-of-3-heading">
-                <h2 class="side-box-heading-one">Trending</h2>
-                <% for(var i=0;i<trendingCount;i++){ %>
-
-                <div class="sub-part-section">
-                <h2 class="title-side-box"><a href="/posts/<%=trendingPosts[i].post.subject%>/<%=trendingPosts[i].post.slug%>"><%=trendingPosts[i].post.title%></a></h2>
-                <div class="date-side-box">
-                    <span><%=trendingPosts[i].post.publishDay%></span>
-                </div>
-            </div>
-            <% } %> 
-            </div>
-
-
-            <div class="two-of-3-heading">
-                <h2 class="side-box-heading-two">Recommended</h2>
-                <% for(var i=0;i<recommendedCount;i++){ %>
-                <div class="sub-part-section">
-                    <h2 class="title-side-box"><a href="/posts/<%=recommendedPosts[i].post.subject%>/<%=recommendedPosts[i].post.slug%>"><%=recommendedPosts[i].post.title%></a></h2>
-                    <div class="date-side-box">
-                        <span><%=recommendedPosts[i].post.publishDay%></span>
-                    </div>
-                </div>
-                <% } %>  
-            </div>
-
-
-            <div class="three-of-3-heading">
-                <h2 class="side-box-heading-three">Popular</h2>
-                <% for(var i=0;i<popularCount;i++){ %>
-                <div class="sub-part-section">
-                    <h2 class="title-side-box">
-                        <a href="/posts/<%=popularPosts[i].post.subject%>/<%=popularPosts[i].post.slug%>"><%=popularPosts[i].post.title%></a></h2>
-                    <div class="date-side-box">
-                        <span><%=popularPosts[i].post.publishDay%></span>
-                    </div>
-                </div>
-                <% } %>
-            </div>
-        </div>
-        <% } %>
-
-
         <div class="table-all">
             <% for(var i=start; i<=limit; i+=2) { %>
         <!-- <div class="row"> -->
@@ -156,11 +108,11 @@
                 </form>
                 <div><button onclick="deletePost(this)" getpost="<%=posts[i].slug%>" >delete post</button></div>
             <% } %>
-            <a href="/posts/personality-development/<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
+            <a href="/posts/<%=posts[i+1].subject%>/<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
             <ul class="btns-on-blogcard">
                 <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
                 <button onclick="like(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span onclick="count(this)" class="count" id="likecount" ><%=posts[i].likes%></span></li></button>
-                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/personality-development/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
+                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/<%=posts[i+1].subject%>/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
          
                 <span></span>
             </ul>
@@ -199,11 +151,11 @@
                     </form>
                     <div><button onclick="deletePost(this)" getpost="<%=posts[i+1].slug%>">delete post</button></div>
                 <% } %>
-                <a href="/posts/personality-development/<%=posts[i+1].slug%>" class="blog-post__cta">Read more</a>
+                <a href="/posts/<%=posts[i+1].subject%>/<%=posts[i+1].slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
                     <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
                     <button onclick="like(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count" id="likecount"><%=posts[i+1].likes%></span></li></button>
-                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/personality-development/<%= posts[i+1].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i+1].shares%></span></li></button></a>
+                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/<%=posts[i+1].subject%>/<%= posts[i+1].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i+1].shares%></span></li></button></a>
                     <span></span>
                 </ul>
                 </div>
@@ -230,7 +182,7 @@
 
             <div class="next-page">
                 <% if(shownextbutton === true){ %>
-                <h2 class="new-page-blogs">-Page <%=page%>- <span class="next-page-btn"><a href="/posts/personality-development?page=<%=nextpage%>">Next page</a></span></h2>
+                <h2 class="new-page-blogs">-Page <%=page%>- <span class="next-page-btn"><a href="/showSharedArticles?page=<%=nextpage%>">Next page</a></span></h2>
                 <% } else{ %>
                     <h2 class="new-page-blogs">-Page <%=page%>-</h2>
                 <% } %>
@@ -289,14 +241,14 @@
                 <div class="right box">
                     <h2>Any queries ?</h2>
                     <div class="content">
-                        <form action="/query/submit/personality-development/<%=page%>" method="POST">
+                        <form action="#">
                             <div class="email">
                                 <div class="text">Email *</div>
-                                <input type="email" name="email" required>
+                                <input type="email" required>
                             </div>
                             <div class="msg">
                                 <div class="text">Message *</div>
-                                <textarea  cols="25" rows="2" name="message"></textarea>
+                                <textarea  cols="25" rows="2"></textarea>
                             </div>
                             <div class="btn">
                                 <button type="submit">Send</button>
@@ -508,6 +460,11 @@
           }
         }
 
+
+
+
  </script>
+
+
 
 </html>
