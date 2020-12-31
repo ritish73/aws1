@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+*,
+*::before,
+*::after
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+html
+{
+    overflow-x: hidden;
+    font-family: 'poppins',cursive;
+    text-align: justify;
+}
+
+#logoo
+{
+    height: 60px;
+    width: 60px;
+
+}
+
+.logo
+{
+    position: absolute;
+    top: 5px;
+    left: 10px;
+}
+
+.why-us
+{
+    height: 40vh;
+    background:rgba(209, 208, 208, 0.911) ;
+}
+
+.engineering
+{
+    height: 40vh;
+    background-color: #ad1c1c;
+    background-image:linear-gradient(147deg, #000000 0%, #2c3e50 74%);
+
+}
+
+.business
+{
+    height: 40vh;
+    background-color: #2f4353;
+    background-image: linear-gradient(315deg, #2f4353 0%, #d2ccc4 74%);
+}
+
+.commerce
+{
+    height: 40vh;
+    background-color: #a40606;
+    background-image: linear-gradient(315deg, #000000 10%, #7f8c8d 99%);
+
+}
+
+.personality
+{
+    height: 40vh;
+    background-color: #b3cdd1;
+    background-image:linear-gradient(147deg, #b3cdd1 0%, #9fa4c4 74%);
+
+
+}
+
+.img-why
+{
+    float: right;
+    transform: translateY(0%);
+
+}
+
+.why-us-heading
+{
+    position: relative;
+    transform: translateX(36%);
+    align-items: center;
+    font-size: 2rem;
+    color: #a13d24;
+
+}
+
+.why-us-content
+{
+    display: flexbox;
+    max-width: 1200px;
+    padding: 15px;
+}
+
+.heading-1
+{
+    position: relative;
+    transform: translateX(30%);
+    align-items: center;
+    font-size: 2rem;
+    color: white;
+
+}
+.heading-2
+{
+    position: relative;
+    transform: translateX(20%);
+    align-items: center;
+    font-size: 2rem;
+
+}
+.heading-3
+{
+    position: relative;
+    transform: translateX(30%);
+    align-items: center;
+    font-size: 2rem;
+    
+
+}
+.heading-4
+{
+    position: relative;
+    transform: translateX(18%);
+    align-items: center;
+    font-size: 2rem;
+
+}
+
+
+
+.content-1
+{
+    display: flexbox;
+    max-width: 1250px;
+    padding: 15px;
+    color: white;
+
+}
+.content-2
+{
+    display: flexbox;
+    max-width: 1250px;
+    padding: 15px;
+
+}
+.content-3
+{
+    display: flexbox;
+    max-width: 1250px;
+    padding: 15px;
+    color: white;
+
+}
+.content-4
+{
+    display: flexbox;
+    max-width: 1250px;
+    padding: 15px;
+
+}
+
+
+.img-1
+{
+    float: right;
+    transform: translateY(-30%);
+
+}
+
+.img-2
+{
+    float: right;
+    transform: translateY(-30%);
+
+}
+.img-3
+{
+    float: right;
+    transform: translateY(-30%);
+
+}
+.img-4
+{
+    float: right;
+    transform: translateY(-30%);
+
+}

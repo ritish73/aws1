@@ -2,7 +2,7 @@ var express = require("express");
 var router  = express.Router();
 var Post = require('../models/post.js');
 var User = require('../models/user.js');
-
+var Review = require('../models/review.js');
 var Trending = require('../models/trending.js');
 var Query = require('../models/query.js');
 var Popular = require('../models/popular.js');
@@ -15,6 +15,27 @@ const { unwatchFile } = require("fs");
 const middlewareObj = require("../middleware/index");
 const Ip = require("../models/ip.js");
 const auth = require("../middleware/auth.js");
+var multer = require('multer');
+const check = require("../controllers/checkAuthcontroller");
+
+
+
+var storage = multer.diskStorage({
+  destination: function(req,file,cb){
+    cb(null,'public/uploads/review/');
+  },
+  filename: function(req,file,cb){
+      
+      var uid = req.user.bb_id;
+      
+      console.log(uid + "_" + Date.now() +"_"+ file.originalname);
+      cb(null,uid + "_" + Date.now() +"_"+ file.originalname);
+  }
+});
+
+var upload = multer({
+  storage: storage,
+});
 
 router.get('/adminportal', auth , middleware.isAdmin, (req,res)=>{
   var ip = req.headers['x-forwarded-for'] || 
@@ -414,6 +435,32 @@ router.post('/updateRecommended/:slug/:subject/:page',auth, middleware.isAdmin,a
     })
   }
 })
+
+router.get("/review",(req,res)=>{
+  res.render("reviewform")
+})
+
+ 
+router.post("/review", check, upload.single("photo"), (req,res)=>{
+  try{
+    var uid = req.user.bb_id;
+    var newreview = new Review();
+    newreview.designation = req.body.designation;
+    newreview.content = req.body.content;
+    var file = req.file;
+    newreview.imagename = uid + "_" + Date.now() +"_" + file.originalname;
+    newreview.save((err,nr)=>{
+      if(err) res.send(err);
+      else{
+        console.log(nr)
+      }
+      res.redirect("/adminportal")
+    });
+  }catch(err){
+    console.log("err")
+  }
+})
+
 
 router.get("/showqueries", async(req,res)=>{
   var q = await Query.find({});

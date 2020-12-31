@@ -6,11 +6,19 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Backbenchers</title>
       <link rel="shortcut icon" type="image/x-icon" href="/images/1_logo.png" />
-      <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+      <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
       <link rel="stylesheet" href="/stylesheets/2nd_dark.css">
-  </head>
+      <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
+      </head>
+      <style>
+        #message {
+          color: #ab2d24;
+          background-color: white;
+        }
+      </style>
   <body>
 
+    <h2 id="message"></h2>
 
       
       <header>
@@ -30,10 +38,12 @@
                   <div class="search-box">
                       
                       <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
-                      <button>
+                      <button class="search-btn">
                           <i class="fas fa-search"></i>
                       </button>
-                  
+                  <style>
+                     
+                  </style>
                   </div>
               </form>
 
@@ -55,11 +65,11 @@
       <div class="vertical-nav-bar">
         <a href="/">Home<span><i class="fas fa-home"></i></span></a>
         <a href="/blogs">Blogs<span><i class="fas fa-user-graduate"></i></span></a>
-        <a href="/publish">Authors<span><i class="fas fa-pencil-alt"></i></span></a>
-        <a href="/contactus">Contact US<span><i class="fas fa-phone-alt"></i></span></a>
+        <a href="/publish">Write here<span><i class="fas fa-pencil-alt"></i></span></a>
+        <a href="#cu">Contact US<span><i class="fas fa-phone-alt"></i></span></a>
         <a href="/aboutus">About Us<span><i class="fas fa-users"></i></span></a>
         <a href="https://www.facebook.com/BackBenchers-105240558097832">Facebook<span><i class="fab fa-facebook-f"></i></span></a>
-        <a href="#">Instagram<span><i class="fab fa-instagram"></i></span></a>
+        <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5">Instagram<span><i class="fab fa-instagram"></i></span></a>
         <a href="https://www.linkedin.com/in/back-benchers-94a049202/">Linkedin<span><i class="fab fa-linkedin-in"></i></span></a>
           
          
@@ -121,9 +131,25 @@
              <div class="central-part-total">
               <div class="article-content">
                   <h2 class="article-heading-3p"> <%= post.title %> </h2>
-                  <h3 class="overall-prop"> - <%=post.authorName%>  <span><a href="/posts/<%=post._id%>/edit">Edit this post</a></span>   <span id="last-page-date"> <span id="author-linkedin"><i class="fab fa-linkedin-in"></i></span>  |  <%=displaydate%></span> <span id="entity-save-subscribe"><span><button id="channel-name"><%=post.authorName%></button></span><span id="susbscribe-id-plus">  <button id="save-to-later"> <i class="fas fa-plus "></i> </button> </span></span></h3>
+                  <h3 class="overall-prop"> - <%=post.authorName%>    <span id="last-page-date"> <span id="author-linkedin"><i class="fab fa-linkedin-in"></i></span>  |  <%=displaydate%></span> <span id="entity-save-subscribe"><span><button onclick="addFollower(this)" getauthor="<%= post.authorName %>" id="channel-name"><%=post.authorName%></button></span><span id="susbscribe-id-plus">  <button id="save-to-later" onclick="saveToLater(this)" getpost="<%=post.slug%>"> <i class="fas fa-plus "></i> </button> </span></span></h3>
               
                   <p class="article-para-3p"><%- post.sanitizedHtml %></p>
+                  <ul class="btns-on-blogcard">
+
+                    <button onclick="like(this)" getpost="<%=post.slug%>"><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span id="likecount" class="count"><%=post.likes%></span></li></button>
+
+                    <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/<%=post.subject%>/<%= post.slug %>" data-action="share/whatsapp/share" target="_blank">
+                    <button onclick="sharePost(this)" getpost="<%=post.slug%>">
+                    <li class="btns-blog"><i class="fas fa-share fa-2x "></i>
+                    <span class="count" id="sharecount"><%=post.shares%></span></li></button></a>
+
+                  </ul>
+
+           
+                
+                  <% if(currentUser && currentUser.role === 'admin'){ %>
+                  <span><a href="/posts/<%=post._id%>/edit">Edit this post</a></span>
+                  <% } %>
               </div>
   
   
@@ -181,9 +207,9 @@
                           <img src="/images/2.png" alt="logo" height="250px" width="250px">
                       </div>
                           <div class="social">
-                              <a href="#"><span class="fab fa-facebook-f"></span></a>
-                              <a href="#"><span class="fab fa-instagram"></span></a>
-                              <a href="#"><span class="fab fa-linkedin-in"></span></a>
+                            <a href="https://www.facebook.com/BackBenchers-105240558097832"><span class="fab fa-facebook-f"></span></a>
+                            <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5"><span class="fab fa-instagram"></span></a>
+                            <a href="https://www.linkedin.com/in/back-benchers-94a049202/"><span class="fab fa-linkedin-in"></span></a>
                           </div>
                       </div>
                   </div>
@@ -192,11 +218,11 @@
                       <h2>Quick links</h2>
                       <div class="content">
                           <ul class="links">
-                          <li><a href="#"> > Home</a></li>
-                          <li><a href="#"> > Business & Economics</a></li>
-                          <li><a href="#"> > Commerce</a></li>
-                          <li><a href="#"> > Engineering</a></li>
-                          <li><a href="#"> > Personality Devlopment</a></li>
+                            <li><a href="/"> > Home</a></li>
+                            <li><a href="/posts/business-economics?page=1"> > Business & Economics</a></li>
+                            <li><a href="/posts/commerce?page=1"> > Commerce</a></li>
+                            <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
+                            <li><a href="/posts/personality-development?page=1"> > Personality Devlopment</a></li>
                           </ul>
                       </div>
                   </div>
@@ -205,10 +231,10 @@
                       <h2>Company</h2>
                       <div class="content">
                           <ul class="links">
-                          <li><a href="#"> > About Us</a></li>
-                          <li><a href="#"> > Contact Us</a></li>
-                          <li><a href="#"> > Terms and conditions</a></li>
-                          <li><a href="#"> > Privacy Policy</a></li>
+                            <li><a href="/aboutus"> > About Us</a></li>
+                            <li><a href="#" id="cu"> > Contact Us</a></li>
+                            <li><a href="/termsandconditions"> > Terms and conditions</a></li>
+                            <li><a href="/privacypolicy"> > Privacy Policy</a></li>
                           </ul>
                       </div>
                   </div>
@@ -216,23 +242,24 @@
                   
   
                   <div class="right box">
-                      <h2>Any queries ?</h2>
-                      <div class="content">
-                          <form action="#">
-                              <div class="email">
-                                  <div class="text">Email *</div>
-                                  <input type="email" required>
-                              </div>
-                              <div class="msg">
-                                  <div class="text">Message *</div>
-                                  <textarea  cols="25" rows="2"></textarea>
-                              </div>
-                              <div class="btn">
-                                  <button type="submit">Send</button>
-                              </div>
-                          </form>
-                      </div>
-                  </div>
+                    <h2>Any queries ?</h2>
+                    <div class="content">
+                        <form action="/query/submit/home" method="POST">
+                            <div class="email">
+                                <div class="text">Email *</div>
+                                <input type="email" name="email" required>
+                            </div>
+                            <div class="msg">
+                                <div class="text">Message *</div>
+                                <textarea  cols="25" rows="2" name="message"></textarea>
+                            </div>
+                            <div class="btn">
+                                <button type="submit">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
               </div>
   
               <div class="bottom">
@@ -258,145 +285,171 @@
   <div id="message"></div>   -->
   <script>
 
-      var currentUser;
-      var currentPost;
-      var httpRequest;
-      async function callfun(){
-        await findPostAndUser();
-        next();
-      }
-      callfun();
+  var currentUser;
+  var httpRequest;
+  function findUser(){
+    httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = findUserRequest;
+    httpRequest.open('GET', '/findUser');        
+    httpRequest.send();
+  }
+  window.onload = findUser();
 
-      function next(){
-
-        var likebutton = document.getElementById("like");
-        var likesdisplay = document.querySelector('.likescount');
-        var messageDisplay = document.querySelector('#message');
-        likebutton.addEventListener('click', like);
-        var saveToLater = document.querySelector("#save-to-later");
-        saveToLater.addEventListener('click', savetolater);
-        var sharepostButton = document.querySelector('#share');
-        var sharelink = document.querySelector('#share a');
-        sharepostButton.addEventListener('click',sharePost);  
-
-        function like(){
-        
-        if(currentUser){
-          
-            httpRequest = new XMLHttpRequest();
-            if (!httpRequest) {
-              alert('Giving up :( Cannot create an XMLHTTP instance');
-              return false;
-            }
-            httpRequest.onreadystatechange = likeRequest;
-            httpRequest.open('GET', '/posts/liked/' + '<%= post.slug %>');        
-            httpRequest.send();
-          
-          }
-         else {
-          document.querySelector("#message").innerHTML = "you need to log in to like this post";
-        }
-      }
-
-      function likeRequest(){
-          if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-              var respJson = JSON.parse(httpRequest.responseText)
-              console.log(respJson)
-              likesdisplay.innerHTML = respJson.likes;
-              messageDisplay.innerHTML = respJson.message;
-            } else {
-              alert('There was a problem with the request.');
-            }
-          }
-        }
-
-
-      function savetolater(){
-        httpRequest = new XMLHttpRequest();
-        if (!httpRequest) {
-          alert('Giving up :( Cannot create an XMLHTTP instance');
-          return false;
-        }
-        httpRequest.onreadystatechange = savetolaterRequest;
-        httpRequest.open('GET', '/savetolater/' + '<%= post.slug %>');        
-        httpRequest.send();
-      }
-        
-      function savetolaterRequest(){
-        if(currentUser){
-          if (httpRequest.readyState === XMLHttpRequest.DONE) {
-          if (httpRequest.status === 200) {
-            var respJson = JSON.parse(httpRequest.responseText)
-            console.log(respJson);
-            messageDisplay.innerHTML = respJson.message;
-          } else {
-            alert('There was a problem with the request.');
-            }
-          }
-        } else {
-          document.querySelector("#message").innerHTML = "you need to log in to save to later this post";
-          
-        }
-      }
-
-      function sharePost(){
-        httpRequest = new XMLHttpRequest();
-        if (!httpRequest) {
-          alert('Giving up :( Cannot create an XMLHTTP instance');
-          return false;
-        }
-        httpRequest.onreadystatechange = sharePostRequest;
-        httpRequest.open('GET', '/sharepost/' + '<%= post.slug %>');        
-        httpRequest.send();
-      }
-
-      function sharePostRequest(){
-
-        if(currentUser){
-          if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-              var respJson = JSON.parse(httpRequest.responseText)
-              console.log(respJson);
-              
-            } else {
-              alert('There was a problem with the request.');
+    
+  function findUserRequest(){
+      
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+          if (httpRequest.status === 200 ) {
+              var resJson = JSON.parse(httpRequest.responseText)
+              currentUser = resJson.CurrentUser;
+              console.log(currentUser)
+              if(currentUser === undefined){
+                  console.log("no one is logged in");
+              } else {
+                  console.log('user found!!')
               }
+              
+          } else {
+          alert('There was a problem with the request.');
           }
-        } else {
-          // document.querySelector("#message").innerHTML = "you need to log in to share this post ";
-        }
-
       }
-
-      }
-      
-      
-
-      function findPostAndUser(){
+  }      
+  var likesdisplay = document.querySelector('#likecount');
+  var messageDisplay = document.querySelector('#message');        
+  var sharecount = document.querySelector("#sharecount");
         
+
+    function like(e){
+    if(currentUser){
+      var curPostSlug = e.getAttribute('getpost');  
         httpRequest = new XMLHttpRequest();
         if (!httpRequest) {
           alert('Giving up :( Cannot create an XMLHTTP instance');
           return false;
         }
-        httpRequest.onreadystatechange =  findPostAndUserRequest;
-        httpRequest.open('GET', '/posts/findPostIdAndUser/'+'<%= post.slug %>');        
+        httpRequest.onreadystatechange = likeRequest;
+        httpRequest.open('GET', '/posts/liked/' + curPostSlug);        
         httpRequest.send();
       }
+      else {
+      // document.querySelector("#message").innerHTML = "you need to log in to like this post";
+      window.location = '/register_or_login?m=0'
+    }
+  }
 
-      async function findPostAndUserRequest(){
-          if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-              var respJson = JSON.parse(httpRequest.responseText)
-              currentPost = await respJson.CurPost_id;
-              currentUser = await respJson.curuser;
-              console.log(currentPost, currentUser)
-            } else {
-              alert('There was a problem with the request.');
-            }
+  function likeRequest(){
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest.status === 200) {
+          var respJson = JSON.parse(httpRequest.responseText)
+          console.log(respJson);
+          likesdisplay.innerText = respJson.count;
+          messageDisplay.innerText = respJson.message;
+        } else {
+          alert('There was a problem with the request.');
+        }
+      }
+    }
+
+
+  function saveToLater(e){
+    var curPostSlug = e.getAttribute('getpost');  
+    if(currentUser){
+
+      httpRequest = new XMLHttpRequest();
+      if (!httpRequest) {
+        alert('Giving up :( Cannot create an XMLHTTP instance');
+        return false;
+      }
+      httpRequest.onreadystatechange = savetolaterRequest;
+      httpRequest.open('GET', '/savetolater/' + curPostSlug);        
+      httpRequest.send();
+    } else{
+      window.location = '/register_or_login?m=0'
+    }
+    
+  }
+    
+  function savetolaterRequest(){
+    if(currentUser){
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+        var respJson = JSON.parse(httpRequest.responseText)
+        console.log(respJson);
+        messageDisplay.innerHTML = respJson.message;
+      } else {
+        alert('There was a problem with the request.');
+        }
+      }
+    } else {
+      document.querySelector("#message").innerHTML = "you need to log in to save to later this post";
+      
+    }
+  }
+
+  function sharePost(e){
+    httpRequest = new XMLHttpRequest();
+    var sl = e.getAttribute('getpost')
+    if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.onreadystatechange = sharePostRequest;
+    httpRequest.open('GET', '/sharepost/' + sl);        
+    httpRequest.send();
+  }
+
+  function sharePostRequest(){
+
+    if(currentUser){
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest.status === 200) {
+          var respJson = JSON.parse(httpRequest.responseText)
+          console.log(respJson);
+          sharecount.innerText = respJson.value;
+        } else {
+          alert('There was a problem with the request.');
           }
       }
+    } else {
+      window.location = '/register_or_login?m=0'
+    }
+
+  }
+      
+      
+
+      
+
+  async function addFollowerRequest(){
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+          if (httpRequest.status === 200 ) {
+              var resJson = JSON.parse(httpRequest.responseText)
+              console.log(resJson.message);
+              messageDisplay.innerHTML = resJson.message;
+          } else {
+          alert('There was a problem with the request.');
+          }
+      }
+  }
+
+  async function addFollower(e){
+    if(currentUser){
+        var authname = await e.getAttribute('getauthor');
+        console.log("authname : ", authname);
+        httpRequest = new XMLHttpRequest();
+        if(!httpRequest){
+            alert('Giving up :( Cannot create an XMLHTTP instance')
+            return false;
+        }
+        httpRequest.onreadystatechange = addFollowerRequest;
+        httpRequest.open('GET', '/addfollower/' +authname);
+        httpRequest.send();
+      } else {
+        // console.log("you need to login to follow an author")
+        // var message = "you need to login first to follow an author"
+        window.location = '/register_or_login?m=0'
+      }
+  }
 
       
   </script>

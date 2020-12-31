@@ -4,9 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <link rel="stylesheet" href="/stylesheets/dashboard_css.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
     
-    
-    <title>BackBenchers</title>
+    <title>Dashboard</title>
 </head>
 <body>
 
@@ -108,7 +108,7 @@
                         <div class="card-body">
                             <span class="ti-write"></span>
                             <div>
-                                <h5>Total number of articles</h5>
+                                <h5>Total number of Blogs</h5>
                                 <h4><%=articlesCount%></h4>
                             </div> 
                         </div>
@@ -126,7 +126,7 @@
                             </div> 
                         </div>
                         <div class="card-footer">
-                            <a href="/showAllFollowers">View all</a>
+                            <!-- <a href="/showAllFollowers">View all</a> -->
                         </div>
                     </div>
 
@@ -139,7 +139,7 @@
                             </div> 
                         </div>
                         <div class="card-footer">
-                            <a href="">View all</a>
+                            <!-- <a href="">View all</a> -->
                         </div>
                     </div>
 
@@ -218,14 +218,18 @@
                             
                             </div>
 
-
-                            
                         </form>
 
                         <h3 class="heading-top">DELETE MY ACCOUNT</h3>
                         <div class="delete-account">
-                            <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero modi animi pariatur illum distinctio unde perferendis, alias laudantium consequatur omnis, voluptate, doloribus veniam officia ut? Laboriosam nulla reprehenderit debitis. Ex delectus quia illum harum ipsam, amet minima, et laborum esse iure iste dolore pariatur suscipit soluta atque distinctio ullam nulla eligendi impedit, iusto similique non optio perspiciatis! Non laborum distinctio, libero harum sit hic necessitatibus nobis, voluptate accusantium similique excepturi odio magni? Nesciunt repellendus nisi ipsum consequatur mollitia natus repellat quas asperiores consequuntur quis odit voluptatum omnis et, molestias molestiae.</h4>
-                            <button class="delete-button">Delete my account</button>
+                            <h4>
+                                If you wish to delete your account, all of your data 
+                                will be permanently deleted. You will not be able to restore 
+                                it once you continue to delete your account. In case you want to 
+                                reactivate your account, kindly mail us at
+                                teambackbenchers@gmail.com within 45 days from the date of deletion of your account.
+                            </h4>
+                            <button onclick="deleteAccount(this)" class="delete-button">Delete my account</button>
                         </div>
                     </div>
 
@@ -258,7 +262,7 @@
 
                         <div class="birthday-card">
                             <div class="bday-info">
-                                <h5>Publish your articles</h5>
+                                <h5>Publish your Blog</h5>
                                 <div>
                                   <a href="/publish">
                                     <button>
@@ -284,9 +288,35 @@
 
             </main>
         </div>
-    
 
-    
-    
 </body>
+
+<script>
+var httpRequest;
+function deleteAccount(e){
+    
+    httpRequest = new XMLHttpRequest();
+    if (!httpRequest) {
+        alert('Giving up :( Cannot create an XMLHTTP instance');
+        return false;
+    }
+    httpRequest.onreadystatechange = deleteAccountRequest;
+    httpRequest.open('GET', '/delete');        
+    httpRequest.send();   
+    
+}
+
+function deleteAccountRequest(){
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest.status === 200) {
+            // let respJson = JSON.parse(httpRequest.responseText);
+            window.location = '/logout';
+        } else {
+            alert('There was a problem with the request.');
+        }
+    }
+}
+
+</script>
+    
 </html>

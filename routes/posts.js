@@ -17,7 +17,8 @@ const check = require("../controllers/checkAuthcontroller");
 var deleteObj = require("../controllers/deleteController")
 var showObj = require("../controllers/showPageController")
 const { route } = require("./users.js");
-var middlewareObj = require("../middleware/index")
+var middlewareObj = require("../middleware/index");
+const { count } = require("console");
 var storage = multer.diskStorage({
   destination: function(req,file,cb){
     cb(null,'public/uploads/img/posts');
@@ -1282,10 +1283,15 @@ router.get('/liked/:slug', check,(req,res)=>{
                 console.log(user)
               }
             })
-            res.json({message: "you have liked this post"
+            res.json({
+              count: post.likes,
+              message: "you liked this post"
                     })
           } else {
-            res.json({message: "you can only like this post once"
+            
+            res.json({
+              count: post.likes,
+              message: "you can only like this post once"
                     })
           }
         }

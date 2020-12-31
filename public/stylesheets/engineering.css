@@ -14,11 +14,9 @@ html
     font-family: 'poppins',cursive;
     font-size: 12px;
      background-color: rgba(0, 0, 0, 0.932);
-    background-image: url(/images/sameer_12draft.jpeg);
+    background-image: url('/images/sameer_12draft.jpeg');
     cursor: pointer;
-    overflow-x: hidden;
-    
-
+    overflow-x: hidden;   
 }
 
 body
@@ -68,13 +66,6 @@ body
 }
 
 .author-name .author-content button
-{
-    background: none;
-    outline: none;
-    border: none;
-}
-
-.search-box button
 {
     background: none;
     outline: none;
@@ -138,7 +129,7 @@ body
     left: -24rem;
 }
 
-.blog-post__date
+..blog-post__date
 {
     display: inline-block;
 }
@@ -444,8 +435,6 @@ body
     color: white;
 }
 
-
-
 .search-box
 {
     position: absolute;
@@ -483,6 +472,9 @@ body
     justify-content: center;
     align-items: center;
     transition: 0.4s;
+    background: none;
+    outline: none;
+    border: none;
 }
 
 .search-box .search-txt
@@ -770,7 +762,7 @@ body
          outline-color: #ab2d24;
        }
 
-       .right form textarea
+       .right form textarea,
        {
           height: 95px;
        }
@@ -1053,6 +1045,18 @@ body
        @media screen and (max-width:376px)
        {
 
+        .name-aut
+{
+   
+    margin-left: 12rem;
+
+}
+
+.save-to-later
+{
+    margin-left: 22.5rem;
+}
+
         .top-img2-logo
         {
             display: none;
@@ -1070,8 +1074,8 @@ body
 
            .blog-post
            {
-               max-width:28rem ;
-               height: 36rem;
+               max-width:25rem ;
+               height: 37rem;
            }
 
            .table-all
@@ -1082,13 +1086,13 @@ body
 
            .all-engineering-articles
            {
-               left: 1.8rem;
+               left: 1.6rem;
            }
 
            .blog-post__info
            {
             top: 67px;
-            left: -25rem;
+            left: -23rem;
            }
 
            .next-page
@@ -1141,8 +1145,8 @@ body
 
            .blog-post
            {
-               max-width:25rem ;
-               height: 36rem;
+               max-width:23rem ;
+               height: 38rem;
            }
 
            .table-all
@@ -1153,13 +1157,13 @@ body
 
            .all-engineering-articles
            {
-               left: 0.8rem;
+               left: 0.2rem;
            }
 
            .blog-post__info
            {
-            top: 67px;
-            left: -23rem;
+            top: 75px;
+            left: -21.2rem;
            }
 
            .next-page
@@ -1186,22 +1190,25 @@ body
 
 .name-aut
 {
-    margin-left: 13rem;
+    margin-left: 11rem;
 }
 
 .save-to-later
 {
-    margin-left: 23rem;
+    margin-left: 21rem;
+    transform: translateY(-4.2rem);
+}
+
+.blog-post__cta
+{
+    margin-right: 3.8rem;
 }
 
 
-
-}
+       }
 
 
 
 
        
-
-
 

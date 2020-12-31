@@ -423,7 +423,7 @@ middlewareObj.recommended = async  function(){
     // console.log(posts.length)
     // console.log(posts)
     var copyOfPosts = posts
-    console.log(posts,copyOfPosts)
+    console.log(".............................",copyOfPosts)
     await middlewareObj.quickSortRecursive(copyOfPosts,0,copyOfPosts.length-1,'recommended');
   
 
@@ -442,7 +442,7 @@ middlewareObj.recommended = async  function(){
         var recommendedpost = new Recommended();
         recommendedpost.subject = copyOfPosts[i].subject;
         recommendedpost.rank = copyOfPosts[i].rank;
-        recommendedpost.post = copyOfPosts[i];
+        recommendedpost.post = copyOfPosts[i].post;
         
         be++;
         console.log("be : ",be)
@@ -466,7 +466,7 @@ middlewareObj.recommended = async  function(){
         var recommendedpost = new Recommended();
         recommendedpost.subject = copyOfPosts[i].subject;
         recommendedpost.rank = copyOfPosts[i].rank;
-        recommendedpost.post = copyOfPosts[i];
+        recommendedpost.post = copyOfPosts[i].post;
         comm++;
         console.log("comm : ",comm)
         await recommendedpost.save((err,post)=>{
@@ -486,7 +486,7 @@ middlewareObj.recommended = async  function(){
         var recommendedpost = new Recommended();
         recommendedpost.subject = copyOfPosts[i].subject;
         recommendedpost.rank = copyOfPosts[i].rank;
-        recommendedpost.post = copyOfPosts[i];
+        recommendedpost.post = copyOfPosts[i].post;
         eng++;
         console.log("eng : ",eng)
         await recommendedpost.save((err,post)=>{
@@ -508,7 +508,7 @@ middlewareObj.recommended = async  function(){
         var recommendedpost = new Recommended();
         recommendedpost.subject = copyOfPosts[i].subject;
         recommendedpost.rank = copyOfPosts[i].rank;
-        recommendedpost.post = copyOfPosts[i];
+        recommendedpost.post = copyOfPosts[i].post;
         pd++;
         console.log("pd : ",pd)
         await recommendedpost.save((err,post)=>{

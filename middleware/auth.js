@@ -38,7 +38,7 @@ const auth = async (req,res,next)=>{
     }
     }catch(e){
         console.log("in auth catch")
-        res.redirect('register_or_login')
+        res.redirect('/register_or_login')
         // res.status(401).send({error: "please authenticate with correct creds"})
     }
     

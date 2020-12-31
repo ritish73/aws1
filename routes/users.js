@@ -31,7 +31,12 @@ const ejsLint = require('ejs-lint');
 // })
 
 
-router.get("/" , function(req, res){
+router.get('/aboutus',(req,res)=>{
+  res.render('aboutus');
+})
+
+
+router.get("/" , check ,function(req, res){
   console.log("in home : ",req.user)
   var message=undefined;
   if(req.query.message){
@@ -104,13 +109,20 @@ router.get("/" , function(req, res){
   
 });
 
+router.get('/delete', check ,async (req,res)=>{
+  var user = await User.findOne({_id: req.user._id});
+  user.deleted = true;
+  await user.save();
+  req.flash('success','your account was deleted');
+  res.send()
+})
 
-router.get("/T&C", function(req, res){
-  res.render("about");
+router.get("/termsandconditions", function(req, res){
+  res.render("termsandconditions");
 });
 
-router.get("/privacyPolicy", function(req, res){
-  res.render("about");
+router.get("/privacypolicy", function(req, res){
+  res.render("privacypolicy");
 });
 
 router.get("/blogs",(req,res)=>{
@@ -149,7 +161,7 @@ router.get('/addFollower/:authname', auth , async (req,res)=>{
   req.flash('success','now you are following this author')
   await middlewareObj.addFollower(res,req)
   .then((message)=>{
-    res.json({"message" : message})
+    res.json({message : message})
   })
   
 })
@@ -293,7 +305,15 @@ router.get("/good", isLoggedIn,(req,res)=>{
 
 // register nw user get and post routes
 router.get("/register_or_login", (req,res)=>{
-	res.render("register");
+  var message;
+  console.log(req.query.m)
+  if(req.query.m === '0'){
+    console.log("hhhhhhhhhhhhh")
+    req.flash('error','you need to login to perform this action')
+    res.redirect("/register_or_login")
+  }else{
+    res.render("register");
+  }
 });
 
 router.post("/register_old",(req,res)=>{
@@ -377,7 +397,8 @@ router.post("/register",(req,res)=>{
                 httpOnly: true,
                 path: '/'
               });
-              res.status(200).send(user);
+              req.flash('success','welcome to the backbenchers community')
+              res.redirect("/");
             }).catch((e)=>{
               console.log(e);
               req.flash('error','an error occured while creating your account')

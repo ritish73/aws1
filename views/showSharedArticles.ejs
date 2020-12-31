@@ -4,7 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
     <link rel="stylesheet" href="/stylesheets/business-economics.css">
-    <title>Blog card</title>
+    <title>Blogs</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
 </head>
 <body>
 
@@ -36,7 +37,7 @@
             <div class="search-box">
                 
                 <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
-                <button>
+                <button class="search-btn">
                     <i class="fas fa-search"></i>
                 </button>
             
@@ -60,11 +61,11 @@
 <div class="vertical-nav-bar">
     <a href="/">Home<span><i class="fas fa-home"></i></span></a>
     <a href="/blogs">Blogs<span><i class="fas fa-user-graduate"></i></span></a>
-    <a href="/publish">Authors<span><i class="fas fa-pencil-alt"></i></span></a>
+    <a href="/publish">Write Here<span><i class="fas fa-pencil-alt"></i></span></a>
     <a href="/contactus">Contact US<span><i class="fas fa-phone-alt"></i></span></a>
     <a href="/aboutus">About Us<span><i class="fas fa-users"></i></span></a>
     <a href="https://www.facebook.com/BackBenchers-105240558097832">Facebook<span><i class="fab fa-facebook-f"></i></span></a>
-    <a href="#">Instagram<span><i class="fab fa-instagram"></i></span></a>
+    <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5">Instagram<span><i class="fab fa-instagram"></i></span></a>
     <a href="https://www.linkedin.com/in/back-benchers-94a049202/">Linkedin<span><i class="fab fa-linkedin-in"></i></span></a>
 
     
@@ -108,11 +109,11 @@
                 </form>
                 <div><button onclick="deletePost(this)" getpost="<%=posts[i].slug%>" >delete post</button></div>
             <% } %>
-            <a href="/posts/<%=posts[i+1].subject%>/<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
+            <a href="/posts/<%=posts[i].subject%>/<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
             <ul class="btns-on-blogcard">
                 <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
                 <button onclick="like(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span onclick="count(this)" class="count" id="likecount" ><%=posts[i].likes%></span></li></button>
-                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/<%=posts[i+1].subject%>/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
+                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/<%=posts[i].subject%>/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
          
                 <span></span>
             </ul>
@@ -129,7 +130,7 @@
             <div class="column">
                 <div class="blog-post">
                 <div class="blog-post__img">
-                <img src="/uploads/img/posts/<%=posts[i].imagename%>" alt="<%=posts[i].imagename%>" class="blog-post__article-img">
+                <img src="/uploads/img/posts/<%=posts[i+1].imagename%>" alt="<%=posts[i+1].imagename%>" class="blog-post__article-img">
                 </div>
                 <div class="blog-post__info">
                 <div class="blog-post__date">
@@ -145,7 +146,7 @@
                 <h1 class="blog-post__title"><%=posts[i+1].title%></h1>
                 <p class="blog-post__text"><%= posts[i+1].content.substring(0,10) %>...</p>
                 <% if(currentUser && currentUser.role == "admin"){ %>
-                    <form method="POST" action="/updateRecommended/<%=posts[i].slug%>/<%=posts[i].subject%>/<%=page%>">
+                    <form method="POST" action="/updateRecommended/<%=posts[i+1].slug%>/<%=posts[i+1].subject%>/<%=page%>">
                         <span>push to recommended at what position: </span><input type="number" name="position">
                         <button type="submit">push</button>
                     </form>
@@ -204,9 +205,9 @@
                         <img src="/images/2.png" alt="logo" height="250px" width="250px">
                     </div>
                         <div class="social">
-                            <a href="#"><span class="fab fa-facebook-f"></span></a>
-                            <a href="#"><span class="fab fa-instagram"></span></a>
-                            <a href="#"><span class="fab fa-linkedin-in"></span></a>
+                            <a href="https://www.facebook.com/BackBenchers-105240558097832"><span class="fab fa-facebook-f"></span></a>
+                        <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5"><span class="fab fa-instagram"></span></a>
+                        <a href="https://www.linkedin.com/in/back-benchers-94a049202/"><span class="fab fa-linkedin-in"></span></a>
                         </div>
                     </div>
                 </div>
@@ -215,11 +216,11 @@
                     <h2>Quick links</h2>
                     <div class="content">
                         <ul class="links">
-                        <li><a href="#"> > Home</a></li>
-                        <li><a href="#"> > Business & Economics</a></li>
-                        <li><a href="#"> > Commerce</a></li>
-                        <li><a href="#"> > Engineering</a></li>
-                        <li><a href="#"> > Personality Devlopment</a></li>
+                            <li><a href="/"> > Home</a></li>
+                            <li><a href="/posts/business-economics?page=1"> > Business & Economics</a></li>
+                            <li><a href="/posts/commerce?page=1"> > Commerce</a></li>
+                            <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
+                            <li><a href="/posts/personality-development?page=1"> > Personality Devlopment</a></li>
                         </ul>
                     </div>
                 </div>
@@ -228,10 +229,10 @@
                     <h2>Company</h2>
                     <div class="content">
                         <ul class="links">
-                        <li><a href="#"> > About Us</a></li>
-                        <li><a href="#"> > Contact Us</a></li>
-                        <li><a href="#"> > Terms and conditions</a></li>
-                        <li><a href="#"> > Privacy Policy</a></li>
+                            <li><a href="/aboutus"> > About Us</a></li>
+                            <li><a href="#" id="cu"> > Contact Us</a></li>
+                            <li><a href="/termsandconditions"> > Terms and conditions</a></li>
+                            <li><a href="/privacypolicy"> > Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -241,14 +242,14 @@
                 <div class="right box">
                     <h2>Any queries ?</h2>
                     <div class="content">
-                        <form action="#">
+                        <form action="/query/submit/personality-development/<%=page%>" method="POST">
                             <div class="email">
                                 <div class="text">Email *</div>
-                                <input type="email" required>
+                                <input type="email" name="email" required>
                             </div>
                             <div class="msg">
                                 <div class="text">Message *</div>
-                                <textarea  cols="25" rows="2"></textarea>
+                                <textarea  cols="25" rows="2" name="message"></textarea>
                             </div>
                             <div class="btn">
                                 <button type="submit">Send</button>
@@ -256,6 +257,8 @@
                         </form>
                     </div>
                 </div>
+
+
             </div>
 
             <div class="bottom">

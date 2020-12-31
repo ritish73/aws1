@@ -114,8 +114,9 @@ showObj.recordViews = async (req)=>{
                     var already = false;
                     console.log(already)
                     postid = post._id;
-                    console.log("this is the id of current post : ", postid);
+                    console.log("this is the id of current post : ", postid,user.viewed_posts.length);
                     for(var i=0; i<user.viewed_posts.length; i++){
+                      console.log(user.viewed_posts[i].post._id)
                       if(postid.equals(user.viewed_posts[i].post._id)){
                         console.log("jnvosdnvonsdov  : ", user.viewed_posts[i].post._id)
                         index = i;

@@ -37,6 +37,7 @@ const check = async (req,res,next)=>{
 
                     req.user = await user;
                     res.locals.currentUser = await req.user;
+                    console.log("inside check user added to currentUser : ", res.locals.currentUser);
                     req.token = await token;
                     // console.log("req.user before " , req.user, user)
                     next();

@@ -4,7 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
     <link rel="stylesheet" href="/stylesheets/personality-development.css">
-    <title>Blog card</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
+    <title>Blogs</title>
 </head>
 <body>
 
@@ -38,7 +39,7 @@
             <div class="search-box">
                 
                 <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
-                <button>
+                <button class="search-btn" >
                     <i class="fas fa-search"></i>
                 </button>
             
@@ -62,11 +63,11 @@
 <div class="vertical-nav-bar">
     <a href="/">Home<span><i class="fas fa-home"></i></span></a>
     <a href="/blogs">Blogs<span><i class="fas fa-user-graduate"></i></span></a>
-    <a href="/publish">Authors<span><i class="fas fa-pencil-alt"></i></span></a>
+    <a href="/publish">Write Here<span><i class="fas fa-pencil-alt"></i></span></a>
     <a href="/contactus">Contact US<span><i class="fas fa-phone-alt"></i></span></a>
     <a href="/aboutus">About Us<span><i class="fas fa-users"></i></span></a>
     <a href="https://www.facebook.com/BackBenchers-105240558097832">Facebook<span><i class="fab fa-facebook-f"></i></span></a>
-    <a href="#">Instagram<span><i class="fab fa-instagram"></i></span></a>
+    <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5">Instagram<span><i class="fab fa-instagram"></i></span></a>
     <a href="https://www.linkedin.com/in/back-benchers-94a049202/">Linkedin<span><i class="fab fa-linkedin-in"></i></span></a>
 
     
@@ -143,8 +144,8 @@
             </div>
             <div class="author-name">
                 <ul class="author-content">
-                    <button onclick="addFollower(this)" getauthor="<%= posts[i].authorName %>" > <li class="name-aut"><%= posts[i].authorName %>></li></button>
-                    <button onclick="saveToLater(this)" getpost="<%=posts[i].slug%>" > <li class="save-to-later"><i class="fas fa-plus "></i></li></button>
+                    <button onclick="addFollower(this)" getauthor="<%= posts[i].authorName %>"> <li class="name-aut"><%= posts[i].authorName %>></li></button>
+                    <button onclick="saveToLater(this)" getpost="<%=posts[i].slug%>"> <li class="save-to-later"><i class="fas fa-plus "></i></li></button>
                 </ul>
             </div>
             <h1 class="blog-post__title"><%=posts[i].title%></h1>
@@ -160,7 +161,7 @@
             <ul class="btns-on-blogcard">
                 <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
                 <button onclick="like(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span onclick="count(this)" class="count" id="likecount" ><%=posts[i].likes%></span></li></button>
-                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/personality-development/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
+                <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
          
                 <span></span>
             </ul>
@@ -203,7 +204,7 @@
                 <ul class="btns-on-blogcard">
                     <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
                     <button onclick="like(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count" id="likecount"><%=posts[i+1].likes%></span></li></button>
-                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/personality-development/<%= posts[i+1].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i+1].shares%></span></li></button></a>
+                <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= posts[i+1].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i+1].shares%></span></li></button></a>
                     <span></span>
                 </ul>
                 </div>
@@ -252,9 +253,9 @@
                         <img src="/images/2.png" alt="logo" height="250px" width="250px">
                     </div>
                         <div class="social">
-                            <a href="#"><span class="fab fa-facebook-f"></span></a>
-                            <a href="#"><span class="fab fa-instagram"></span></a>
-                            <a href="#"><span class="fab fa-linkedin-in"></span></a>
+                            <a href="https://www.facebook.com/BackBenchers-105240558097832"><span class="fab fa-facebook-f"></span></a>
+                        <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5"><span class="fab fa-instagram"></span></a>
+                        <a href="https://www.linkedin.com/in/back-benchers-94a049202/"><span class="fab fa-linkedin-in"></span></a>
                         </div>
                     </div>
                 </div>
@@ -263,11 +264,11 @@
                     <h2>Quick links</h2>
                     <div class="content">
                         <ul class="links">
-                        <li><a href="#"> > Home</a></li>
-                        <li><a href="#"> > Business & Economics</a></li>
-                        <li><a href="#"> > Commerce</a></li>
-                        <li><a href="#"> > Engineering</a></li>
-                        <li><a href="#"> > Personality Devlopment</a></li>
+                            <li><a href="/"> > Home</a></li>
+                            <li><a href="/posts/business-economics?page=1"> > Business & Economics</a></li>
+                            <li><a href="/posts/commerce?page=1"> > Commerce</a></li>
+                            <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
+                            <li><a href="/posts/personality-development?page=1"> > Personality Devlopment</a></li>
                         </ul>
                     </div>
                 </div>
@@ -276,10 +277,10 @@
                     <h2>Company</h2>
                     <div class="content">
                         <ul class="links">
-                        <li><a href="#"> > About Us</a></li>
-                        <li><a href="#"> > Contact Us</a></li>
-                        <li><a href="#"> > Terms and conditions</a></li>
-                        <li><a href="#"> > Privacy Policy</a></li>
+                            <li><a href="/aboutus"> > About Us</a></li>
+                            <li><a href="#" id="cu"> > Contact Us</a></li>
+                            <li><a href="/termsandconditions"> > Terms and conditions</a></li>
+                            <li><a href="/privacypolicy"> > Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -420,6 +421,7 @@
          httpRequest.send();
        } else {
            console.log("you need to login to save this post")
+           window.location = '/register_or_login?m=0'
        }
      }   
 
@@ -435,7 +437,8 @@
             httpRequest.open('GET', '/posts/delete/' + curPostSlug);        
             httpRequest.send();
        } else {
-           console.log("you need to login to save this post")
+        //    console.log("you need to login to save this post")
+        window.location = '/register_or_login?m=0'
        }
     }
 
@@ -454,7 +457,7 @@
         } else {
             console.log("you need to login to follow an author")
             var message = "you need to login first to follow an author"
-            window.location = '/register_or_login/?message='+message;
+            window.location = '/register_or_login?m=0'
         }
     }
 
@@ -471,7 +474,7 @@
             httpRequest.open('GET', '/sharePost/' +curPostSlug);
             httpRequest.send();
         } else {
-            console.log("you need to login to share this post")
+            window.location = '/register_or_login?m=0'
         }
     }
 
@@ -492,7 +495,7 @@
           
           }
          else {
-          document.querySelector("#message").innerHTML = "you need to log in to like this post";
+            window.location = '/register_or_login?m=0'
         }
       }
 

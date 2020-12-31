@@ -124,11 +124,12 @@ form.sign-in-form {
   color: black;
 }
 
-/* #input-file input[type="file"]{
+#input-file input[type="file"]{
   outline: none;
   border: none;
-  background: none
-} */
+  background: none;
+  width: 200px;
+}
 
 .option
 {
