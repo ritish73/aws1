@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BackBenchers</title>
-  <link rel="shortcut icon" type="image/x-icon" href="./1_logo.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/1_logo.png" />
 </head>
 <body>
   <h1>unreviewed posts of all the subjects are here</h1>
@@ -12,7 +12,6 @@
     <p><%=currentUser.username%> with <%=currentUser.role%> role is logged in!</p>
   <br><br><br>
   <% for(var i=0; i<posts.length; i++){ %>
-
     <% if(posts[i].isReviewedByAdmin === false && posts[i].isReviewedByAuditor === false){ %>
       <h1>Post Number is : <%=posts[i].postNumber%></h1>
       <h1> <%=posts[i].title%> </h1> 
@@ -27,11 +26,13 @@
         <span>Likes: <%=posts[i].likes%></span>
         <span>Views: <%=posts[i].views%></span>
       </div>
+
       <% if(posts[i].filename){ %>
-
-        <p><a href="/publish/download?file=<%=posts[i].filename%>"><%=posts[i].filename%></a></p>
-
-      <% } %>
+        <strong><%=posts[i].filename%></strong>
+        <div><a href="/publish/displayfile/pdf?file=<%=posts[i].filename%>">click here if it is a <strong>pdf file</strong></a></div><br>
+        <div><a href="/publish/displayfile/word?file=<%=posts[i].filename%>">click here if it is a <strong>word file</strong></a></div>
+        <br>
+      <% } %> 
     
         <button id="approve" getpost= "<%=posts[i].slug%>"  role="admin" onclick="approveFunc(this)">approve this post and send to respective posts page</button>
         <!-- <button getpost= "<%=posts[i].slug%>" onclick="clearpost(this)">clear</button> -->
@@ -44,8 +45,6 @@
           <button auditorname="<%=auditor.username%>" getpost= "<%=posts[i].slug%>"  onclick="sendToAuditor(this)" > <%=auditor.username%> </button>
         <% }) %>
         
-        
-
       <!-- here we put the operations on these posts by th admins or auditors -->
       <a href="/posts/<%=posts[i]._id%>/edit">Edit this post</a>
       <form action="/<%=posts[i].slug%>?_method=DELETE" method="POST">
@@ -53,7 +52,7 @@
       </form>
       <p id="reviewstatus"></p>
       
-      <form method="POST"  enctype="multipart/form-data" action="/posts/upload/file/<%=posts[i].postNumber%>">
+      <form method="POST"  enctype="multipart/form-data" action="/posts/upload/file/<%=posts[i]._id%>">
         <span>upload the image with numbering same as <b>article number</b>: </span>
         <input type="file" placeholder="file upload" name="photo"><BR><br>
         <div>

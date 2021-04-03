@@ -12,11 +12,20 @@
     transition: 0.3s;
 }
 
-html
+html,body
 {
-    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
     font-family: 'poppins',cursive;
     text-align: justify;
+}
+
+html
+{
+
 }
 
 #logoo
@@ -187,5 +196,1722 @@ html
 {
     float: right;
     transform: translateY(-30%);
+
+}
+
+@media screen and (max-width:1800px)
+{
+    .why-us
+    {
+        height: 51vh;
+    }
+    
+    .engineering
+    {
+        height: 48vh;
+    }
+    
+    .business
+    {
+        height: 48vh;
+    }
+    
+    .commerce
+    {
+        height: 48vh;
+    
+    }
+    
+    .personality
+    {
+        height: 48vh;
+    }
+    
+    
+    .why-us-heading
+    {
+        transform: translateX(30%);
+        align-items: center;
+        font-size: 3rem;
+    
+    }
+    
+    .why-us-content
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.5rem;
+    }
+    
+    .heading-1
+    {
+        transform: translateX(27%);
+        font-size: 3rem;
+    
+    }
+    .heading-2
+    {
+        transform: translateX(15%);
+        font-size: 3rem;
+    
+    }
+    .heading-3
+    {
+        transform: translateX(28%);
+        font-size: 3rem;
+        
+    
+    }
+    .heading-4
+    {
+        transform: translateX(14%);
+        font-size: 3rem;
+    
+    }
+    
+    .content-1
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.5rem;
+    
+    }
+    .content-2
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.5rem;
+    
+    }
+    .content-3
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.5rem;
+    
+    }
+    .content-4
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.5rem;
+    
+    }
+
+    .img-why
+    {
+        margin-right: 60px;
+        transform: translateY(50%);
+        padding-left:30px;
+    }
+    
+    
+    .img-1
+    {
+        margin-right: 120px;
+        transform: translateY(-20%);
+        padding-left:30px;
+    }
+    
+    .img-2
+    {
+        margin-right: 120px;
+        transform: translateY(-15%);
+        padding-left:30px;
+    
+    }
+    .img-3
+    {
+        margin-right: 120px;
+        transform: translateY(-10%);
+        padding-left:30px;
+    
+    }
+    .img-4
+    {
+        margin-right: 120px;
+        transform: translateY(-0%);
+        padding-left:30px;
+    
+    }
+
+}
+
+
+@media screen and (max-width:1650px)
+{
+    .why-us
+    {
+        height: 52vh;
+    }
+    
+    .engineering
+    {
+        height: 48vh;
+    }
+    
+    .business
+    {
+        height: 48vh;
+    }
+    
+    .commerce
+    {
+        height: 48vh;
+    
+    }
+    
+    .personality
+    {
+        height: 48vh;
+    }
+    
+    
+    .why-us-heading
+    {
+        transform: translateX(30%);
+        align-items: center;
+        font-size: 2.5rem;
+    
+    }
+    
+    
+    .heading-1
+    {
+        transform: translateX(27%);
+        font-size: 2.5rem;
+    
+    }
+    .heading-2
+    {
+        transform: translateX(15%);
+        font-size: 2.5rem;
+    
+    }
+    .heading-3
+    {
+        transform: translateX(28%);
+        font-size: 2.5rem;
+        
+    
+    }
+    .heading-4
+    {
+        transform: translateX(14%);
+        font-size: 2.5rem;
+    
+    }
+
+    .why-us-content
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.3rem;
+        text-align: justify;
+    }
+    
+    .content-1
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.3rem;
+    
+    }
+    .content-2
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.3rem;
+    
+    }
+    .content-3
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.3rem;
+    
+    }
+    .content-4
+    {
+        max-width: 1250px;
+        padding: 15px;
+        font-size: 1.3rem;
+    
+    }
+
+    .img-why
+    {
+        margin-right: 60px;
+        transform: translateY(50%);
+        padding-left:30px;
+    }
+    
+    
+    .img-1
+    {
+        margin-right: 120px;
+        transform: translateY(-20%);
+        padding-left:30px;
+    }
+    
+    .img-2
+    {
+        margin-right: 120px;
+        transform: translateY(-15%);
+        padding-left:30px;
+    
+    }
+    .img-3
+    {
+        margin-right: 120px;
+        transform: translateY(-10%);
+        padding-left:30px;
+    
+    }
+    .img-4
+    {
+        margin-right: 120px;
+        transform: translateY(-0%);
+        padding-left:30px;
+    
+    }
+
+}
+
+
+@media screen and (max-width:1440px)
+{
+
+    .why-us
+    {
+        height: 55vh;
+    }
+    
+    .engineering
+    {
+        height: 49vh;
+    }
+    
+    .business
+    {
+        height: 49vh;
+    }
+    
+    .commerce
+    {
+        height: 49vh;
+    
+    }
+    
+    .personality
+    {
+        height: 49vh;
+    }
+    
+    
+    .why-us-heading
+    {
+        transform: translateX(30%);
+        align-items: center;
+        font-size: 2.3rem;
+    
+    }
+    
+    
+    .heading-1
+    {
+        transform: translateX(27%);
+        font-size: 2.3rem;
+    
+    }
+    .heading-2
+    {
+        transform: translateX(15%);
+        font-size: 2.3rem;
+    
+    }
+    .heading-3
+    {
+        transform: translateX(28%);
+        font-size: 2.3rem;
+        
+    
+    }
+    .heading-4
+    {
+        transform: translateX(14%);
+        font-size: 2.3rem;
+    
+    }
+
+    .why-us-content
+    {
+        max-width: 900px;
+        padding: 15px;
+        font-size: 1.2rem;
+        text-align: justify;
+    }
+    
+    .content-1
+    {
+        max-width: 1150px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+    .content-2
+    {
+        max-width: 1150px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+    .content-3
+    {
+        max-width: 1150px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+    .content-4
+    {
+        max-width: 1150px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+
+    .img-why
+    {
+        margin-right: 140px;
+        transform: translateY(50%);
+        padding-left:30px;
+
+    }
+    
+    
+    .img-1
+    {
+        margin-right: 120px;
+        transform: translateY(-20%);
+        padding-left:30px;
+    }
+    
+    .img-2
+    {
+        margin-right: 120px;
+        transform: translateY(-15%);
+        padding-left:30px;
+    
+    }
+    .img-3
+    {
+        margin-right: 120px;
+        transform: translateY(-10%);
+        padding-left:30px;
+    
+    }
+    .img-4
+    {
+        margin-right: 120px;
+        transform: translateY(-0%);
+        padding-left:30px;
+    
+    }
+
+
+
+    /* .why-us
+{
+    height: 45vh;
+}
+
+.engineering
+{
+    height: 45vh;
+}
+
+.business
+{
+    height: 45vh;
+}
+
+.commerce
+{
+    height: 45vh;
+
+}
+
+.personality
+{
+    height: 45vh;
+}
+
+.img-why
+{
+    margin-right: 60px;
+    transform: translateY(25%);
+
+}
+
+.why-us-heading
+{
+    transform: translateX(30%);
+    align-items: center;
+    font-size: 2rem;
+
+}
+
+.why-us-content
+{
+    max-width: 950px;
+    padding: 15px;
+}
+
+.heading-1
+{
+    transform: translateX(27%);
+    font-size: 1.5rem;
+
+}
+.heading-2
+{
+    transform: translateX(15%);
+    font-size: 1.5rem;
+
+}
+.heading-3
+{
+    transform: translateX(28%);
+    font-size: 1.5rem;
+    
+
+}
+.heading-4
+{
+    transform: translateX(14%);
+    font-size: 1.5rem;
+
+}
+
+.content-1
+{
+    max-width: 850px;
+    padding: 15px;
+
+}
+.content-2
+{
+    max-width: 850px;
+    padding: 15px;
+
+}
+.content-3
+{
+    max-width: 850px;
+    padding: 15px;
+
+}
+.content-4
+{
+    max-width: 850px;
+    padding: 15px;
+
+}
+
+
+.img-1
+{
+    margin-right: 120px;
+    transform: translateY(-20%);
+
+}
+
+.img-2
+{
+    margin-right: 120px;
+    transform: translateY(-30%);
+
+}
+.img-3
+{
+    margin-right: 120px;
+    transform: translateY(-30%);
+
+}
+.img-4
+{
+    margin-right: 120px;
+    transform: translateY(-20%);
+
+} */
+
+}
+
+@media screen and (max-width:1300px)
+{
+
+    .why-us
+    {
+        height: 50vh;
+    }
+    
+    .engineering
+    {
+        height: 54vh;
+    }
+    
+    .business
+    {
+        height: 54vh;
+    }
+    
+    .commerce
+    {
+        height: 54vh;
+    
+    }
+    
+    .personality
+    {
+        height: 57vh;
+    }
+    
+    
+    .why-us-heading
+    {
+        transform: translateX(30%);
+        align-items: center;
+        font-size: 2rem;
+    
+    }
+    
+    
+    .heading-1
+    {
+        transform: translateX(27%);
+        font-size: 2rem;
+    
+    }
+    .heading-2
+    {
+        transform: translateX(15%);
+        font-size: 2rem;
+    
+    }
+    .heading-3
+    {
+        transform: translateX(28%);
+        font-size: 2rem;
+        
+    
+    }
+    .heading-4
+    {
+        transform: translateX(14%);
+        font-size: 2rem;
+    
+    }
+
+    .why-us-content
+    {
+        max-width: 800px;
+        padding: 15px;
+        font-size: 1.2rem;
+        text-align: justify;
+    }
+    
+    .content-1
+    {
+        max-width: 850px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+    .content-2
+    {
+        max-width: 850px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+    .content-3
+    {
+        max-width: 850px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+    .content-4
+    {
+        max-width: 850px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+
+    .img-why
+    {
+        margin-right: 140px;
+        transform: translateY(20%);
+        padding-left:30px;
+
+    }
+    
+    
+    .img-1
+    {
+        margin-right: 120px;
+        transform: translateY(-20%);
+        padding-left:30px;
+    }
+    
+    .img-2
+    {
+        margin-right: 120px;
+        transform: translateY(-15%);
+        padding-left:30px;
+    
+    }
+    .img-3
+    {
+        margin-right: 120px;
+        transform: translateY(-10%);
+        padding-left:30px;
+    
+    }
+    .img-4
+    {
+        margin-right: 120px;
+        transform: translateY(-0%);
+        padding-left:30px;
+    
+    }
+}
+
+
+@media screen and (max-width:1200px)
+{
+
+    .why-us
+    {
+        height: 45vh;
+    }
+    
+    .engineering
+    {
+        height: 53vh;
+    }
+    
+    .business
+    {
+        height: 53vh;
+    }
+    
+    .commerce
+    {
+        height: 53vh;
+    
+    }
+    
+    .personality
+    {
+        height: 62vh;
+    }
+    
+    
+    .why-us-heading
+    {
+        transform: translateX(30%);
+        align-items: center;
+        font-size: 1.7rem;
+    
+    }
+    
+    
+    .heading-1
+    {
+        transform: translateX(27%);
+        font-size: 1.7rem;
+    
+    }
+    .heading-2
+    {
+        transform: translateX(15%);
+        font-size: 1.7rem;
+    
+    }
+    .heading-3
+    {
+        transform: translateX(28%);
+        font-size: 1.7rem;
+        
+    
+    }
+    .heading-4
+    {
+        transform: translateX(14%);
+        font-size: 1.7rem;
+    
+    }
+
+    .why-us-content
+    {
+        max-width: 700px;
+        padding: 15px;
+        font-size: 1.1rem;
+        text-align: justify;
+    }
+    
+    .content-1
+    {
+        max-width: 750px;
+        padding: 15px;
+        font-size: 1.1rem;
+    
+    }
+    .content-2
+    {
+        max-width: 750px;
+        padding: 15px;
+        font-size: 1.1rem;
+    
+    }
+    .content-3
+    {
+        max-width: 750px;
+        padding: 15px;
+        font-size: 1.1rem;
+    
+    }
+    .content-4
+    {
+        max-width: 750px;
+        padding: 15px;
+        font-size: 1.2rem;
+    
+    }
+
+    .img-why
+    {
+        margin-right: 140px;
+        transform: translateY(10%);
+        padding-left:30px;
+
+    }
+    
+    
+    .img-1
+    {
+        margin-right: 120px;
+        transform: translateY(-10%);
+        padding-left:30px;
+    }
+    
+    .img-2
+    {
+        margin-right: 120px;
+        transform: translateY(-8%);
+        padding-left:30px;
+    
+    }
+    .img-3
+    {
+        margin-right: 120px;
+        transform: translateY(-7%);
+        padding-left:30px;
+    
+    }
+    .img-4
+    {
+        margin-right: 120px;
+        transform: translateY(-0%);
+        padding-left:30px;
+    
+    }
+}
+
+
+@media screen and (max-width:1024px)
+{
+
+    .why-us
+{
+    height: 47vh;
+}
+
+.engineering
+{
+    height: 56vh;
+}
+
+.business
+{
+    height: 56vh;
+}
+
+.commerce
+{
+    height: 56vh;
+
+}
+
+.personality
+{
+    height: 59vh;
+}
+
+.img-why
+{
+    margin-right: 0px;
+    transform: translateY(15%);
+
+}
+
+.why-us-heading
+{
+    transform: translateX(30%);
+    align-items: center;
+    font-size: 1.2rem;
+
+}
+
+.why-us-content
+{
+    margin-top: 20px;
+    max-width: 650px;
+    padding: 15px;
+}
+
+.heading-1
+{
+    transform: translateX(27%);
+    font-size: 1.2rem;
+
+}
+.heading-2
+{
+    transform: translateX(15%);
+    font-size: 1.2rem;
+
+}
+.heading-3
+{
+    transform: translateX(28%);
+    font-size: 1.2rem;
+    
+
+}
+.heading-4
+{
+    transform: translateX(14%);
+    font-size: 1.2rem;
+
+}
+
+.content-1
+{
+    max-width: 650px;
+    padding: 15px;
+
+}
+.content-2
+{
+    max-width: 650px;
+    padding: 15px;
+
+}
+.content-3
+{
+    max-width: 650px;
+    padding: 15px;
+
+}
+.content-4
+{
+    max-width: 650px;
+    padding: 15px;
+
+}
+
+
+.img-1
+{
+    margin-right: 85px;
+    transform: translateY(0%);
+
+}
+
+.img-2
+{
+    margin-right: 85px;
+    transform: translateY(-10%);
+
+}
+.img-3
+{
+    margin-right: 85px;
+    transform: translateY(0%);
+
+}
+.img-4
+{
+    margin-right: 85px;
+    transform: translateY(0%);
+
+}
+
+
+ .img-1
+    {
+        margin-right: 20px;
+        transform: translateY(-10%);
+        padding-left:30px;
+    }
+    
+    .img-2
+    {
+        margin-right: 20px;
+        transform: translateY(-8%);
+        padding-left:30px;
+    
+    }
+    .img-3
+    {
+        margin-right: 20px;
+        transform: translateY(-7%);
+        padding-left:30px;
+    
+    }
+    .img-4
+    {
+        margin-right: 20px;
+        transform: translateY(-0%);
+        padding-left:30px;
+    
+    }
+}
+
+
+@media screen and (max-width:900px)
+{
+
+    .why-us
+{
+    height: 60vh;
+}
+
+.engineering
+{
+    height: 56vh;
+}
+
+.business
+{
+    height: 56vh;
+}
+
+.commerce
+{
+    height: 56vh;
+
+}
+
+.personality
+{
+    height: 59vh;
+}
+
+.img-why
+{
+    display: none;
+    margin-right: 0px;
+    transform: translateY(25%);
+
+}
+
+.why-us-heading
+{
+    transform: translateX(30%);
+    align-items: center;
+    font-size: 1.2rem;
+
+}
+
+.why-us-content
+{
+    margin-top: 20px;
+    max-width: 850px;
+    padding: 15px;
+}
+
+.heading-1
+{
+    transform: translateX(27%);
+    font-size: 1.2rem;
+
+}
+.heading-2
+{
+    transform: translateX(15%);
+    font-size: 1.2rem;
+
+}
+.heading-3
+{
+    transform: translateX(28%);
+    font-size: 1.2rem;
+    
+
+}
+.heading-4
+{
+    transform: translateX(14%);
+    font-size: 1.2rem;
+
+}
+
+.content-1
+{
+    max-width: 850px;
+    padding: 15px;
+
+}
+.content-2
+{
+    max-width: 850px;
+    padding: 15px;
+
+}
+.content-3
+{
+    max-width: 850px;
+    padding: 15px;
+
+}
+.content-4
+{
+    max-width: 850px;
+    padding: 15px;
+
+}
+
+
+.img-1
+{
+    margin-right: 85px;
+    transform: translateY(0%);
+
+}
+
+.img-2
+{
+    margin-right: 85px;
+    transform: translateY(-10%);
+
+}
+.img-3
+{
+    margin-right: 85px;
+    transform: translateY(0%);
+
+}
+.img-4
+{
+    margin-right: 85px;
+    transform: translateY(0%);
+
+}
+
+
+ .img-1
+    {
+        display: none;
+        margin-right: 20px;
+        transform: translateY(-10%);
+        padding-left:30px;
+    }
+    
+    .img-2
+    {
+        display: none;
+        margin-right: 20px;
+        transform: translateY(-8%);
+        padding-left:30px;
+    
+    }
+    .img-3
+    {
+        display: none;
+        margin-right: 20px;
+        transform: translateY(-7%);
+        padding-left:30px;
+    
+    }
+    .img-4
+    {
+        display: none;
+        margin-right: 20px;
+        transform: translateY(-0%);
+        padding-left:30px;
+    
+    }
+}
+
+
+
+
+
+@media screen and (max-width:768px)
+{
+
+    .why-us
+{
+    height: 45vh;
+}
+
+.engineering
+{
+    height: 68vh;
+}
+
+.business
+{
+    height: 63vh;
+}
+
+.commerce
+{
+    height: 64vh;
+
+}
+
+.personality
+{
+    height: 90vh;
+}
+
+.img-why
+{
+    margin-right: 60px;
+    transform: translateY(55%);
+    display: none;
+
+}
+
+.why-us-heading
+{
+    transform: translateX(42%);
+    align-items: center;
+    font-size: 1rem;
+
+}
+
+.why-us-content
+{
+    
+    max-width: 590px;
+    padding: 15px;
+}
+
+.heading-1
+{
+    transform: translateX(32%);
+    font-size: 1rem;
+
+}
+.heading-2
+{
+    transform: translateX(10%);
+    font-size: 1rem;
+
+}
+.heading-3
+{
+    transform: translateX(37%);
+    font-size: 1rem;
+    
+
+}
+.heading-4
+{
+    transform: translateX(20%);
+    font-size: 0.8rem;
+
+}
+
+.content-1
+{
+    max-width: 590px;
+    padding: 15px;
+
+}
+.content-2
+{
+    max-width: 590px;
+    padding: 15px;
+
+}
+.content-3
+{
+    max-width: 590px;
+    padding: 15px;
+
+}
+.content-4
+{
+    max-width: 590px;
+    padding: 15px;
+
+}
+
+
+.img-1
+{
+    margin-right: 65px;
+    transform: translateY(12%);
+    display: none;
+
+}
+
+.img-2
+{
+    margin-right: 65px;
+    transform: translateY(5%);
+    display: none;
+
+}
+.img-3
+{
+    margin-right: 65px;
+    transform: translateY(8%);
+    display: none;
+
+}
+.img-4
+{
+    margin-right: 65px;
+    transform: translateY(10%);
+    display: none;
+
+}
+
+}
+
+
+
+
+@media screen and (max-width:426px)
+{
+
+    .why-us
+{
+    height: 45vh;
+}
+
+.engineering
+{
+    height: 85vh;
+}
+
+.business
+{
+    height: 77vh;
+}
+
+.commerce
+{
+    height: 75vh;
+
+}
+
+.personality
+{
+    height: 110vh;
+}
+
+.img-why
+{
+    margin-right: 60px;
+    transform: translateY(55%);
+    display: none;
+
+}
+
+.why-us-heading
+{
+    transform: translateX(33%);
+    align-items: center;
+    font-size: 0.8rem;
+
+}
+
+.why-us-content
+{
+    
+    max-width: 400px;
+    padding: 15px;
+}
+
+.heading-1
+{
+    transform: translateX(25%);
+    font-size: 0.8rem;
+
+}
+.heading-2
+{
+    transform: translateX(5%);
+    font-size: 0.8rem;
+
+}
+.heading-3
+{
+    transform: translateX(25%);
+    font-size: 0.8rem;
+    
+
+}
+.heading-4
+{
+    transform: translateX(2%);
+    font-size: 0.8rem;
+
+}
+
+.content-1
+{
+    max-width: 340px;
+    padding: 15px;
+
+}
+.content-2
+{
+    max-width: 340px;
+    padding: 15px;
+
+}
+.content-3
+{
+    max-width: 340px;
+    padding: 15px;
+
+}
+.content-4
+{
+    max-width: 340px;
+    padding: 15px;
+
+}
+
+
+.img-1
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(12%);
+
+}
+
+.img-2
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(5%);
+
+}
+.img-3
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(8%);
+
+}
+.img-4
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(10%);
+
+}
+
+}
+
+
+@media screen and (max-width:376px)
+{
+
+    .why-us
+{
+    height: 58vh;
+}
+
+.engineering
+{
+    height: 100vh;
+}
+
+.business
+{
+    height: 92vh;
+}
+
+.commerce
+{
+    height: 87vh;
+
+}
+
+.personality
+{
+    height:130vh;
+}
+
+.img-why
+{
+    margin-right: 60px;
+    transform: translateY(55%);
+    display: none;
+
+}
+
+.why-us-heading
+{
+    transform: translateX(33%);
+    align-items: center;
+    font-size: 0.8rem;
+
+}
+
+.why-us-content
+{
+    
+    max-width: 300px;
+    left: 100px;
+    padding: 10px;
+    align-items: center;
+}
+
+.heading-1
+{
+    transform: translateX(23%);
+    font-size: 0.7rem;
+
+}
+.heading-2
+{
+    transform: translateX(4%);
+    font-size: 0.7rem;
+
+}
+.heading-3
+{
+    transform: translateX(25%);
+    font-size: 0.7rem;
+    
+
+}
+.heading-4
+{
+    transform: translateX(1%);
+    font-size: 0.7rem;
+
+}
+
+.content-1
+{
+    max-width: 292px;
+    padding: 15px;
+
+}
+.content-2
+{
+    max-width: 292px;
+    padding: 15px;
+
+}
+.content-3
+{
+    max-width: 292px;
+    padding: 15px;
+
+}
+.content-4
+{
+    max-width: 292px;
+    padding: 15px;
+
+}
+
+
+.img-1
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(12%);
+
+}
+
+.img-2
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(5%);
+
+}
+.img-3
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(8%);
+
+}
+.img-4
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(10%);
+
+}
+
+}
+
+
+
+
+@media screen and (max-width:321px)
+{
+
+    .why-us
+{
+    height: 60vh;
+}
+
+.engineering
+{
+    height: 110vh;
+}
+
+.business
+{
+    height: 105vh;
+}
+
+.commerce
+{
+    height: 92vh;
+
+}
+
+.personality
+{
+    height:137vh;
+}
+
+.img-why
+{
+    margin-right: 60px;
+    transform: translateY(55%);
+    display: none;
+
+}
+
+.why-us-heading
+{
+    transform: translateX(33%);
+    align-items: center;
+    font-size: 0.8rem;
+
+}
+
+.why-us-content
+{
+    
+    max-width: 272px;
+    padding: 15px;
+    align-items: center;
+}
+
+.heading-1
+{
+    transform: translateX(23%);
+    font-size: 0.7rem;
+
+}
+.heading-2
+{
+    transform: translateX(2%);
+    font-size: 0.7rem;
+
+}
+.heading-3
+{
+    transform: translateX(25%);
+    font-size: 0.7rem;
+    
+
+}
+.heading-4
+{
+    transform: translateX(4.5%);
+    font-size: 0.6rem;
+
+}
+
+.content-1
+{
+    max-width: 272px;
+    padding: 15px;
+
+}
+.content-2
+{
+    max-width: 272px;
+    padding: 15px;
+
+}
+.content-3
+{
+    max-width: 272px;
+    padding: 15px;
+
+}
+.content-4
+{
+    max-width: 272px;
+    padding: 15px;
+
+}
+
+
+.img-1
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(12%);
+
+}
+
+.img-2
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(5%);
+
+}
+.img-3
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(8%);
+
+}
+.img-4
+{
+    display: none;
+    margin-right: 65px;
+    transform: translateY(10%);
+
+}
 
 }

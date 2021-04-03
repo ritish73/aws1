@@ -187,13 +187,13 @@ middlewareObj.trending = async function(){
               trendingpost.actualViews = copyOfPosts[i].actualViews;
               trendingpost.post = copyOfPosts[i];
               be++;
-              console.log("be : ",be)   
+              // console.log("be : ",be)   
               await trendingpost.save(async (err,post)=>{
                 if(err){
                   console.log("error occured while saving post to trending", err);
                 } else {
                   
-                  console.log("this is the post saved to trending collection", post)
+                  // console.log("this is the post saved to trending collection", post)
                   await Trending.countDocuments({},(err,c)=>{
                     console.log("finally : ",c);
                   })
@@ -209,7 +209,7 @@ middlewareObj.trending = async function(){
             trendingpost.actualViews = copyOfPosts[i].actualViews;
             trendingpost.post = copyOfPosts[i];
             comm++;
-            console.log("comm : ",comm)
+            // console.log("comm : ",comm)
             await trendingpost.save((err)=>{
               if(err){
                 res.send(err);
@@ -227,7 +227,7 @@ middlewareObj.trending = async function(){
             trendingpost.actualViews = copyOfPosts[i].actualViews;
             trendingpost.post = copyOfPosts[i];
             eng++;
-            console.log("eng : ",eng)
+            // console.log("eng : ",eng)
             await trendingpost.save((err)=>{
               if(err){
                 res.send(err);
@@ -243,7 +243,7 @@ middlewareObj.trending = async function(){
             trendingpost.actualViews = copyOfPosts[i].actualViews;
             trendingpost.post = copyOfPosts[i];
             pd++;
-            console.log("pd : ",pd)
+            // console.log("pd : ",pd)
             await trendingpost.save((err)=>{
               if(err){
                 res.send(err);
@@ -272,7 +272,7 @@ middlewareObj.popular = async function(){
   await Popular.deleteMany({},async (err,posts)=>{
     if(err) console.log(err)
     else{
-      console.log("deleted posts are ", posts)
+      // console.log("deleted posts are ", posts)
       
   await Post.find({}, async (err,posts)=>{
     if(err){
@@ -282,7 +282,7 @@ middlewareObj.popular = async function(){
       var copyOfPosts = await JSON.parse(JSON.stringify(posts));
       await middlewareObj.quickSortRecursive(copyOfPosts,0,copyOfPosts.length-1,'popular');
       // console.log("copyOfPosts of all subjects is here",copyOfPosts);
-      console.log("copyOfPosts.length",copyOfPosts.length);
+      // console.log("copyOfPosts.length",copyOfPosts.length);
       // var countBE=0,countC=0,countE=0,countPD=0;
       // for(var i=0;i<copyOfPosts.length;i++){
       //   if(copyOfPosts[i].subject === 'business-economics'){
@@ -299,9 +299,9 @@ middlewareObj.popular = async function(){
       // console.log("countBE : ",countBE,"countC : ",countC,"countE : ",countE," countPD : ",countPD );
 
       
-      console.log("copyOfPosts.length again",copyOfPosts.length);
+      // console.log("copyOfPosts.length again",copyOfPosts.length);
       for(var i=0;i<copyOfPosts.length;i++){
-        console.log("be  : ",be,"comm : ",comm,"eng : ",eng,"pd : ",pd)
+        // console.log("be  : ",be,"comm : ",comm,"eng : ",eng,"pd : ",pd)
         // Trending.countDocuments({subject: 'business-economics'},(err,c1)=>{
         //   if(err) console.log(err)
         //   else{
@@ -333,7 +333,7 @@ middlewareObj.popular = async function(){
 
         if(copyOfPosts[i].subject === 'business-economics' && be<3){
           
-          console.log("likes of business-economics copyOfPosts ",i+1," are : ",copyOfPosts[i].likes)
+          // console.log("likes of business-economics copyOfPosts ",i+1," are : ",copyOfPosts[i].likes)
           var popularpost = new Popular();
           popularpost.subject = copyOfPosts[i].subject;
           popularpost.rank = i+1;
@@ -346,16 +346,16 @@ middlewareObj.popular = async function(){
             if(err){
               console.log("error occured while saving post to popular", err);
             } else {
-              console.log("this is the post saved to popular collection", post)
+              // console.log("this is the post saved to popular collection", post)
               Popular.countDocuments({},(err,c)=>{
-                console.log("finally : ",c);
+                // console.log("finally : ",c);
               })
             }
           })  
         }
 
         if(copyOfPosts[i].subject === 'commerce' && comm<3){
-        console.log("likes of  commerce copyOfPosts ",i+1," are : ",copyOfPosts[i].likes)
+        // console.log("likes of  commerce copyOfPosts ",i+1," are : ",copyOfPosts[i].likes)
         var popularpost = new Popular();
         popularpost.subject = copyOfPosts[i].subject;
         popularpost.rank = i+1;
@@ -368,7 +368,7 @@ middlewareObj.popular = async function(){
             console.log("error occured while saving post to popular", err);
           } else {
             
-            console.log("this is the post saved to popular collection", post)
+            // console.log("this is the post saved to popular collection", post)
             }
           })  
         }
@@ -376,7 +376,7 @@ middlewareObj.popular = async function(){
         console.log("comm outside : ",comm)
 
           if(copyOfPosts[i].subject === 'engineering' && eng<3){
-          console.log("likes of  engineering copyOfPosts ",i+1," are : ",copyOfPosts[i].likes)
+          // console.log("likes of  engineering copyOfPosts ",i+1," are : ",copyOfPosts[i].likes)
           var popularpost = new Popular();
           popularpost.subject = copyOfPosts[i].subject;
           popularpost.rank = i+1;
@@ -389,12 +389,12 @@ middlewareObj.popular = async function(){
               console.log("error occured while saving post to popular", err);
             } else {
               
-              console.log("this is the post saved to popular collection", post)
+              // console.log("this is the post saved to popular collection", post)
             }
           })  
         }
           if(copyOfPosts[i].subject === 'personality-development' && pd<3){
-            console.log("likes of  personality-development copyOfPosts ",i+1," are : ",copyOfPosts[i].likes)
+            // console.log("likes of  personality-development copyOfPosts ",i+1," are : ",copyOfPosts[i].likes)
             var popularpost = new Popular();
             popularpost.subject = copyOfPosts[i].subject;
             popularpost.rank = i+1;
@@ -407,7 +407,7 @@ middlewareObj.popular = async function(){
                 console.log("error occured while saving post to popular", err);
               } else {
                 
-                console.log("this is the post saved to popular collection", post)
+                // console.log("this is the post saved to popular collection", post)
               }
             })  
           }  
@@ -423,7 +423,7 @@ middlewareObj.recommended = async  function(){
     // console.log(posts.length)
     // console.log(posts)
     var copyOfPosts = posts
-    console.log(".............................",copyOfPosts)
+    // console.log(".............................",copyOfPosts)
     await middlewareObj.quickSortRecursive(copyOfPosts,0,copyOfPosts.length-1,'recommended');
   
 
@@ -438,7 +438,7 @@ middlewareObj.recommended = async  function(){
 
       if(copyOfPosts[i].subject === 'business-economics' && be<3){
             
-        console.log("rank of business-economics copyOfPosts ",i+1," are : ",copyOfPosts[i].rank)
+        // console.log("rank of business-economics copyOfPosts ",i+1," are : ",copyOfPosts[i].rank)
         var recommendedpost = new Recommended();
         recommendedpost.subject = copyOfPosts[i].subject;
         recommendedpost.rank = copyOfPosts[i].rank;
@@ -450,14 +450,14 @@ middlewareObj.recommended = async  function(){
           if(err){
             console.log("error occured while saving post to recommended", err);
           } else {
-            console.log("this is the post saved to recommended collection", post)
+            // console.log("this is the post saved to recommended collection", post)
             Recommended.countDocuments({},(err,c)=>{
               console.log("finally : ",c);
             })
           }
         })  
 
-        console.log("recommendedpost.post be : ", recommendedpost.post)
+        // console.log("recommendedpost.post be : ", recommendedpost.post)
       }
 
 
@@ -474,7 +474,7 @@ middlewareObj.recommended = async  function(){
             console.log("error occured while saving post to recommended", err);
           } else {
             
-            console.log("this is the post saved to recommended collection", post)
+            // console.log("this is the post saved to recommended collection", post)
           }
         })  
       }
@@ -494,7 +494,7 @@ middlewareObj.recommended = async  function(){
             console.log("error occured while saving post to recommended", err);
           } else {
             
-            console.log("this is the post saved to recommended collection", post)
+            // console.log("this is the post saved to recommended collection", post)
           }
         })  
       }
@@ -516,7 +516,7 @@ middlewareObj.recommended = async  function(){
             console.log("error occured while saving post to recommended", err);
           } else {
             
-            console.log("this is the post saved to recommended collection", post)
+            // console.log("this is the post saved to recommended collection", post)
           }
         })  
       }
@@ -554,7 +554,7 @@ var getPostsHomePageRecommended = async (obj)=>{
     if(err) console.log(err)
     else{
 
-      console.log(posts.length)
+      // console.log(posts.length)
       for(var i=0; i<posts.length; i++){
 
         if(posts[i].subject === 'business-economics'){
@@ -586,9 +586,9 @@ var getPostsHomePageRecommended = async (obj)=>{
         }
 
       }
-      console.log(obj)
+      // console.log(obj)
       resolve(obj);
-      console.log("inside recommended")
+      // console.log("inside recommended")
       // obj.bepopularpost = bepopularpost;
       // obj.cpopularpost = cpopularpost;
       // obj.epopularpost = epopularpost;
@@ -647,7 +647,7 @@ var getPostsHomePagePopular = async function (obj){
 
       }
       resolve(obj);
-      console.log("inside popular")
+      // console.log("inside popular")
       // obj.bepopularpost = bepopularpost;
       // obj.cpopularpost = cpopularpost;
       // obj.epopularpost = epopularpost;
@@ -713,7 +713,7 @@ var getPostsHomePageTrending = async (obj)=>{
 
         }
         resolve(obj);
-        console.log("inside trending")
+        // console.log("inside trending")
         // console.log(betrendingpost, ctrendingpost, etrendingpost, pdtrendingpost)
         // obj.betrendingpost = betrendingpost;
         // console.log(obj);
@@ -765,8 +765,8 @@ middlewareObj.helperGoogleAuth = async function(accessToken, refreshToken, profi
     User.findOne({google_id: profile.id}, async (err,user)=>{
       if(err) console.log(err)
       if(user){
-        console.log("the user we already have who registered using google auth is: ")
-        console.log(user)
+        // console.log("the user we already have who registered using google auth is: ")
+        // console.log(user)
         return done(null,user)
       } else {
         var newuser = new User()

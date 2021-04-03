@@ -36,44 +36,23 @@
         <!-- search results can be shown only for business-economics page, give the user 4 options to first filter the subject and search  -->
         <!-- filter and sort funcyionality more convinient here -->
         <div class="other-icons">
-        <form method="get" action="/posts/business-economics">
-            <div class="search-box">
+            <form method="get" action="/posts/business-economics">
+                <div class="search-box">
+                    
+                    <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
                 
-                <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
-                <button>
-                    <i class="fas fa-search"></i>
-                </button>
-            
-            </div>
-        </form>
+                </div>
+            </form>
         
-        <div class="person-account">
-            <span class="account-info">
-                <% if(currentUser){ %>
-                    <a href="/dashboard" class="finall"> <%=currentUser.username%></a>
-                <% } else { %>
-                    <a href="/register_or_login" class="finall"> Sign-in/up</a>
-                <% } %>
-            </span>
-        </div>
+        <%- include('partials/toprightname.ejs') %>
         </div>
 
         </div>
 
-
-<div class="vertical-nav-bar">
-    <a href="/">Home<span><i class="fas fa-home"></i></span></a>
-    <a href="/blogs">Blogs<span><i class="fas fa-user-graduate"></i></span></a>
-    <a href="/publish">Authors<span><i class="fas fa-pencil-alt"></i></span></a>
-    <a href="/contactus">Contact US<span><i class="fas fa-phone-alt"></i></span></a>
-    <a href="/aboutus">About Us<span><i class="fas fa-users"></i></span></a>
-    <a href="https://www.facebook.com/BackBenchers-105240558097832">Facebook<span><i class="fab fa-facebook-f"></i></span></a>
-    <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5">Instagram<span><i class="fab fa-instagram"></i></span></a>
-    <a href="https://www.linkedin.com/in/back-benchers-94a049202/">Linkedin<span><i class="fab fa-linkedin-in"></i></span></a>
-
-    
-   
-</div>
+        <%- include('partials/vertical_navbar.ejs') %>
 </header>
 
 <main>
@@ -200,77 +179,7 @@
     
 
 
-        <footer>
-            <div class="main-content">
-                <div class="left box">
-                    <div class="content">
-                        <div class="logo-footer-img">
-                        <img src="/images/2.png" alt="logo" height="250px" width="250px">
-                    </div>
-                        <div class="social">
-                            <a href="https://www.facebook.com/BackBenchers-105240558097832"><span class="fab fa-facebook-f"></span></a>
-                        <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5"><span class="fab fa-instagram"></span></a>
-                        <a href="https://www.linkedin.com/in/back-benchers-94a049202/"><span class="fab fa-linkedin-in"></span></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="center box">
-                    <h2>Quick links</h2>
-                    <div class="content">
-                        <ul class="links">
-                            <li><a href="/"> > Home</a></li>
-                            <li><a href="/posts/business-economics?page=1"> > Business & Economics</a></li>
-                            <li><a href="/posts/commerce?page=1"> > Commerce</a></li>
-                            <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
-                            <li><a href="/posts/personality-development?page=1"> > Personality Devlopment</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="center-right box">
-                    <h2>Company</h2>
-                    <div class="content">
-                        <ul class="links">
-                            <li><a href="/aboutus"> > About Us</a></li>
-                            <li><a href="#" id="cu"> > Contact Us</a></li>
-                            <li><a href="/termsandconditions"> > Terms and conditions</a></li>
-                            <li><a href="/privacypolicy"> > Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                
-
-                <div class="right box">
-                    <h2>Any queries ?</h2>
-                    <div class="content">
-                        <form action="/query/submit/personality-development/<%=page%>" method="POST">
-                            <div class="email">
-                                <div class="text">Email *</div>
-                                <input type="email" name="email" required>
-                            </div>
-                            <div class="msg">
-                                <div class="text">Message *</div>
-                                <textarea  cols="25" rows="2" name="message"></textarea>
-                            </div>
-                            <div class="btn">
-                                <button type="submit">Send</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class="bottom">
-                <center>
-                    <span class="credits">Created by <a href="#">Backbenchers</a> | </span>
-                    <span class="far fa-copyright"></span><span> 2020 All rights reserved.</span>
-                </center>
-            </div>
-        </footer>
+    <%- include('partials/footer.ejs') %>
 
 
 </body>

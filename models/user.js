@@ -6,11 +6,11 @@ var jwt = require('jsonwebtoken');
 var userSchema = new mongoose.Schema({
   
   fb_id: String,
-  fb_username: {type: String, lowercase: true, unique: true, index: true,  sparse:true, match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
+  fb_username: {type: String, lowercase: true,  match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
   fb_email: {type: String, lowercase: true, unique: true, index: true ,sparse:true, match: [/\S+@\S+\.\S+/, 'is invalid']},
 
   google_id: String,
-  google_username: {type: String, lowercase: true, unique: true, index: true,  sparse:true, match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
+  google_username: {type: String, lowercase: true,  match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
   google_email: {type: String, lowercase: true, unique: true, index: true ,sparse:true, match: [/\S+@\S+\.\S+/, 'is invalid']},
 
   bb_id: { type: Number },
@@ -28,6 +28,9 @@ var userSchema = new mongoose.Schema({
     ref: "User"
   }],
 
+  
+  createdAt: String,
+  deletedAt: String,
   number_of_followers: Number,
   is_prime_member: Boolean,
   resetPasswordToken: String,
@@ -38,10 +41,22 @@ var userSchema = new mongoose.Schema({
   phoneNumber: String,
   fullName: String,
   dob: Date, 
+  channel: String,
+  linkedin: String,
+  deleted: {
+    type:Boolean,
+    default: false
+  },
   add_info: {
     type: Boolean,
     default: false
   },
+
+  add_info2: {
+    type: Boolean,
+    default: false
+  },
+
 
   fb_token: {
     type: String,

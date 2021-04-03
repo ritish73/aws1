@@ -12,9 +12,17 @@
       </head>
       <style>
         #message {
+          position: absolute;
+          top: 0;
           color: #ab2d24;
           background-color: white;
         }
+
+        .makeitblack{
+            color: black;
+            text-decoration: none;
+        }
+
       </style>
   <body>
 
@@ -24,11 +32,11 @@
       <header>
   
           <div class="top-horiz-bar">
-              <div class="logo-section-in-bar">
+              <a href="/"><div class="logo-section-in-bar">
                   <img class="top-img-logo" src="/images/final_2.png" alt="logo-pic" height="60px" width="60px">
                   <img class="top-img2-logo" src="/images/5.png" alt="logo-pic" height="60rem" width="145rem">
                   
-              </div>
+              </div></a>
       
       
               <div class="other-icons">
@@ -50,7 +58,15 @@
               <div class="person-account">
                   <span class="account-info" href="#">
                     <% if(currentUser){ %>
-                      <a href="/dashboard" class="finall"> <%=currentUser.username%></a>
+                      <% if(currentUser.google_id){ %>
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.google_username.substring(0,8)%></a>
+
+                    <% } else if(currentUser.fb_id){ %>
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.fb_username.substring(0,8)%></a>
+
+                    <% } else { %>
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.username.substring(0,8)%></a>
+                    <% } %>
                     <% } else { %>
                         <a href="/register_or_login" class="finall"> Sign-in/up</a>
                     <% } %>
@@ -62,18 +78,7 @@
           
       
       
-      <div class="vertical-nav-bar">
-        <a href="/">Home<span><i class="fas fa-home"></i></span></a>
-        <a href="/blogs">Blogs<span><i class="fas fa-user-graduate"></i></span></a>
-        <a href="/publish">Write here<span><i class="fas fa-pencil-alt"></i></span></a>
-        <a href="#cu">Contact US<span><i class="fas fa-phone-alt"></i></span></a>
-        <a href="/aboutus">About Us<span><i class="fas fa-users"></i></span></a>
-        <a href="https://www.facebook.com/BackBenchers-105240558097832">Facebook<span><i class="fab fa-facebook-f"></i></span></a>
-        <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5">Instagram<span><i class="fab fa-instagram"></i></span></a>
-        <a href="https://www.linkedin.com/in/back-benchers-94a049202/">Linkedin<span><i class="fab fa-linkedin-in"></i></span></a>
-          
-         
-      </div>
+              <%- include('partials/vertical_navbar.ejs') %>
   
   </header>
   
@@ -89,43 +94,52 @@
                   <div class="one-of-3-heading">
                       <h2 class="side-box-heading-one">Trending</h2>
                       <% for(var i=0;i<trendingCount;i++){ %>
-      
-                        <div class="sub-part-section">
-                          <h2 class="title-side-box"><a href="/posts/<%=trendingPosts[i].post.subject%>/<%=trendingPosts[i].post.slug%>"><%=trendingPosts[i].post.title%></a></h2>
-                          <div class="date-side-box">
-                              <span><%=trendingPosts[i].post.publishDay%></span>
-                          </div>
-                        </div>
-                      <% } %> 
+                          <% if(trendingPosts[i].post){ %>
+          
+                              <div class="sub-part-section">
+                                  <h2 class="title-side-box"><a href="/posts/<%=trendingPosts[i].post.subject%>/<%=trendingPosts[i].post.slug%>" class="makeitblack"><%=trendingPosts[i].post.title%></a></h2>
+                                  <div class="date-side-box">
+                                  <span><%=trendingPosts[i].post.publishDay%></span>
+                              </div>
+          
+                          <% } %>
                   </div>
-      
-      
+                  <% } %> 
+                  </div>
+          
+          
                   <div class="two-of-3-heading">
                       <h2 class="side-box-heading-two">Recommended</h2>
                       <% for(var i=0;i<recommendedCount;i++){ %>
-                        <div class="sub-part-section">
-                            <h2 class="title-side-box"><a href="/posts/<%=recommendedPosts[i].post.subject%>/<%=recommendedPosts[i].post.slug%>"><%=recommendedPosts[i].post.title%></a></h2>
-                            <div class="date-side-box">
-                                <span><%=recommendedPosts[i].post.publishDay%></span>
-                            </div>
-                        </div>
+                      <% if(recommendedPosts[i].post){ %>
+                      <div class="sub-part-section">
+                          <h2 class="title-side-box"><a href="/posts/<%=recommendedPosts[i].post.subject%>/<%=recommendedPosts[i].post.slug%>" class="makeitblack"><%=recommendedPosts[i].post.title%></a></h2>
+                          <div class="date-side-box">
+                              <span><%=recommendedPosts[i].post.publishDay%></span>
+                          </div>
+                      </div>
+                      <% } %>
                       <% } %>  
                   </div>
-      
-      
+          
+          
                   <div class="three-of-3-heading">
                       <h2 class="side-box-heading-three">Popular</h2>
                       <% for(var i=0;i<popularCount;i++){ %>
-                        <div class="sub-part-section">
-                            <h2 class="title-side-box">
-                                <a href="/posts/<%=popularPosts[i].post.subject%>/<%=popularPosts[i].post.slug%>"><%=popularPosts[i].post.title%></a></h2>
-                            <div class="date-side-box">
-                                <span><%=popularPosts[i].post.publishDay%></span>
-                            </div>
-                        </div>
+                      <% if(trendingPosts[i].post){ %>
+                          <div class="sub-part-section">
+                              <h2 class="title-side-box">
+                                  <a href="/posts/<%=popularPosts[i].post.subject%>/<%=popularPosts[i].post.slug%>" class="makeitblack"><%=popularPosts[i].post.title%></a></h2>
+                              <div class="date-side-box">
+                                  <span><%=popularPosts[i].post.publishDay%></span>
+                              </div>
+                          </div>
+                      <% }%>
                       <% } %>
                   </div>
               </div>
+              
+              
               
   
              <div class="central-part-total">
@@ -133,6 +147,12 @@
                   <h2 class="article-heading-3p"> <%= post.title %> </h2>
                   <h3 class="overall-prop"> - <%=post.authorName%>    <span id="last-page-date"> <span id="author-linkedin"><i class="fab fa-linkedin-in"></i></span>  |  <%=displaydate%></span> <span id="entity-save-subscribe"><span><button onclick="addFollower(this)" getauthor="<%= post.authorName %>" id="channel-name"><%=post.authorName%></button></span><span id="susbscribe-id-plus">  <button id="save-to-later" onclick="saveToLater(this)" getpost="<%=post.slug%>"> <i class="fas fa-plus "></i> </button> </span></span></h3>
               
+                  <style>
+                    p{
+                      /* color: red; */
+                      font-size: 20px;
+                    }
+                  </style>
                   <p class="article-para-3p"><%- post.sanitizedHtml %></p>
                   <ul class="btns-on-blogcard">
 
@@ -165,13 +185,13 @@
                       <div class="column">
                           <div class="similar-blog">
                               <div class="similar-article-heading">
-                                  <h2><%=similarArticles[i].title%></h2>
+                                  <h2 class="makeitblack"><%=similarArticles[i].title%></h2>
                               </div>
                               <div class="similar-article-image">
                                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQYs6x530rsToLKIxPZy69gkmLtHaAJr0kSiA&usqp=CAU" alt="" height="auto" width="135px">
                               </div>
                               <div class="similar-button">
-                                  <button><a href="/posts/<%=similarArticles[i].subject%>/<%=similarArticles[i].slug%>">Read more</a></button>
+                                  <button><a href="/posts/<%=similarArticles[i].subject%>/<%=similarArticles[i].slug%>" class="makeitblack">Read more</a></button>
                               </div>
                           </div>
                       </div>
@@ -200,6 +220,7 @@
   
   
           <footer>
+            <span id="cu"></span>
               <div class="main-content">
                   <div class="left box">
                       <div class="content">
@@ -219,10 +240,11 @@
                       <div class="content">
                           <ul class="links">
                             <li><a href="/"> > Home</a></li>
+                            <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
                             <li><a href="/posts/business-economics?page=1"> > Business & Economics</a></li>
                             <li><a href="/posts/commerce?page=1"> > Commerce</a></li>
-                            <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
-                            <li><a href="/posts/personality-development?page=1"> > Personality Devlopment</a></li>
+                           
+                            <li><a href="/posts/personality-development?page=1"> > Personality Development</a></li>
                           </ul>
                       </div>
                   </div>
@@ -232,7 +254,7 @@
                       <div class="content">
                           <ul class="links">
                             <li><a href="/aboutus"> > About Us</a></li>
-                            <li><a href="#" id="cu"> > Contact Us</a></li>
+                            <!-- <li><a href="#" id="cu"> > Contact Us</a></li> -->
                             <li><a href="/termsandconditions"> > Terms and conditions</a></li>
                             <li><a href="/privacypolicy"> > Privacy Policy</a></li>
                           </ul>

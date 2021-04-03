@@ -28,8 +28,8 @@ var storage = multer.diskStorage({
       
       var uid = req.user.bb_id;
       
-      console.log(uid + "_" + Date.now() +"_"+ file.originalname);
-      cb(null,uid + "_" + Date.now() +"_"+ file.originalname);
+      // console.log(uid + "_" + Date.now() +"_"+ file.originalname);
+      cb(null, file.originalname);
   }
 });
 
@@ -125,14 +125,16 @@ router.post("/register-user-by-admin", auth,  middleware.isAdmin, async (req,res
             user.password =  req.body.password;
             user.email =  req.body.email;
             user.bb_id =  uid;
+            user.role = req.body.role;
             await user.hashPassword()
-            user.save().then(async ()=>{
+            await user.save().then(async ()=>{
               console.log(user);
-              res.status(200).send(user);
+              res.redirect('/adminportal')
             }).catch((e)=>{
               console.log(e);
               res.status(400).redirect("/register_or_login?=an error occured while creating your account");
             })
+            
           }
           myfunction();
 
@@ -448,7 +450,7 @@ router.post("/review", check, upload.single("photo"), (req,res)=>{
     newreview.designation = req.body.designation;
     newreview.content = req.body.content;
     var file = req.file;
-    newreview.imagename = uid + "_" + Date.now() +"_" + file.originalname;
+    newreview.imagename =  file.originalname;
     newreview.save((err,nr)=>{
       if(err) res.send(err);
       else{

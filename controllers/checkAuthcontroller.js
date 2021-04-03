@@ -4,7 +4,7 @@ const check = async (req,res,next)=>{
 
     try{
         // console.log("req.user.fb_id : ",req.user.fb_id, "\nreq.user.google_id : ",req.user.google_id)
-        if(req.user){
+        if(req.user && req.user.deleted === false){
 
             if(req.user.fb_id || req.user.google_id){
                 if(req.isAuthenticated()){
@@ -31,13 +31,16 @@ const check = async (req,res,next)=>{
                         // await console.log("user is found : " ,founduser);
                     }
                 });
+                if(user.deleted === true){
+                    throw new Error('you are no longer a user! Please sign-up')
+                }
                 if(!user){
                     next();
                 } else {
 
                     req.user = await user;
                     res.locals.currentUser = await req.user;
-                    console.log("inside check user added to currentUser : ", res.locals.currentUser);
+                    // console.log("inside check user added to currentUser : ", res.locals.currentUser);
                     req.token = await token;
                     // console.log("req.user before " , req.user, user)
                     next();
@@ -48,6 +51,7 @@ const check = async (req,res,next)=>{
         }
     }catch(e){
         console.log("in auth catch")
+        // req.flash('error',e)
         res.redirect('/register_or_login')
         // res.status(401).send({error: "please authenticate with correct creds"})
     }

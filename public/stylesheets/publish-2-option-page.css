@@ -11,6 +11,16 @@ input {
   font-family: "Poppins", sans-serif;
 }
 
+input[type=file]
+{
+  border: none;
+  background: none;
+  outline: none;
+  align-items: center;
+  max-width: 190px;
+  margin-bottom: 15px;
+}
+
 nav img
 {
     position: absolute;
@@ -93,19 +103,6 @@ form.sign-in-form {
   position: relative;
 }
 
-.input-field-subject {
-  max-width: 360px;
-  width: 100%;
-  background-color: #f0f0f0;
-  margin: 10px 0;
-  height: 55px;
-  border-radius: 55px;
-  display: grid;
-  grid-template-columns: 15% 85%;
-  padding: 0 0.4rem;
-  position: relative;
-}
-
 .input-field i {
   text-align: center;
   line-height: 55px;
@@ -124,31 +121,7 @@ form.sign-in-form {
   color: black;
 }
 
-#input-file input[type="file"]{
-  outline: none;
-  border: none;
-  background: none;
-  width: 200px;
-}
-
-.option
-{
-  line-height: 40px;
-  width: 375px;
-  border-radius: 55px;
-  padding: 0 50px 0 22px;
-  font-size: 16px;
-  color: black;
-  height: 55px;
-  outline: none;
-  overflow: hidden;
-  font-weight: 600;
-  margin-top: 5px;
-
-}
-
-
-.input-field input::placeholder, input::placeholder{
+.input-field input::placeholder {
   color: black;
   font-weight: 500;
 }
@@ -462,4 +435,47 @@ textarea::placeholder
     bottom: 28%;
     left: 50%;
   }
+
+  .title
+  {
+    font-size: 1.9rem;
+  }
+}
+
+@media (max-width: 321px) {
+  form {
+    padding: 0 1.5rem;
+  }
+
+  .image {
+    display: none;
+  }
+  .panel .content {
+    padding: 0.5rem 1rem;
+  }
+  .container {
+    padding: 1.5rem;
+  }
+
+  .container:before {
+    bottom: 72%;
+    left: 50%;
+  }
+
+  .container.sign-up-mode:before {
+    bottom: 28%;
+    left: 50%;
+  }
+
+  .title
+  {
+    font-size: 1.2rem;
+  }
+
+  #p-of
+  {
+    max-width: 130px;
+  }
+
+
 }

@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.js')
 const auth = async (req,res,next)=>{
     try{
-        console.log("req.user : " + req.user)
+        // console.log("req.user : " + req.user)
         // console.log("req.user.fb_id : ",req.user.fb_id, "\nreq.user.google_id : ",req.user.google_id)
-        if(req.user){
+        if(req.user && req.user.deleted === false){
 
             if(req.user.fb_id || req.user.google_id){
                 if(req.isAuthenticated()){
@@ -24,11 +24,15 @@ const auth = async (req,res,next)=>{
         const user = await User.findOne({_id  : decoded._id, 'tokens.token': token}, async (err,founduser)=>{
             if(err) console.log(err);
             else{
-                await console.log("user is found : " ,founduser);
+                // await console.log("user is found : " ,founduser);
             }
         });
+        
         if(!user){
             throw new Error('user was not found with jwt token in the cookie');
+        }
+        if(user && user.deleted === true){
+            throw new Error('you are not a user anymore! You need to Sign-up first');
         }
         req.user = await user;
         res.locals.currentUser = await req.user;
@@ -38,6 +42,7 @@ const auth = async (req,res,next)=>{
     }
     }catch(e){
         console.log("in auth catch")
+        // req.flash('error',e);
         res.redirect('/register_or_login')
         // res.status(401).send({error: "please authenticate with correct creds"})
     }

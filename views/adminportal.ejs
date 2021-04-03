@@ -7,29 +7,38 @@
   <title>BackBenchers</title>
 </head>
 <body>
+
+
+  <a href="/"><div class="logo-section-in-bar">
+    <img class="top-img-logo" src="/images/final_2.png" alt="logo-pic" height="60px" width="60px">
+    <img class="top-img2-logo" src="/images/5.png" alt="logo-pic" height="60rem" width="145rem">
+    
+</div></a>
+
+
   <h1>welcome to admin portal</h1>
   <p>total articles till now are : <%= totalArticles %></p>
   <p><%=currentUser.username%> is logged in! as <%=currentUser.role%></p>
-  <div><a href="/unreviewedposts">go to unreviewed articles</a></div>
+  <div><a href="/unreviewedposts" target="_blank">go to unreviewed articles</a></div>
   <br><br>
-  <div><a href="/createusers">create users with any roles</a></div>
+  <div><a href="/createusers" target="_blank">create users with any roles</a></div>
   <br><br>
-  <div> <a href="/reviewedByAuditors">posts which auditors have submitted for final confirmation after editing</a></div>
+  <div> <a href="/reviewedByAuditors" target="_blank">posts which auditors have submitted for final confirmation after editing</a></div>
   <br><br>
   <div><button onclick="updateTrending()">updateTrending</button></div>
   <br><br>
   <div><button onclick="updatePopular()">updatePopular</button></div>
   <br><br>
   <div><button onclick="updateRecommended()">updateRecommended</button></div>
-  <div><a href="/posts/business-economics?page=1">Go to Business economics page  directly </a></div>
-  <div><a href="/posts/commerce?page=1">go to commerce page directly </a></div>
-  <div><a href="/posts/engineering?page=1">go to engineering page directly </a></div>
-  <div><a href="/posts/personality-development?page=1">go to personality development page directly </a></div>
-  <div><a href="/posts/new">create new posts</a></div>
+  <div><a href="/posts/business-economics?page=1" target="_blank">Go to Business economics page  directly </a></div>
+  <div><a href="/posts/commerce?page=1" target="_blank">go to commerce page directly </a></div>
+  <div><a href="/posts/engineering?page=1" target="_blank">go to engineering page directly </a></div>
+  <div><a href="/posts/personality-development?page=1" target="_blank">go to personality development page directly </a></div>
+  <div><a href="/posts/new" target="_blank">create new posts</a></div>
   <br><br>
-  <div><a href="/showips">click here to list all of the ip addresses who visited this site</a></div>
-  <div><a  href="/showqueries">showqueries</a></div>
-  <div><a href="/review">Submit a Review</a></div>
+  <div><a href="/showips" target="_blank">click here to list all of the ip addresses who visited this site</a></div>
+  <div><a  href="/showqueries" target="_blank">showqueries</a></div>
+  <div><a href="/review" target="_blank">Submit a Review</a></div>
  
 </body>
 

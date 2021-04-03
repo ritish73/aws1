@@ -11,7 +11,7 @@ dashboardObj.getTotalArticles = async (req)=>{
                     if(err) {
                         res.send(err)
                      } else{
-                        console.log("all posts : " , user.posts)
+                        // console.log("all posts : " , user.posts)
                         resolve(user.posts)
                         
                     }

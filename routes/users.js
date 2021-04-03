@@ -15,6 +15,7 @@ var Ip = require('../models/ip.js');
 const Trending = require("../models/trending.js");
 const Popular = require("../models/popular.js");
 const Recommended = require("../models/recommended.js");
+const Review = require("../models/review.js")
 const middlewareObj = require("../middleware/index.js");
 const auth = require("../middleware/auth.js");
 const check = require("../controllers/checkAuthcontroller");
@@ -22,6 +23,12 @@ const dashboardObj = require("../controllers/dashboardcontroller.js");
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken");
 const ejsLint = require('ejs-lint');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
+const {USER, PASS, HOSTNAME, PROTOCOL} = require("../config/index")
+const { 
+  FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, F_callback_url,
+  GOOGLE_APP_ID,GOOGLE_APP_SECRET,G_callback_url        
+} = require("../config/third_party_auth.js")
 
 // app.use((req,res,next)=>{
 //   res.locals.successmessage = req.flash('success')
@@ -31,20 +38,27 @@ const ejsLint = require('ejs-lint');
 // })
 
 
+const transport = nodemailer.createTransport(
+  nodemailerSendgrid({
+    apiKey: "SG.B1IJJAIJRQaThbsOibOhuw.ITEDqiEbtNvqRqLRTNZNqRAeAXFbDG8NgmAYnJMv2Sw"
+  })
+  )
+
+
 router.get('/aboutus',(req,res)=>{
   res.render('aboutus');
 })
 
 
 router.get("/" , check ,function(req, res){
-  console.log("in home : ",req.user)
+  // console.log("in home : ",req.user)
   var message=undefined;
   if(req.query.message){
     message = req.query.message;
   }
   // console.log("all user ids :", "google_id : ",req.user.google_id," fb_id : ",req.user.fb_id," bb_id : ",req.user.bb_id);
   var obj = new Object();
-  console.log("req.user and req.is authenticated  : " ,req.isAuthenticated(), req.user )
+  // console.log("req.user and req.is authenticated  : " ,req.isAuthenticated(), req.user )
   var call  = async function(){
     await middlewareObj.getPostsHomePage(obj);
     // console.log("<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>",obj);
@@ -62,6 +76,9 @@ router.get("/" , check ,function(req, res){
       var crecommendedpost = obj.crecommendedpost
       var erecommendedpost = obj.erecommendedpost
       var pdrecommendedpost = obj.pdrecommendedpost
+
+      const reviews = await Review.find({});
+
       res.render("home", 
     {
       betrendingpost: betrendingpost,
@@ -78,6 +95,7 @@ router.get("/" , check ,function(req, res){
       crecommendedpost: crecommendedpost,
       erecommendedpost: erecommendedpost,
       pdrecommendedpost: pdrecommendedpost,
+      reviews: reviews,
       message: req.flash('success')
       // async: true 
     }
@@ -91,7 +109,7 @@ router.get("/" , check ,function(req, res){
      req.connection.remoteAddress || 
      req.socket.remoteAddress ||
      (req.connection.socket ? req.connection.socket.remoteAddress : null);
-     console.log(ip);
+    //  console.log(ip);
      Ip.findOne({ip_address: ip}, (err,foundip)=>{
        if(err) console.log(err);
        else if(!foundip){
@@ -104,14 +122,15 @@ router.get("/" , check ,function(req, res){
         foundip.save();
        }
      })
-  console.log("user is successfully serialized in home page")
-  console.log(req.user)
+  // console.log("user is successfully serialized in home page")
+  // console.log(req.user)
   
 });
 
 router.get('/delete', check ,async (req,res)=>{
   var user = await User.findOne({_id: req.user._id});
   user.deleted = true;
+  user.deletedAt = moment().format('MMMM Do YYYY, h:mm:ss a');
   await user.save();
   req.flash('success','your account was deleted');
   res.send()
@@ -135,7 +154,7 @@ router.get('/myposts',(req,res)=>{
   }
   User.findById(req.user._id).populate("posts").exec(function(err,user){
     if(err){
-      console.log("error occured while displaying all posts written by current user");
+      console.log("Error occured while displaying all posts written by current user");
       console.log(err);
     } else{
       res.render("userposts",{posts: user.posts});
@@ -174,8 +193,8 @@ router.get('/sharePost/:slug', auth, async (req,res)=>{
 })
 
 router.get("/savetolater/:slug", check ,(req,res)=>{
-  console.log("request made")
-  console.log(req.user)
+  // console.log("request made")
+  // console.log(req.user)
     Post.findOne({slug: req.params.slug}, (err,foundpost)=>{
       if(err) console.log(err)
       else if(req.user){
@@ -223,14 +242,11 @@ router.get("/savetolater/:slug", check ,(req,res)=>{
 
 // FACEBOOK AUTHENTICATION
 // facebook strategy
-var FACEBOOK_APP_ID='1054812551601760';
-var  FACEBOOK_APP_SECRET='6c64261a02a8bc25f44337d8766b50ee';
-
 passport.use(new FacebookStrategy(
   {
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost/auth/facebook/callback",
+    callbackURL: F_callback_url,
     profileFields: ['id', 'displayName', 'name', 'gender', 'picture.type(large)', 'email']
   }, 
   function(accessToken, refreshToken, profile, done) {
@@ -240,7 +256,7 @@ passport.use(new FacebookStrategy(
 router.get("/auth/facebook", passport.authenticate('facebook',{ scope:'email'}));
 
 router.get("/auth/facebook/callback",passport.authenticate('facebook',{
-  failureRedirect: "/register_or_login?message=an error occured while authentication with facebook'"
+  failureRedirect: "/register_or_login?message=An error occured while authentication with facebook'"
 }), async(req,res)=>{
   if(req.user){
     if(req.user.fb_id) {
@@ -260,9 +276,9 @@ router.get("/auth/facebook/callback",passport.authenticate('facebook',{
 // Google Authentication
 
 passport.use(new GoogleStrategy({
-  clientID: "562343987437-hhntpe0uh3qt19lgca4shh8fttrvgkpv.apps.googleusercontent.com",
-  clientSecret: "aaPbLLz1nanGc2nQoOe07PEh",
-  callbackURL: "http://localhost/google/callback"
+  clientID: GOOGLE_APP_ID,
+  clientSecret: GOOGLE_APP_SECRET,
+  callbackURL: G_callback_url
 },
 // api key AIzaSyCn8rZMwbOxiTAU08ObK9dFPuz-p53PbMU
 function(accessToken, refreshToken, profile, done) {
@@ -274,7 +290,7 @@ function(accessToken, refreshToken, profile, done) {
 
 router.get('/google',passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/register_or_login?message=an error occured while authentication with google' }),
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/register_or_login?message=An error occured while authentication with google' }),
   function(req, res) {
 
     if(req.user){
@@ -309,7 +325,7 @@ router.get("/register_or_login", (req,res)=>{
   console.log(req.query.m)
   if(req.query.m === '0'){
     console.log("hhhhhhhhhhhhh")
-    req.flash('error','you need to login to perform this action')
+    req.flash('error','You need to login to perform this action')
     res.redirect("/register_or_login")
   }else{
     res.render("register");
@@ -389,19 +405,21 @@ router.post("/register",(req,res)=>{
             user.password =  req.body.password;
             user.email =  req.body.email;
             user.bb_id =  uid;
+            console.log(moment().format('MMMM Do YYYY, h:mm:ss a'))
+            user.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
             await user.hashPassword()
             user.save().then(async ()=>{
-              console.log(user);
+              // console.log(user);
               const token = await user.generateAuthToken();
               res.cookie('bearer_token', token,{
                 httpOnly: true,
                 path: '/'
               });
-              req.flash('success','welcome to the backbenchers community')
+              req.flash('success','Welcome to the backbenchers community')
               res.redirect("/");
             }).catch((e)=>{
               console.log(e);
-              req.flash('error','an error occured while creating your account')
+              req.flash('error','An error occured while creating your account')
               res.status(400).redirect("/register_or_login");
             })
           }
@@ -444,7 +462,7 @@ router.post("/login" , async (req,res)=>{
           path: '/'
         });
         req.user = user;
-        req.flash('success','logged in successfully')
+        req.flash('success','Logged in successfully')
         res.redirect('/')
       } else{
         // first check that is that token of the same user who provided credits
@@ -462,7 +480,7 @@ router.post("/login" , async (req,res)=>{
           } else{
             req.user = await userwithtoken;
             console.log('token verified')
-            req.flash('success','logged in successfully')
+            req.flash('success','Logged in successfully')
             res.redirect('/')
           }
         } else {
@@ -481,13 +499,13 @@ router.post("/login" , async (req,res)=>{
       } 
     } else{
       console.log('user not found with provided credentials');
-      req.flash('error','error while logging in')
+      req.flash('error','Error while logging in')
       return res.redirect('/register_or_login')
     }
     
   } catch(e){
-    console.log("an error occured : ", e)
-    req.flash('error','error while logging in')
+    console.log("An error occured : ", e)
+    req.flash('error','Error while logging in')
     res.redirect('/register_or_login')
   }
 })
@@ -500,16 +518,23 @@ router.get("/logout", auth, async (req,res)=>{
       console.log("logging out google or fb user");
       if(req.user.google_id || req.cookies._google_token){
         res.clearCookie('_google_token');
+       
       }
       if(req.user.fb_id || req.cookies._fb_token){
         res.clearCookie('_fb_token');
       }
       res.clearCookie('connect.sid')
-      req.user = await null;
-      req.session = await null;
+    
+      req.user = null;
+    
+      req.session = null;
+     
       req.logout();
-      req.flash('success', 'you were logged out successfully')
+    
+      // req.flash('success', 'you were logged out successfully')
+    
       res.redirect("/")
+   
     } else {
       // console.log("tokens : ", req.user.tokens)
       req.user.tokens = await req.user.tokens.filter((token)=>{
@@ -523,25 +548,40 @@ router.get("/logout", auth, async (req,res)=>{
         }
       });
       res.clearCookie('bearer_token');
-      req.flash('success', 'you were logged out successfully')
+      // req.flash('success', 'you were logged out successfully')
       res.redirect('/') 
     }
    } catch(err){
-      res.status(500).send({"error": 'there was an error logging you out'});
+      res.status(500).send({"error": 'There was an error logging you out'});
+      
     }
 })
 
 
 
 router.post("/updateUser", auth, async (req,res)=>{
+  console.log("ah chak" , req.body.username)
   var user = await User.findById(req.user._id);
-  user.username = req.body.username
-  user.fullName = req.body.fullName
+  if(user.google_id){ 
+    user.google_username = req.body.google_username;
+  }
+  else if(user.fb_id){ 
+    user.fb_username = req.body.fb_username;
+  } else{
+    console.log(user.username , req.body.username)
+  user.username = await req.body.username;
+  console.log(user.username , req.body.username)
+  }
+
+  // user.fullName = req.body.fullName
+  user.dob = req.body.dob;
   user.email = req.body.email
   user.gender = req.body.gender
   user.profession = req.body.profession
+  user.channel = req.body.channel
   await user.save()
-  req.flash('success', 'your account details are changed')
+  console.log("uptaded user : ", user)
+  // req.flash('success', 'your account details are changed')
   res.redirect("/dashboard")
 })
 
@@ -604,72 +644,67 @@ router.post("/login_old", passport.authenticate("local-user" , {
 //logout user route
 router.get("/logout_old" ,(req,res)=>{
   
-  console.log("req.user",req.user);
+  // console.log("req.user",req.user);
 	req.logout();
 	res.send("logged you out");
 });
-
-
 
 
 router.get('/forgot',(req,res)=>{ 
   res.render('forgot', {message: req.flash('success')});
 })
 
-router.post('/forgot',(req,res,next)=>{
-  async.waterfall([
-    function(done){
-      crypto.randomBytes(20,(err,buf)=>{
-        var token = buf.toString('hex');
-        done(err,token)
-      })
-    },
-    function(token,done){
-      User.findOne({email: req.body.email},(err,user)=>{
-        if(!user){
-          console.log("no user found");
-          req.flash('error','no account with this email exists');
-          return res.redirect('/forgot');
-        }
-        user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + 3600000; //1 hr
-        user.save((err)=>{
-          done(err,token,user)
-        })
-      })
-    },
-    function(token,user,done){
-      var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: 'BBTESTING69',
-          pass: 'BbTesting69'
-        }
-      });
-      var mailOptions = {
-        to: user.email,
-        from: 'BBTESTING69',
-        subject: 'password reset backbenchers',
-        text: 'click the link to reset your password\n'+
-        'http://' + req.headers.host + '/reset/' + token + '\n\n' 
-      }
-      smtpTransport.sendMail(mailOptions,(err)=>{
-        console.log('mail sent');
-        req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-        done(err, 'done');
-      })
-    }   
-  ], function(err){
-    if(err) return next(err);
-    res.redirect('/forgot')
+router.post('/forgot', (req,res,next)=>{
+  console.log("yes received : " , req.body.email)
+   var token;
+   crypto.randomBytes(20,(err,buf)=>{
+    if(err) console.log(err)
+    token = buf.toString('hex');
+    console.log(token)
   })
-})
+    
+  User.findOne({email: req.body.email}, async (err,user)=>{
+    if(!user){
+      console.log("no user found");
+      req.flash('error','No account with this email exists');
+      res.redirect('/forgot');
+    }
+    user.resetPasswordToken = await token;
+    user.resetPasswordExpires =  Date.now() + 3600000; //1 hr
+    await user.save((err)=>{
+      if(err) console.log(err)
+    })
+
+
+
+    var link = PROTOCOL + HOSTNAME + '/reset/' + token
+      
+    var mailOptions = {
+      to: req.body.recovery_email,
+      from: USER,
+      subject: 'password reset backbenchers',
+      html: `<p>click the link to reset your password</p><div>${link}</div>`
+    }
+    transport.sendMail(mailOptions,(err)=>{
+      console.log('mail sent');
+      req.flash('success' , 'An e-mail has been sent to ' + req.body.recovery_email + ' with further instructions.');
+    })
+
+
+
+  }) 
+
+  
+    
+    res.redirect('/')
+  })
+
 
 
 router.get('/reset/:token',(req,res)=>{
   User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },(err,user)=>{
     if(!user){
-      req.flash('error', 'either token is invalid or expired')
+      req.flash('error', 'Either token is invalid or expired')
       return res.redirect('forgot')
     } else{
       res.render('reset',{token: req.params.token})
@@ -678,54 +713,48 @@ router.get('/reset/:token',(req,res)=>{
 })
 
 
-router.post('/reset/:token', function(req, res) {
-  async.waterfall([
-    function(done) {
-      User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
-        if (!user) {
-          req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('back');
-        }
-        if(req.body.password === req.body.confirm) {
-          user.setPassword(req.body.password, function(err) {
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
-
-            user.save(function(err) {
-              req.logIn(user, function(err) {
-                done(err, user);
-              });
-            });
-          })
-        } else {
-            req.flash("error", "Passwords do not match.");
-            return res.redirect('back');
-        }
-      });
-    },
-    function(user, done) {
-      var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail', 
-        auth: {
-          user: 'BBTESTING69',
-          pass: 'BbTesting69'
-        }
-      });
-      var mailOptions = {
-        to: user.email,
-        from: 'BBTESTING69',
-        subject: 'Your password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
-      };
-      smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('success', 'Success! Your password has been changed.');
-        done(err);
-      });
+router.post('/reset/:token', function(req, res) {   
+  
+    
+  User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },async function(err, user) {
+    if (!user) {
+      req.flash('error', 'Password reset token is invalid or has expired.');
+      res.redirect('/forgot');
     }
-  ], function(err) {
-    res.redirect('/posts/engineering');
+
+    var validpass = validatePass(req.body.password)
+    if(validpass.status){
+
+      if(req.body.password === req.body.confirm) {
+        console.log("new password : ", req.body.password)
+        user.password = await req.body.password;
+        await user.hashPassword()
+        await user.save()
+        
+      } else {
+          req.flash("error", "Passwords do not match.");
+          res.redirect('/forgot');
+      }
+
+    } else {
+      res.redirect('/reset/'+req.params.token)
+    }
+    
   });
+   
+      
+  var mailOptions = {
+    to: req.body.recovery_email,
+    from: USER,
+    subject: 'Your password has been changed',
+    text: 'Hello,\n\n' +
+      'This is a confirmation that the password for your account has just been changed.\n'
+  };
+  transport.sendMail(mailOptions, function(err) {
+    req.flash('success', 'Success! Your password has been changed.');
+  });
+
+  res.redirect("/")
 });
 
 

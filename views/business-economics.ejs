@@ -40,6 +40,7 @@
             <div class="search-box">
                 
                 <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
+            
                 <button class="search-btn">
                     <i class="fas fa-search"></i>
                 </button>
@@ -47,83 +48,21 @@
             </div>
         </form>
         
-        <div class="person-account">
-            <span class="account-info">
-                <% if(currentUser){ %>
-                    <a href="/dashboard" class="finall"> <%=currentUser.username%></a>
-                <% } else { %>
-                    <a href="/register_or_login" class="finall"> Sign-in/up</a>
-                <% } %>
-            </span>
-        </div>
+        <%- include('partials/toprightname.ejs') %>
+
         </div>
 
         </div>
 
 
-<div class="vertical-nav-bar">
-    <a href="/">Home<span><i class="fas fa-home"></i></span></a>
-    <a href="/blogs">Blogs<span><i class="fas fa-user-graduate"></i></span></a>
-    <a href="/publish">Write Here<span><i class="fas fa-pencil-alt"></i></span></a>
-    <a href="/contactus">Contact US<span><i class="fas fa-phone-alt"></i></span></a>
-    <a href="/aboutus">About Us<span><i class="fas fa-users"></i></span></a>
-    <a href="https://www.facebook.com/BackBenchers-105240558097832">Facebook<span><i class="fab fa-facebook-f"></i></span></a>
-    <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5">Instagram<span><i class="fab fa-instagram"></i></span></a>
-    <a href="https://www.linkedin.com/in/back-benchers-94a049202/">Linkedin<span><i class="fab fa-linkedin-in"></i></span></a>
-
-    
-   
-</div>
+<%- include('partials/vertical_navbar.ejs') %>
 </header>
 
 <main>
 
     <div class="all-engineering-articles">
 
-        <% if(showsidebox === true){ %>
-        <div class="side-box">
-            <div class="one-of-3-heading">
-                <h2 class="side-box-heading-one">Trending</h2>
-                <% for(var i=0;i<trendingCount;i++){ %>
-
-                <div class="sub-part-section">
-                <h2 class="title-side-box"><a href="/posts/<%=trendingPosts[i].post.subject%>/<%=trendingPosts[i].post.slug%>"><%=trendingPosts[i].post.title%></a></h2>
-                <div class="date-side-box">
-                    <span><%=trendingPosts[i].post.publishDay%></span>
-                </div>
-            </div>
-            <% } %> 
-            </div>
-
-
-            <div class="two-of-3-heading">
-                <h2 class="side-box-heading-two">Recommended</h2>
-                <% for(var i=0;i<recommendedCount;i++){ %>
-                <div class="sub-part-section">
-                    <h2 class="title-side-box"><a href="/posts/<%=recommendedPosts[i].post.subject%>/<%=recommendedPosts[i].post.slug%>"><%=recommendedPosts[i].post.title%></a></h2>
-                    <div class="date-side-box">
-                        <span><%=recommendedPosts[i].post.publishDay%></span>
-                    </div>
-                </div>
-                <% } %>  
-            </div>
-
-
-            <div class="three-of-3-heading">
-                <h2 class="side-box-heading-three">Popular</h2>
-                <% for(var i=0;i<popularCount;i++){ %>
-                <div class="sub-part-section">
-                    <h2 class="title-side-box">
-                        <a href="/posts/<%=popularPosts[i].post.subject%>/<%=popularPosts[i].post.slug%>"><%=popularPosts[i].post.title%></a></h2>
-                    <div class="date-side-box">
-                        <span><%=popularPosts[i].post.publishDay%></span>
-                    </div>
-                </div>
-                <% } %>
-            </div>
-        </div>
-        <% } %>
-
+        <%- include('partials/sidebox.ejs') %>
 
         <div class="table-all">
             <% for(let i=start; i<=limit; i+=2) { %>
@@ -140,7 +79,7 @@
             </div>
             <div class="blog-post__info">
             <div class="blog-post__date">
-                <span><%= posts[i].publishDay%></span>
+                <span><%= posts[i].publishDate.toDateString()%></span>
                 <span><%= posts[i].publish_date %></span>
             </div>
             <div class="author-name">
@@ -150,11 +89,19 @@
                 </ul>
             </div>
             <h1 class="blog-post__title"><%=posts[i].title%></h1>
-            <p class="blog-post__text"><%= posts[i].content.substring(0,120) %>...</p>
+            <p class="blog-post__text"><%= posts[i].content.substring(0,270) %>...</p>
             <% if(currentUser && currentUser.role === "admin"){ %>
                 <form method="POST" action="/updateRecommended/<%=posts[i].slug%>/<%=posts[i].subject%>/<%=page%>">
                     <span>push to recommended at what position: </span><input type="number" name="position">
                     <button type="submit">push</button>
+                </form>
+
+                <form method="POST"  enctype="multipart/form-data" action="/posts/upload/file/<%=posts[i]._id%>">
+                    <!-- <span>upload the image with numbering same as <b>article number</b>: </span> -->
+                    <input type="file" placeholder="file upload" name="photo"><BR><br>
+                    
+                      <input type="submit" value="click here after attaching the image">
+                     
                 </form>
                 <div><button onclick="deletePost(this)" getpost="<%=posts[i].slug%>" >delete post</button></div>
             <% } %>
@@ -179,11 +126,11 @@
             <div class="column">
                 <div class="blog-post">
                 <div class="blog-post__img">
-                <img src="/uploads/img/posts/<%=posts[i].imagename%>" alt="<%=posts[i].imagename%>" class="blog-post__article-img">
+                <img src="/uploads/img/posts/<%=posts[i+1].imagename%>" alt="<%=posts[i+1].imagename%>" class="blog-post__article-img">
                 </div>
                 <div class="blog-post__info">
                 <div class="blog-post__date">
-                    <span><%= posts[i+1].publishDay%></span>
+                    <span><%= posts[i+1].publishDate.toDateString()%></span>
                     <span><%= posts[i+1].publish_date %></span>
                 </div>
                 <div class="author-name">
@@ -193,11 +140,19 @@
                     </ul>
                 </div>
                 <h1 class="blog-post__title"><%=posts[i+1].title%></h1>
-                <p class="blog-post__text"><%= posts[i+1].content.substring(0,10) %>...</p>
+                <p class="blog-post__text"><%= posts[i+1].content.substring(0,270) %>...</p>
                 <% if(currentUser && currentUser.role == "admin"){ %>
                     <form method="POST" action="/updateRecommended/<%=posts[i].slug%>/<%=posts[i].subject%>/<%=page%>">
                         <span>push to recommended at what position: </span><input type="number" name="position">
                         <button type="submit">push</button>
+                    </form>
+
+                    <form method="POST"  enctype="multipart/form-data" action="/posts/upload/file/<%=posts[i+1]._id%>">
+                        <!-- <span>upload the image with numbering same as <b>article number</b>: </span> -->
+                        <input type="file" placeholder="file upload" name="photo"><BR><br>
+                        
+                          <input type="submit" value="click here after attaching the image">
+                         
                     </form>
                     <div><button onclick="deletePost(this)" getpost="<%=posts[i+1].slug%>">delete post</button></div>
                 <% } %>
@@ -243,80 +198,7 @@
     </main>
         
 
-    
-
-
-        <footer>
-            <div class="main-content">
-                <div class="left box">
-                    <div class="content">
-                        <div class="logo-footer-img">
-                        <img src="/images/2.png" alt="logo" height="250px" width="250px">
-                    </div>
-                        <div class="social">
-                            <a href="https://www.facebook.com/BackBenchers-105240558097832"><span class="fab fa-facebook-f"></span></a>
-                        <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5"><span class="fab fa-instagram"></span></a>
-                        <a href="https://www.linkedin.com/in/back-benchers-94a049202/"><span class="fab fa-linkedin-in"></span></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="center box">
-                    <h2>Quick links</h2>
-                    <div class="content">
-                        <ul class="links">
-                            <li><a href="/"> > Home</a></li>
-                            <li><a href="/posts/business-economics?page=1"> > Business & Economics</a></li>
-                            <li><a href="/posts/commerce?page=1"> > Commerce</a></li>
-                            <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
-                            <li><a href="/posts/personality-development?page=1"> > Personality Devlopment</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="center-right box">
-                    <h2>Company</h2>
-                    <div class="content">
-                        <ul class="links">
-                            <li><a href="/aboutus"> > About Us</a></li>
-                            <li><a href="#" id="cu"> > Contact Us</a></li>
-                            <li><a href="/termsandconditions"> > Terms and conditions</a></li>
-                            <li><a href="/privacypolicy"> > Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                
-
-                <div class="right box">
-                    <h2>Any queries ?</h2>
-                    <div class="content">
-                        <form action="/query/submit/business-economics/<%=page%>" method="POST">
-                            <div class="email">
-                                <div class="text">Email *</div>
-                                <input type="email" name="email" required>
-                            </div>
-                            <div class="msg">
-                                <div class="text">Message *</div>
-                                <textarea  cols="25" rows="2" name="message"></textarea>
-                            </div>
-                            <div class="btn">
-                                <button type="submit">Send</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="bottom">
-                <center>
-                    <span class="credits">Created by <a href="#">Backbenchers</a> | </span>
-                    <span class="far fa-copyright"></span><span> 2020 All rights reserved.</span>
-                </center>
-            </div>
-        </footer>
-
+    <%- include('partials/footer.ejs') %>
 
 </body>
 

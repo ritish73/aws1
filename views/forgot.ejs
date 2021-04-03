@@ -10,7 +10,26 @@
         <!-- <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"> -->
     <title>Forgot-pass</title>
 </head>
+
+<style>
+nav img{
+    position: absolute;
+    height:70px;
+    width:70px;
+    top: 0px;
+    left: 0.7%;
+    z-index: 110;
+    cursor: pointer;
+
+}
+</style>
+
 <body>
+
+    <nav>
+        <a href="/"><img src="/images/final_2.png" alt="" class="logo-top" ></a>
+    </nav>
+
   <h3><%=message%></h3>
     <div class="container">
 
@@ -24,7 +43,13 @@
                     <h2 class="title">Forgot password?</h2>
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                    <input type="email" name="email" placeholder="Enter your email">
+                    <input type="email" name="email" placeholder="Enter your email " required>
+                    
+                    </div>
+
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="email" name="recovery_email" placeholder="Enter your gmail where you will get the password reset link" required> 
                     </div>
 
                     <input type="submit" value="Submit" class="btn solid">

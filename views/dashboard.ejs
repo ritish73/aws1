@@ -5,6 +5,28 @@
     <link rel="stylesheet" href="/stylesheets/dashboard_css.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
     <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
+
+
+    <link rel="stylesheet" href="/stylesheets/delete_pop.css">
+    <!-- <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('.click').click(function(){
+          $('.popup_box').css("display", "block");
+        });
+        $('.btn1').click(function(){
+          $('.popup_box').css("display", "none");
+        });
+        $('.btn2').click(function(){
+          $('.popup_box').css("display", "none");
+          alert("Account Permanently Deleted.");
+        });
+      });
+
+    </script>
+
+
     
     <title>Dashboard</title>
 </head>
@@ -71,7 +93,7 @@
 
                 <% if(currentUser.role === 'admin'){ %>
                 <li>
-                    <a href="/adminportal">
+                    <a href="/adminportal" target="_blank">
                         <span class="ti-settings"></span>
                         <span>adminportal</span>
                     </a>
@@ -86,14 +108,24 @@
 
             <header>
                 <div class="search-wrapper">
-                    <img class="personal-img" src="/images/final_2.png" alt="" height="40px" width="40px">
+                    <a href="/"><img class="personal-img" src="/images/final_2.png" alt="" height="40px" width="40px"></a>
                 </div>
                 <p><%=message%></p>
                 <div class="social-icons">
 
                     <!-- <span class="ti-bell"></span>
                     <span class="ti-comment"></span> -->
-                    <span class="name-dash"><a href="/dashboard">logged in as <%=currentUser.username%></a></span>
+                    <% if(currentUser.google_id){ %>
+                        <span class="name-dash"><h3>Logged In as <%=currentUser.google_username%></h3></span>
+
+                    <% } else if(currentUser.fb_id){ %>
+                        <span class="name-dash"><h3>Logged In as <%=currentUser.fb_username%></h3></span>
+
+                    <% } else { %>
+                        <span class="name-dash"><h3>Logged In as <%=currentUser.username%></h3></span>
+                    <% } %>
+
+                    
                     <div></div>
                 </div>
             </header>
@@ -113,7 +145,9 @@
                             </div> 
                         </div>
                         <div class="card-footer">
-                            <a href="/showAllArticles?page=1">View all</a>
+                            <% if(currentUser.role == 'author' || currentUser.role == 'admin'){ %>
+                            <a href="/showAllArticles?page=1" target="_blank">View all</a>
+                            <% } %>
                         </div>
                     </div>
 
@@ -151,25 +185,43 @@
                         <h3 class="heading-top" id="ending">PERSONAL INFO</h3>
 
                         <form action="/updateUser" method="POST" class="sign-in-form">
-
-
                             <!-- <h2 class="title">Personal info</h2> -->
                             <h3>Username</h3>
                             <div class="input-field">
                                 <i class="fas fa-user"></i>
-                            <input type="text" name="username" value="<%=currentUser.username%>" required >
+                            <% if(currentUser.google_id){ %>
+                                <input type="text" name="google_username" value="<%=currentUser.google_username%>"  >
+
+                            <% } else if(currentUser.fb_id){ %>
+                                <input type="text" name="fb_username" value="<%=currentUser.fb_username%>"  >
+
+                            <% } else { %>
+                                <input type="text" name="username" value="<%= currentUser.username %>"  >
+                            <% } %>
+
                             </div>
 
+                            <% if(currentUser.role === 'author' || currentUser.role == 'admin'){ %>
                             <h3>Channel name</h3>
                             <div class="input-field">
                                 <i class="fas fa-user"></i>
-                            <input type="text" name="fullName" value="<%=currentUser.fullName%>" required>
+                            <input type="text" name="channel" value="<%=currentUser.channel%>" >
                             </div>
+                            <% } %>
 
                             <h3>Email address</h3>
                             <div class="input-field">
                                 <i class="fas fa-envelope"></i>
-                            <input type="text" name="email" value="<%=currentUser.email%>" required>
+                                <% if(currentUser.google_id){ %>
+                                    <input type="text" name="email" value="<%=currentUser.google_email%>" readonly >
+    
+                                <% } else if(currentUser.fb_id){ %>
+                                    <input type="text" name="email" value="<%=currentUser.fb_email%>" readonly>
+    
+                                <% } else { %>
+                                    <input type="text" name="email" value="<%=currentUser.email%>" readonly>
+                                <% } %>
+                            
                             </div>
         
                             <h3>Password</h3>
@@ -177,23 +229,44 @@
                                 <!-- <i class="fas fa-lock"></i>
                             <input type="password" value="<%=currentUser.fullName%>"> -->
 
-                            <span class="R-button"><a href="/forgot">Reset password</a></span>
+                            <span class="R-button"><a href="/forgot" target="_blank">Reset password</a></span>
                            
                             </div>
 
                             <h3>Gender</h3>
-                            <select name="gender" class="option" required>
-                                <i class="fas fa-user-tie"></i>
-                                <option selected="selected"><%=currentUser.gender%></option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Others">Others</option>
-                                </select> 
+                            <% if(currentUser.gender == undefined || !currentUser.gender){ %>
+
+                                <select name="gender" class="option" readonly>
+                                    <i class="fas fa-user-tie"></i>
+                                    <option selected="selected" readonly><%=currentUser.gender%> </option>
+                                    <option value="Male" readonly>Male</option>
+                                    <option value="Female" readonly>Female</option>
+                                    <option value="Others" readonly>Others</option>
+                                </select>
+
+                            <% } else { %>
+
+                                <select name="gender" class="option" value="<%=currentUser.gender%>" readonly>
+                                    <i class="fas fa-user-tie"></i>
+                                    <option selected="selected" readonly><%=currentUser.gender%></option>
+                                    <option value="Male" readonly>Male</option>
+                                    <option value="Female" readonly>Female</option>
+                                    <option value="Others" readonly>Others</option>
+                                </select>
+
+                            <% } %>
+                           
+                             
         
                             <h3>Year of Birth</h3>
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
-                            <input type="date" placeholder="Date of birth" name = "dob" value="<%=getdob%>" required>
+                            <% if(getdob === undefined){ %>
+                                <input type="date" placeholder="Date of birth" name = "dob" >
+                            <% } else { %>
+                                <input type="date" placeholder="Date of birth" name = "dob" value="<%= getdob %>" >
+                            <% } %>
+                            
                             </div>
 
                             <!-- <h3>Country</h3>
@@ -202,20 +275,20 @@
                             <input type="text" name="" id="">
                            
                             </div> -->
-                            
+                            <% if(currentUser.role === 'author' || currentUser.role == 'admin'){ %>
                             <h3>Profession</h3>
-                            <select name="profession" class="option" id="" required>
+                            <select name="profession" class="option" id="" >
                             <i class="fas fa-user-tie"></i>
-                            <option disabled="disabled" selected="selected" value=""><%=currentUser.profession%></option>
+                            <option selected="selected" ><%=currentUser.profession%></option>
                             <option value="Self earning">Self earning</option>
                             <option value="Student">Student</option>
                             <option value="Others">Others</option>
                             </select>  
+                            <% } %>
                             
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
                                 <button class="update-info" type="submit">Update info</button>
-                            
                             </div>
 
                         </form>
@@ -229,24 +302,43 @@
                                 reactivate your account, kindly mail us at
                                 teambackbenchers@gmail.com within 45 days from the date of deletion of your account.
                             </h4>
-                            <button onclick="deleteAccount(this)" class="delete-button">Delete my account</button>
+                            <button class="click">Delete my account</button>
                         </div>
+
+
+                        <div class="popup_box">
+                            <!-- <i class="fas fa-exclamation"></i> -->
+                            <span class="ti-alert"></span>
+                            <h1>Your account will be deleted Permanently!</h1>
+                            <label>Are you sure to proceed?</label>
+                            <div class="btns">
+                              <button href="/dashboard" class="btn1">Cancel</button>
+                              <button onclick="deleteAccount(this)" class="btn2">Delete Account</button>
+                            </div>
+                        </div>
+
+
+
+
                     </div>
 
+                    
                     <div class="summary">
                         <div class="summary-card">
-                            <div class="summary-single">
-                                <span class="ti-name"></span>
-                                <div>
-                                    <h5><%=currentUser.fullName%></h5>
-                                    <small>Channel name</small>
+                            <% if(currentUser.role === 'author' || currentUser.role == 'admin'){ %>
+                                <div class="summary-single">
+                                    <span class="ti-name"></span>
+                                    <div>
+                                        <h5><%=currentUser.channel%></h5>
+                                        <small>Channel name</small>
+                                    </div>
                                 </div>
-                            </div>
+                            <% } %>
 
                             <div class="summary-single">
                                 <span class="ti-file"></span>
                                 <div>
-                                    <h5><a href="/showSavedArticles?page=1"><%=savedArticlesCount%></a></h5>
+                                    <h5><a href="/showSavedArticles?page=1" target="_blank"><%=savedArticlesCount%></a></h5>
                                     <small>Saved for later posts</small>
                                 </div>
                             </div>
@@ -254,7 +346,7 @@
                             <div class="summary-single">
                                 <span class="ti-share"></span>
                                 <div>
-                                    <h5><a href="/showSharedArticles?page=1"><%=sharedArticlesCount%></a></h5>
+                                    <h5><a href="/showSharedArticles?page=1" target="_blank"><%=sharedArticlesCount%></a></h5>
                                     <small>No. of post shared</small>
                                 </div>
                             </div>
@@ -264,7 +356,7 @@
                             <div class="bday-info">
                                 <h5>Publish your Blog</h5>
                                 <div>
-                                  <a href="/publish">
+                                  <a href="/publish" target="_blank">
                                     <button>
                                         <span>
                                             click here
@@ -279,15 +371,11 @@
                         
                         </div>
 
-
                     </div>                    
                     </div>
                 </section>
-
-
-
             </main>
-        </div>
+         </div>
 
 </body>
 

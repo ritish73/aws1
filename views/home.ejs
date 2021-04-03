@@ -1,5 +1,10 @@
 <html lang="en">
 <head>
+
+
+
+    <%- include("partials/google_Analytics.ejs") %>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
@@ -8,50 +13,63 @@
     <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
     <title>BackBenchers</title>
 </head>
+
+<style>
+
+#oc11,#oc12,#oc13,#oc21,#oc22,#oc23,#oc31,#oc32,#oc33,#oc41,#oc42,#oc43{
+    color: black;
+    text-decoration: none;
+}
+
+.flash_bg_color{
+    background: #0E76A8;
+}
+
+</style>
+
 <body>
+    <span id="start"></span>
 
     <% if(successmessage){ %>
-        <h2><%=successmessage%></h2>
+        <h3 class="flash_bg_color"><%=successmessage%></h3>
     <% } else { %>
-      <h2><%=successmessage%></h2>
+      <h3 class="flash_bg_color"><%=successmessage%></h3>
     <% } %>
 
     <header>
         <div class="background-img">
-            <img id="bg-img" src="/images/8-01.jpg" alt="">
+            <img id="bg-img" src="/images/16v-01.jpg" alt="">
         </div>
 
         <div class="person-account">
             <span class="account-info">
                 <% if(currentUser){ %>
-                    <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.username%></a>
+                    <% if(currentUser.google_id){ %>
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.google_username.substring(0,8)%></a>
+
+                    <% } else if(currentUser.fb_id){ %>
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.fb_username.substring(0,8)%></a>
+
+                    <% } else { %>
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.username.substring(0,8)%></a>
+                    <% } %>
+                    
                 <% }else{ %>
                     <a href="/register_or_login" class="finall" style="color: black"> Sign-in/up</a>
                 <% } %>
             </span>
         </div>
 
-        <div class="vertical-nav-bar">
-            <a href="/">Home<span><i class="fas fa-home"></i></span></a>
-            <a class="blog-section-left" href="/posts/allblogs">Blogs<span><i class="fas fa-user-graduate"></i></span></a>
-            <!-- <a href="#">Authors<span><i class="fas fa-pencil-alt"></i></span></a> -->
-            <!-- <a href="#">Newsletter<span><i class="fas fa-newspaper"></i></span></a> -->
-            <a href="#cu">Contact Us<span><i class="fas fa-phone-alt"></i></span></a>
-            <a href="/aboutus">About Us<span><i class="fas fa-users"></i></span></a>
-            <a href="https://www.facebook.com/BackBenchers-105240558097832">Facebook<span><i class="fab fa-facebook-f"></i></span></a>
-            <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5">Instagram<span><i class="fab fa-instagram"></i></span></a>
-            <a href="https://www.linkedin.com/in/back-benchers-94a049202/">Linked in<span><i class="fab fa-linkedin-in"></i></span></a>
-            <a href="mailto:ritishgupta45@gmail.com" >Gmail<span><i class="far fa-envelope"></i></span></a>
-        </div>
+        <%- include("partials/vertical_navbar.ejs") %>
 
 
-        <div class="back-to-top">
-            <a href="#">
+        <a href="#start"><div class="back-to-top">
+            
                 <span>
                 <i class="fa fa-chevron-up aria-hidden="true"></i>
             </span>
-        </a>
-        </div>
+        
+        </div></a>
 
         <!-- <div class="tagline-area">
 
@@ -105,15 +123,13 @@
             </div>
 
             <div class="tech-cards">
-
-
                
-                <div class="overall-card-1">
+                <div class="overall-card-1" ><a href="/posts/engineering/<%=etrendingpost.post.slug%>" id="oc11">
                     <h1 class="one-1">#trending </h1>
                         <div class="blog-post__info">
 
                         <h1 class="blog-post__title-1"><%=etrendingpost.post.title%></h1>
-                        <p class="blog-post__text-1" id="card-text"><%-etrendingpost.post.sanitizedHtml.substring(0,100)%></p>
+                        <p id="testone" class="blog-post__text-1" id="card-text"><%=etrendingpost.post.content.substring(0,210)%></p>
                         <a href="/posts/engineering/<%=etrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                         <ul class="btns-on-blogcard">
                             <button onclick="like(this)" getpost="<%=etrendingpost.post.slug%>" ><li class="btns-blog"><i id="changelikecolor" class="far fa-hand-peace fa-2x "></i><span class="count"><%=etrendingpost.post.likes%></span></li></button>
@@ -123,15 +139,17 @@
                         </ul>
 
                         </div>
+                    </a>
                 </div>
 
 
-                <div class="overall-card-1">
+                <% if(erecommendedpost && erecommendedpost.post){ %>
+                <div class="overall-card-1"><a href="/posts/engineering/<%=erecommendedpost.post.slug%>" id="oc12">
                     <h1 class="one-2">#Recommended</h1>
                     <div class="blog-post__info">
-
+                    
                     <h1 class="blog-post__title-1"><%=erecommendedpost.post.title%></h1>
-                    <p class="blog-post__text-1" id="card-text"><%-erecommendedpost.post.sanitizedHtml.substring(0,100)%></p>
+                    <p class="blog-post__text-1" id="card-text"><%=erecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/engineering/<%=erecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=erecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=erecommendedpost.post.likes%></span></li></button>
@@ -140,16 +158,19 @@
 <a href="https://api.whatsapp.com/send?text=thebackbenchers.co/posts/engineering/<%= erecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=erecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=erecommendedpost.post.shares%></span></li></button></a>                        <span></span>
                     </ul>
 
+                    
                     </div>
+                </a>
             </div>
+            <% } %>
 
 
-            <div class="overall-card-1">
+            <div class="overall-card-1"><a href="/posts/engineering/<%=epopularpost.post.slug%>" id="oc13">
                 <h1 class="one-3">#Popular</h1>
                 <div class="blog-post__info">
 
                 <h1 class="blog-post__title-1"><%=epopularpost.post.title%></h1>
-                <p class="blog-post__text-1" id="card-text"><%-epopularpost.post.sanitizedHtml.substring(0,100)%></p>
+                <p class="blog-post__text-1" id="card-text"><%=epopularpost.post.content.substring(0,210)%></p>
                 <a href="/posts/engineering/<%=epopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
                     <button onclick="like(this)" getpost="<%=epopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=epopularpost.post.likes%></span></li></button>
@@ -159,11 +180,12 @@
                 </ul>
 
                 </div>
+                </a>
             </div>
    
             </div>
 
-            <a href="/posts/engineering?page=1"><div class="explore-more">
+            <a href="/posts/engineering?page=1" id="underline"><div class="explore-more">
                 <h2 id="explore-1">Explore more ...</h2>
             </div></a>
 
@@ -217,12 +239,12 @@
 
 
                
-                <div class="overall-card-2">
+                <div class="overall-card-2"><a href="/posts/business-economics/<%=betrendingpost.post.slug%>" id="oc21">
                     <h1 class="one-11">#trending </h1>
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-2"><%=betrendingpost.post.title%></h1>
-                    <p class="blog-post__text-2" id="card-text"><%-betrendingpost.post.sanitizedHtml.substring(0,100)%></p>
+                    <p class="blog-post__text-2" id="card-text"><%=betrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=betrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=betrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=betrendingpost.post.likes%></span></li></button>
@@ -232,15 +254,17 @@
                     </ul>
 
                     </div>
+                    </a>
                 </div>
 
 
-                <div class="overall-card-2">
+                <% if(berecommendedpost && berecommendedpost.post){ %>
+                <div class="overall-card-2"><a href="/posts/business-economics/<%=berecommendedpost.post.slug%>" id="oc22">
                     <h1 class="one-11">#Recommended</h1>
                     <div class="blog-post__info">
-
+                   
                     <h1 class="blog-post__title-2"><%=berecommendedpost.post.title%></h1>
-                    <p class="blog-post__text-2" id="card-text"><%-berecommendedpost.post.sanitizedHtml.substring(0,100)%></p>
+                    <p class="blog-post__text-2" id="card-text"><%=berecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=berecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=berecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=berecommendedpost.post.likes%></span></li></button>
@@ -248,17 +272,20 @@
                         <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= berecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=berecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=berecommendedpost.post.shares%></span></li></button></a>
                         <span></span>
                     </ul>
+                    
 
                     </div>
+                </a>
                 </div>
+                <% } %>
 
 
-                <div class="overall-card-2">
+                <div class="overall-card-2"><a href="/posts/business-economics/<%=bepopularpost.post.slug%>" id="oc23">
                     <h1 class="one-11">#Popular</h1>
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-2"><%=bepopularpost.post.title%></h1>
-                    <p class="blog-post__text-2" id="card-text"><%-bepopularpost.post.sanitizedHtml.substring(0,100)%></p>
+                    <p class="blog-post__text-2" id="card-text"><%=bepopularpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=bepopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=bepopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=bepopularpost.post.likes%></span></li></button>
@@ -268,11 +295,12 @@
                     </ul>
 
                     </div>
+                </a>
             </div>
    
             </div>
 
-            <a id="explore-id" href="/posts/business-economics?page=1"><div class="explore-more">
+            <a href="/posts/business-economics?page=1" id="underline"><div class="explore-more">
                 <h2 id="explore-2">Explore more ...</h2>
             </div></a>
 
@@ -311,12 +339,12 @@
 
 
                
-                <div class="overall-card-3">
+                <div class="overall-card-3"><a href="/posts/commerce/<%=ctrendingpost.post.slug%>" id="oc31">
                     <h1 class="one-11">#trending </h1>
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-3"><%=ctrendingpost.post.title%></h1>
-                    <p class="blog-post__text-3" id="card-text"><%-ctrendingpost.post.sanitizedHtml.substring(0,80)%></p>
+                    <p class="blog-post__text-3" id="card-text"><%=ctrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/commerce/<%=ctrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=ctrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=ctrendingpost.post.likes%></span></li></button>
@@ -326,16 +354,18 @@
                     </ul>
 
                     </div>
+                </a>
                 </div>
 
 
-                <div class="overall-card-3">
+                <% if(crecommendedpost && crecommendedpost.post){ %>
+                <div class="overall-card-3"><a href="/posts/commerce/<%=crecommendedpost.post.slug%>" id="oc32">
                     <h1 class="one-11">#Recommended </h1>
 
                     <div class="blog-post__info">
-
+                   
                     <h1 class="blog-post__title-3"><%=crecommendedpost.post.title%></h1>
-                    <p class="blog-post__text-3" id="card-text"><%-crecommendedpost.post.sanitizedHtml.substring(0,100)%></p>
+                    <p class="blog-post__text-3" id="card-text"><%=crecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/commerce/<%=crecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=crecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=crecommendedpost.post.likes%></span></li></button>
@@ -343,18 +373,21 @@
 
 <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= crecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=crecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=crecommendedpost.post.shares%></span></li></button></a>                        <span></span>
                     </ul>
+                   
 
                     </div>
+                    </a>
                 </div>
+                <% } %>
 
 
-            <div class="overall-card-3">
+            <div class="overall-card-3"><a href="/posts/commerce/<%=cpopularpost.post.slug%>" id="oc33">
                 <h1 class="one-11">#Popular </h1>
 
                 <div class="blog-post__info">
 
                 <h1 class="blog-post__title-3"><%=cpopularpost.post.title%></h1>
-                <p class="blog-post__text-3" id="card-text"><%-cpopularpost.post.sanitizedHtml.substring(0,100)%></p>
+                <p class="blog-post__text-3" id="card-text"><%=cpopularpost.post.content.substring(0,210)%></p>
                 <a href="/posts/commerce/<%=cpopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
                     <button onclick="like(this)" getpost="<%=cpopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=cpopularpost.post.likes%></span></li></button>
@@ -364,11 +397,12 @@
                 </ul>
 
                 </div>
+                </a>
         </div>
    
             </div>
 
-            <a href="/posts/commerce?page=1"><div class="explore-more">
+            <a href="/posts/commerce?page=1" id="underline"><div class="explore-more">
                 <h2 id="explore-3">Explore more ...</h2>
             </div></a>
 
@@ -411,20 +445,20 @@
             </div>
 
             <div class="center-heading-1">
-                <h2 id="center-heading-44">Personality Devlopmemt </h2>
+                <h2 id="center-heading-44">Personality Development </h2>
             </div>
 
             <div class="tech-cards">
 
 
                
-                <div class="overall-card-4">
+                <div class="overall-card-4"><a href="/posts/personality-development/<%=pdtrendingpost.post.slug%>" id="oc41">
                     <h1 class="one-11">#trending </h1>
 
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-4"><%=pdtrendingpost.post.title%></h1>
-                    <p class="blog-post__text-4" id="card-text"><%-pdtrendingpost.post.sanitizedHtml.substring(0,100)%></p>
+                    <p class="blog-post__text-4" id="card-text"><%=pdtrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdtrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=pdtrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdtrendingpost.post.likes%></span></li></button>
@@ -434,15 +468,18 @@
                     </ul>
 
                     </div>
+                </a>
                 </div>
 
 
-                <div class="overall-card-4">
+                <% if(pdrecommendedpost && pdrecommendedpost.post){ %>
+                <div class="overall-card-4"><a href="/posts/personality-development/<%=pdrecommendedpost.post.slug%>" id="oc42">
                     <h1 class="one-11">#Recommended </h1>
 
                     <div class="blog-post__info">
+                    
                     <h1 class="blog-post__title-4"><%=pdrecommendedpost.post.title%></h1>
-                    <p class="blog-post__text-4" id="card-text"><%-pdrecommendedpost.post.sanitizedHtml.substring(0,100)%></p>
+                    <p class="blog-post__text-4" id="card-text"><%=pdrecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdrecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=pdrecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdrecommendedpost.post.likes%></span></li></button>
@@ -450,18 +487,20 @@
                         <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= pdrecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=pdrecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=pdrecommendedpost.post.shares%></span></li></button></a>
                         <span></span>
                     </ul>
-
+                   
                     </div>
+                </a>
                 </div>
+                <% } %>
 
 
-                <div class="overall-card-4">
+                <div class="overall-card-4"><a href="/posts/personality-development/<%=pdpopularpost.post.slug%>" id="oc43">
                     <h1 class="one-11">#Popular </h1>
 
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-4"><%=pdpopularpost.post.title%></h1>
-                    <p class="blog-post__text-4" id="card-text"><%-pdpopularpost.post.sanitizedHtml.substring(0,100)%></p>
+                    <p class="blog-post__text-4" id="card-text"><%=pdpopularpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdpopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=pdpopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdpopularpost.post.likes%></span></li></button>
@@ -471,10 +510,11 @@
                     </ul>
 
                     </div>
+                </a>
                 </div>
             </div>
 
-            <a href="/posts/personality-development?page=1"><div class="explore-more">
+            <a href="/posts/personality-development?page=1" id="underline"><div class="explore-more">
                 <h2 id="explore-4">Explore more ...</h2>
             </div></a>
         </div>
@@ -490,20 +530,45 @@
                 <h2 id="center-heading">Reviews</h2>
             </div>
 
-            <div class="review-content">
-                <div class="review-card">
-                    <img id="person-img" src="/images/so.jpeg" alt="">
-                    <h2 id="designation">(Cheif executive officer at google)</h2>
-                    <p id="person-review-content">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus, mollitia! Natus laborum obcaecati, illum voluptatem numquam vero itaque quia mollitia odio fugit ducimus debitis eveniet repudiandae quisquam esse sequi magni quaerat incidunt, error impedit facere eaque unde est beatae. Quasi nisi sunt asperiores assumenda impedit hic fugiat voluptatum incidunt harum?</p>
+            <button id = "left" class="review-btns"> <i class="fas fa-arrow-circle-left fa-2x"></i> </button>
+                <div class="review-content">
 
+
+                    <% if(reviews.length > 0){ %>
+                    
+
+                        <div class="review-card carousel__item carousel__item--visible" >
+                            <img id="person-img" src="/uploads/review/<%=reviews[0].imagename%>" alt="">
+                            <h2 id="designation"><%=reviews[0].designation%></h2>
+                            <p id="person-review-content"><%=reviews[0].content%></p>
+    
+                        </div>
+
+                        <div class="review-card carousel__item " >
+                            <img id="person-img" src="/uploads/review/<%=reviews[1].imagename%>" alt="">
+                            <h2 id="designation"><%=reviews[1].designation%></h2>
+                            <p id="person-review-content"><%=reviews[1].content%></p>
+    
+                        </div>
+
+                        <div class="review-card carousel__item " >
+                            <img id="person-img" src="/uploads/review/<%=reviews[2].imagename%>" alt="">
+                            <h2 id="designation"><%=reviews[2].designation%></h2>
+                            <p id="person-review-content"><%=reviews[2].content%></p>
+    
+                        </div>
+                    
+                    
+                    <% } %>
                 </div>
-            </div>
+            <button id = "right" class="review-btns"> <i class="fas fa-arrow-circle-right fa-2x"></i> </button>
         </div>
 
     </main>
 
 
     <footer>
+        <span id="cu"></span>
         <div class="main-content">
             <div class="left box">
                 <div class="content">
@@ -522,11 +587,11 @@
                 <h2>Quick links</h2>
                 <div class="content">
                     <ul class="links">
-                    <li><a href="/"> > Home</a></li>
+                    <li><a href="#start"> > Home</a></li>
+                    <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
                     <li><a href="/posts/business-economics?page=1"> > Business & Economics</a></li>
                     <li><a href="/posts/commerce?page=1"> > Commerce</a></li>
-                    <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
-                    <li><a href="/posts/personality-development?page=1"> > Personality Devlopment</a></li>
+                    <li><a href="/posts/personality-development?page=1"> > Personality Development</a></li>
                     </ul>
                 </div>
             </div>
@@ -536,7 +601,7 @@
                 <div class="content">
                     <ul class="links">
                     <li><a href="/aboutus"> > About Us</a></li>
-                    <li><a href="#" id="cu"> > Contact Us</a></li>
+                    <!-- <li><a href="#" id="cu"> > Contact Us</a></li> -->
                     <li><a href="/termsandconditions"> > Terms and conditions</a></li>
                     <li><a href="/privacypolicy"> > Privacy Policy</a></li>
                     </ul>
@@ -568,8 +633,8 @@
 
         <div class="bottom">
             <center>
-                <span class="credits">Created by <a href="#">Backbenchers</a> | </span>
-                <span class="far fa-copyright"></span><span> 2020 All rights reserved.</span>
+                <span class="credits">Created by <a href="#start">Backbenchers</a> | </span>
+                <span class="far fa-copyright"></span><span> 2021 All rights reserved.</span>
             </center>
         </div>
     </footer>
@@ -579,6 +644,50 @@
 
 <script>
 
+
+        let slidePosition = 0;
+        const slides = document.getElementsByClassName('review-card');
+        const totalSlides = slides.length;
+
+        document.
+        getElementById('right')
+        .addEventListener("click", function() {
+            moveToNextSlide();
+        });
+        document.
+        getElementById('left')
+        .addEventListener("click", function() {
+            moveToPrevSlide();
+        });
+
+        function updateSlidePosition() {
+        for (let slide of slides) {
+            slide.classList.remove('carousel__item--visible');
+            slide.classList.add('carousel__item--hidden');
+        }
+
+        slides[slidePosition].classList.add('carousel__item--visible');
+        }
+
+        function moveToNextSlide() {
+        if (slidePosition === totalSlides - 1) {
+            slidePosition = 0;
+        } else {
+            slidePosition++;
+        }
+
+        updateSlidePosition();
+        }
+
+        function moveToPrevSlide() {
+        if (slidePosition === 0) {
+            slidePosition = totalSlides - 1;
+        } else {
+            slidePosition--;
+        }
+
+        updateSlidePosition();
+        }
 
 
     var httpRequest;     
@@ -680,7 +789,37 @@ function like(e){
         }
 
 
+        
+
 </script>
 
+<style>
+
+   
+
+    .carousel__item,
+ .carousel__item--hidden {
+  display: none;
+}
+
+ .carousel__item--visible {
+    display: block;
+    animation: fadeVisibility 0.5s;
+  }
+
+  @keyframes fadeVisibility {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: opacity linear;
+  }
+}
+
+
+</style>
+
+  
 
 </html>

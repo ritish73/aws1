@@ -1,0 +1,17 @@
+<div class="person-account">
+    <span class="account-info">
+        <% if(currentUser){ %>
+            <% if(currentUser.google_id){ %>
+                <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.google_username.substring(0,1).toUpperCase()%></a>
+
+            <% } else if(currentUser.fb_id){ %>
+                <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.fb_username.substring(0,1).toUpperCase()%></a>
+
+            <% } else { %>
+                <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.username.substring(0,1).toUpperCase()%></a>
+            <% } %>
+        <% } else { %>
+            <a href="/register_or_login" class="finall"> Sign-in/up</a>
+        <% } %>
+    </span>
+</div>

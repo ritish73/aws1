@@ -143,7 +143,7 @@ router.get("/showAllArticles", auth,  async (req,res)=>{
   
   router.get("/dashboard", auth, async (req,res)=>{
     // for users who logged in with google or fb handle accordingly
-    console.log("req.user : ", req.user)
+    // console.log("req.user : ", req.user)
     var articlesCount;
     if(req.user.role === 'user') articlesCount = 0;
     else articlesCount = req.user.posts.length;
@@ -166,8 +166,10 @@ router.get("/showAllArticles", auth,  async (req,res)=>{
     //get number of shared posts
     var sharedArticlesCount; 
     sharedArticlesCount = req.user.shared_posts.length;
-  
-    var getdob = moment(req.user.dob).format(moment.HTML5_FMT.DATE);
+    var getdob = undefined;
+    if(req.user.dob){
+     getdob = moment(req.user.dob).format(moment.HTML5_FMT.DATE);
+    } 
     // var year = req.user.dob.toString().substring(0,4);
     // var month = req.user.dob.toString().substring(0,4);
     // var day
@@ -181,8 +183,10 @@ router.get("/showAllArticles", auth,  async (req,res)=>{
       followersCount: followersCount,
       totalLikes: getTotalNumberOfLikes,
       savedArticlesCount: savedArticlesCount,
+
       sharedArticlesCount: sharedArticlesCount,
       getdob: getdob,
+      gender: req.user.gender,
       message: message
     })
   })

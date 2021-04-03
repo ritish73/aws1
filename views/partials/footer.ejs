@@ -1,6 +1,73 @@
 
+ <footer>
+    <span id="cu"></span>
+    <div class="main-content">
+        <div class="left box">
+            <div class="content">
+                <div class="logo-footer-img">
+                <img src="/images/2.png" alt="logo" height="250px" width="250px">
+            </div>
+                <div class="social">
+                    <a href="https://www.facebook.com/BackBenchers-105240558097832" target="_blank"><span class="fab fa-facebook-f"></span></a>
+                    <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5" target="_blank"><span class="fab fa-instagram"></span></a>
+                    <a href="https://www.linkedin.com/in/back-benchers-94a049202/" target="_blank"><span class="fab fa-linkedin-in"></span></a>
+                </div>
+            </div>
+        </div>
 
-</body>
+        <div class="center box">
+            <h2>Quick links</h2>
+            <div class="content">
+                <ul class="links">
+                    <li><a href="/"> > Home</a></li>
+                    <li><a href="/posts/engineering?page=1"> > Engineering</a></li>
+                    <li><a href="/posts/business-economics?page=1"> > Business & Economics</a></li>
+                    <li><a href="/posts/commerce?page=1"> > Commerce</a></li>
+                    
+                    <li><a href="/posts/personality-development?page=1"> > Personality Development</a></li>
+                </ul>
+            </div>
+        </div>
 
-<!-- <script src="/javascripts/main-page-one.js"></script> -->
-</html>
+        <div class="center-right box">
+            <h2>Company</h2>
+            <div class="content">
+                <ul class="links">
+                    <li><a href="/aboutus" id="cu"> > About Us</a></li>
+                    <!-- <li><a href="#" id="cu"> > Contact Us</a></li> -->
+                    <li><a href="/termsandconditions"> > Terms and conditions</a></li>
+                    <li><a href="/privacypolicy"> > Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        
+
+        <div class="right box">
+            <h2>Any queries ?</h2>
+            <div class="content">
+                <form action="/query/submit/business-economics/<%=page%>" method="POST">
+                    <div class="email">
+                        <div class="text">Email *</div>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="msg">
+                        <div class="text">Message *</div>
+                        <textarea  cols="25" rows="2" name="message"></textarea>
+                    </div>
+                    <div class="btn">
+                        <button type="submit">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="bottom">
+        <center>
+            <span class="credits">Created by <a href="#">Backbenchers</a> | </span>
+            <span class="far fa-copyright"></span><span> 2021 All rights reserved.</span>
+        </center>
+    </div>
+</footer>

@@ -22,6 +22,11 @@ background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
   overflow-x: hidden;
 }
 
+#heading
+{
+    color: white;
+}
+
 ul
 {
     list-style: none;

@@ -29,6 +29,7 @@ var postSchema = new mongoose.Schema({
   isReviewedByAdmin: {type: Boolean, default: false},
   isReviewedByAuditor: {type: Boolean, default: false},
   filename: {type: String},
+  deleted: {type: Boolean, default: false},
   author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
@@ -57,8 +58,9 @@ postSchema.pre('validate', function(next){
     this.slug = slugify(this.title, {lower: true, strict: true})
   }
   if(this.content){
-    var content = marked(this.content) // this will convert markdown to  html
+    var content =  marked(this.content) // this will convert markdown to  html
     this.sanitizedHtml = dompurify.sanitize(content) // this gets rid of any malicious code that is in the markdown
+    
   }
   next()
 })

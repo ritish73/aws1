@@ -1047,7 +1047,8 @@ router.get("/business-economics/:slug", check , async function(req,res){
     limit: limit,
     trendingCount: tc,
     recommendedCount: rc,
-    popularCount: pc
+    popularCount: pc,
+    showsidebox: true
   });
 })
 
@@ -1085,7 +1086,7 @@ router.get("/commerce/:slug", check , async function(req,res){
   .then((posts)=>{
     getSimilarArticles = posts;
   })
-
+  var showsidebox = true;
   var post = await Post.findOne({slug: req.params.slug});
   var displaydate = post.publishDate.toDateString();
   console.log("........................................", getSimilarArticles.length)
@@ -1100,7 +1101,8 @@ router.get("/commerce/:slug", check , async function(req,res){
     limit: limit,
     trendingCount: tc,
     recommendedCount: rc,
-    popularCount: pc
+    popularCount: pc,
+    showsidebox: true
   });
 })
 
@@ -1152,7 +1154,8 @@ router.get("/engineering/:slug", check , async function(req,res){
     limit: limit,
     trendingCount: tc,
     recommendedCount: rc,
-    popularCount: pc
+    popularCount: pc,
+    showsidebox: true
   });
 })
 
@@ -1206,7 +1209,8 @@ router.get("/personality-development/:slug", check , async function(req,res){
     limit: limit,
     trendingCount: tc,
     recommendedCount: rc,
-    popularCount: pc
+    popularCount: pc,
+    showsidebox: true
   });
 })
 
@@ -1326,14 +1330,14 @@ router.get("/upload", (req,res)=>{
   res.render("uploadform");
 })
 
-router.post("/upload/file/:num", upload.single('photo') , (req,res,next)=>{
-  console.log("req.params.num  :  ", req.params.num);
+router.post("/upload/file/:id", upload.single('photo') , (req,res,next)=>{
+  // console.log("req.params.num  :  ", req.params.num);
   console.log("inside post route of upload file");
   var fileinfo = req.file;
   console.log(fileinfo);
   var filename = req.file.filename;
   // just for testing 
-  Post.findOne({postNumber: req.params.num}, (err,post)=>{
+  Post.findOne({_id: req.params.id}, (err,post)=>{
     if(err){
       console.log("error while uploading file to database");
       console.log(err);
