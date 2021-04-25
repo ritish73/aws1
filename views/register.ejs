@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,22 +33,9 @@ nav img{
         <a href="/"><img src="/images/final_2.png" alt="" class="logo-top" ></a>
     </nav>
 
-    <div class="flash">
-        <div class="f" role="alert">
-            <% if(successmessage.length){ %>
-                <%= successmessage %>
-            <% } else if(errormessage.length){ %>
-                <%= errormessage %>
-            <% } %>
-        </div> 
-    </div>
+   
 
     <div class="container">
-
-
-        
-
-
        
 
         <div class="form-container">
@@ -55,6 +43,28 @@ nav img{
             <div class="signin-signup">
 
                 <form action="/login" method="POST" class="sign-in-form">
+                
+                <% if(successmessage.length || errormessage.length){ %>
+                    <div class="alert show showAlert">
+                        <span class="fas fa-exclamation-circle"></span>
+                        <% if(successmessage.length){ %>
+                            <span id="success-message-color" class="msg-alert"><%=successmessage%></span>
+                        <% } else if(errormessage.length) { %>
+                            <span id="error-message-color" class="msg-alert"><%=errormessage%></span>
+                        <% } %>
+                        <div class="close-btn">
+                        <span class="fas fa-times"></span>
+                        </div>
+                    </div>
+                    <% } else{ %>
+                        <div class="alert hide">
+                            <span class="fas fa-exclamation-circle"></span>
+                            <span class="msg-alert"></span>
+                            <div class="close-btn">
+                            <span class="fas fa-times"></span>
+                            </div>
+                        </div>
+                    <% } %>
 
 
                     <h2 class="title">Sign in</h2>
@@ -88,6 +98,28 @@ nav img{
 
                 <form action="/register" method="POST" class="sign-up-form">
 
+                                  
+                <% if(successmessage.length || errormessage.length){ %>
+                    <div class="alert show showAlert">
+                        <span class="fas fa-exclamation-circle"></span>
+                        <% if(successmessage.length){ %>
+                            <span id="success-message-color" class="msg-alert"><%=successmessage%></span>
+                        <% } else if(errormessage.length) { %>
+                            <span id="error-message-color" class="msg-alert"><%=errormessage%></span>
+                        <% } %>
+                        <div class="close-btn">
+                        <span class="fas fa-times"></span>
+                        </div>
+                    </div>
+                    <% } else{ %>
+                        <div class="alert hide">
+                            <span class="fas fa-exclamation-circle"></span>
+                            <span class="msg-alert"></span>
+                            <div class="close-btn">
+                            <span class="fas fa-times"></span>
+                            </div>
+                        </div>
+                    <% } %>
 
                     <h2 class="title">Sign up</h2>
                     <div class="input-field">
@@ -100,13 +132,19 @@ nav img{
                         <input type="email" name="email" placeholder="email" required>
                     </div>
 
-
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
                     <input type="password" name="password" id="password" placeholder="password" required>
                     </div>
+                 
+                    <style>
+                        .hide{
+                            display: none;
+                        }
+                    </style>
 
-                    <p style="color: rgb(23, 117, 240)" style="margin-left: 200px" id="warning-pass">Password must be of atleast 8 characters and atleast : 1 uppercase letter,1 lowercase letter ,1 digit and one special character</p>
+                    <p id='invalid-input-message' style="color: rgb(23, 117, 240)" style="margin-left: 200px" id="warning-pass"></p><br>
+                    <p id="fullmsg" style="color: rgb(23, 117, 240);margin-left: 112px"></p>
                     <input type="submit" value="Sign up" id="sign_up_submit" class="btn solid">
 
                     <p class="socia-text">Or Sign up with social platforms</p>
@@ -147,5 +185,8 @@ nav img{
     
 
     <script src="/javascripts/auth_app.js"></script>
+    <script src="/javascripts/passwordValidate.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="/javascripts/pop-alert.js"></script>
 </body>
 </html>

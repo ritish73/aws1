@@ -9,8 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
     <link rel="stylesheet" href="/stylesheets/one-first-css.css">
-    <link rel="stylesheet" href="/stylesheets/review-css.css">
+    <!-- <link rel="stylesheet" href="/stylesheets/review-css.css"> -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"> -->
     <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
+
+    <link rel="stylesheet" href="/stylesheets/preloader_front.css">
+    
     <title>BackBenchers</title>
 </head>
 
@@ -25,16 +29,36 @@
     background: #0E76A8;
 }
 
+
+
 </style>
 
-<body>
-    <span id="start"></span>
 
-    <% if(successmessage){ %>
-        <h3 class="flash_bg_color"><%=successmessage%></h3>
-    <% } else { %>
-      <h3 class="flash_bg_color"><%=successmessage%></h3>
-    <% } %>
+<body>
+
+
+
+
+
+ 
+<!-- 
+    <div class="mainnn">
+        <div class="souravsingla">
+            Welcome
+        </div>
+        <div class="title">
+            BACKBENCHERS
+        </div>
+        <div class="barr">
+            <div id="filll"></div>
+        </div>
+    </div>
+ -->
+
+
+    <span id="start"></span>
+ 
+    
 
     <header>
         <div class="background-img">
@@ -43,15 +67,14 @@
 
         <div class="person-account">
             <span class="account-info">
-                <% if(currentUser){ %>
+                <% if(currentUser && currentUser.isVerified  && !currentUser.deleted){ %>
                     <% if(currentUser.google_id){ %>
-                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.google_username.substring(0,8)%></a>
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.google_username%></a>
 
                     <% } else if(currentUser.fb_id){ %>
-                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.fb_username.substring(0,8)%></a>
-
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.fb_username%></a>
                     <% } else { %>
-                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.username.substring(0,8)%></a>
+                        <a href="/dashboard" class="finall" style="color: black"> <%= currentUser.username%></a>
                     <% } %>
                     
                 <% }else{ %>
@@ -59,6 +82,55 @@
                 <% } %>
             </span>
         </div>
+
+        <style>
+            
+        </style>
+
+
+    <!-- show a message to the user with a link to re-verify his account if not verified  -->
+        <% if(currentUser && !currentUser.isVerified){ %>
+    
+            <div class="alert_custom show showAlert ">
+                <span class="fas fa-exclamation-circle"></span>
+            
+                    <span id="success-message-color" class="msg-alert">If you have not received link for verification or has expired, <a href="/reVerify" style="text-decoration:none;color:yellow;">Verify Account</a></span>
+            
+                <div class="close-btn">
+                <span class="fas fa-times"></span>
+                </div>
+            </div>
+
+            <% } %>
+
+
+        
+        <% if(successmessage.length || errormessage.length){ %>
+        <div class="alert show showAlert">
+            <span class="fas fa-exclamation-circle"></span>
+            <% if(successmessage.length){ %>
+                <span id="success-message-color" class="msg-alert"><%=successmessage%></span>
+            <% } else if(errormessage.length) { %>
+                <span id="error-message-color" class="msg-alert"><%=errormessage%></span>
+            <% } %>
+            <div class="close-btn">
+              <span class="fas fa-times"></span>
+            </div>
+        </div>
+        <% } else{ %>
+            <div class="alert hide">
+                <span class="fas fa-exclamation-circle"></span>
+                <span class="msg-alert"></span>
+                <div class="close-btn">
+                  <span class="fas fa-times"></span>
+                </div>
+            </div>
+        <% } %>
+
+
+        
+
+        
 
         <%- include("partials/vertical_navbar.ejs") %>
 
@@ -87,19 +159,19 @@
          -->
                 <div class="vision-text">
                     <div class="boxx">
-                        <h2 class="knowledge-fade">KNOWLEDGE POSSESS NO BOUNDRIES</h2>
+                        <h2 class="knowledge-fade">KNOWLEDGE POSSESS NO BOUNDARIES</h2>
                         <p>
                         BackBenchers is an edu-tech startup which aims to overcome major barriers in learning
                         and education. We provide a platform where all bloggers and content writers from all 
                         around the world can share their knowledge and ideas in Business and Economics, Commerce,
                         Engineering and Personality Development. We are  building  a community which believes 
-                        in active learning and promotes education irrespective of the field. Rightly said "Bookish
-                        knowledge may guides the way but practical knowledge experiences the way".
+                        in active learning and promotes education irrespective of the field. Rightly said <span id="vision-highlight">"Bookish
+                        knowledge may guides the way but practical knowledge experiences the way".</span>
                         Be a part of our community and share your knowledge. Start publishing with us!!!
                         </p>
                         <div id="publish-btn">
                             <span class="account-infoo" href="#">
-                                <a href="/publish" class="finalll"> Publish here !</a>
+                                <a href="/publish" target="_blank" class="finalll"> Publish here !</a>
                             </span>
                         </div>
                     </div>
@@ -132,9 +204,10 @@
                         <p id="testone" class="blog-post__text-1" id="card-text"><%=etrendingpost.post.content.substring(0,210)%></p>
                         <a href="/posts/engineering/<%=etrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                         <ul class="btns-on-blogcard">
-                            <button onclick="like(this)" getpost="<%=etrendingpost.post.slug%>" ><li class="btns-blog"><i id="changelikecolor" class="far fa-hand-peace fa-2x "></i><span class="count"><%=etrendingpost.post.likes%></span></li></button>
-                            
-   
+                            <button class="make-pop" onclick="like(this)" getpost="<%=etrendingpost.post.slug%>" ><li class="btns-blog"><i id="changelikecolor" class="far fa-hand-peace fa-2x "></i><span class="count"><%=etrendingpost.post.likes%></span></li></button>
+                        
+
+
    <a href="https://api.whatsapp.com/send?text=thebackbenchers.co/posts/engineering/<%=etrendingpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=etrendingpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=etrendingpost.post.shares%></span></li></button></a>                         <span></span>
                         </ul>
 
@@ -152,7 +225,7 @@
                     <p class="blog-post__text-1" id="card-text"><%=erecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/engineering/<%=erecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
-                        <button onclick="like(this)" getpost="<%=erecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=erecommendedpost.post.likes%></span></li></button>
+                        <button class="make-pop" onclick="like(this)" getpost="<%=erecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=erecommendedpost.post.likes%></span></li></button>
                         
 
 <a href="https://api.whatsapp.com/send?text=thebackbenchers.co/posts/engineering/<%= erecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=erecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=erecommendedpost.post.shares%></span></li></button></a>                        <span></span>
@@ -173,7 +246,7 @@
                 <p class="blog-post__text-1" id="card-text"><%=epopularpost.post.content.substring(0,210)%></p>
                 <a href="/posts/engineering/<%=epopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
-                    <button onclick="like(this)" getpost="<%=epopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=epopularpost.post.likes%></span></li></button>
+                    <button class="make-pop"  onclick="like(this)" getpost="<%=epopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=epopularpost.post.likes%></span></li></button>
                     
     
     <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/engineering/<%= epopularpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=epopularpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=epopularpost.post.shares%></span></li></button></a>                <span></span>
@@ -247,10 +320,10 @@
                     <p class="blog-post__text-2" id="card-text"><%=betrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=betrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
-                        <button onclick="like(this)" getpost="<%=betrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=betrendingpost.post.likes%></span></li></button>
+                        <button class="make-pop"  onclick="like(this)" getpost="<%=betrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=betrendingpost.post.likes%></span></li></button>
                         <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=betrendingpost.post.shares%></span></li></button> -->
   
-  <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= betrendingpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=betrendingpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=betrendingpost.post.shares%></span></li></button></a>                      <span></span>
+  <a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= betrendingpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=betrendingpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=betrendingpost.post.shares%></span></li></button></a>                      <span></span>
                     </ul>
 
                     </div>
@@ -267,9 +340,9 @@
                     <p class="blog-post__text-2" id="card-text"><%=berecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=berecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
-                        <button onclick="like(this)" getpost="<%=berecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=berecommendedpost.post.likes%></span></li></button>
+                        <button class="make-pop"  onclick="like(this)" getpost="<%=berecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=berecommendedpost.post.likes%></span></li></button>
                         <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=berecommendedpost.post.shares%></span></li></button> -->
-                        <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= berecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=berecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=berecommendedpost.post.shares%></span></li></button></a>
+                        <a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= berecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=berecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=berecommendedpost.post.shares%></span></li></button></a>
                         <span></span>
                     </ul>
                     
@@ -288,10 +361,10 @@
                     <p class="blog-post__text-2" id="card-text"><%=bepopularpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=bepopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
-                        <button onclick="like(this)" getpost="<%=bepopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=bepopularpost.post.likes%></span></li></button>
+                        <button  class="make-pop" onclick="like(this)" getpost="<%=bepopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=bepopularpost.post.likes%></span></li></button>
                         <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=bepopularpost.post.shares%></span></li></button> -->
    
-   <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= bepopularpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=bepopularpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=bepopularpost.post.shares%></span></li></button></a>                     <span></span>
+   <a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= bepopularpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=bepopularpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=bepopularpost.post.shares%></span></li></button></a>                     <span></span>
                     </ul>
 
                     </div>
@@ -350,7 +423,7 @@
                         <button onclick="like(this)" getpost="<%=ctrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=ctrendingpost.post.likes%></span></li></button>
                         <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=ctrendingpost.post.shares%></span></li></button> -->
    
-                    <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= ctrendingpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=ctrendingpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=ctrendingpost.post.shares%></span></li></button></a>                     <span></span>
+                    <a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= ctrendingpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=ctrendingpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=ctrendingpost.post.shares%></span></li></button></a>                     <span></span>
                     </ul>
 
                     </div>
@@ -371,7 +444,7 @@
                         <button onclick="like(this)" getpost="<%=crecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=crecommendedpost.post.likes%></span></li></button>
                         <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=crecommendedpost.post.shares%></span></li></button> -->
 
-<a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= crecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=crecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=crecommendedpost.post.shares%></span></li></button></a>                        <span></span>
+<a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= crecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=crecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=crecommendedpost.post.shares%></span></li></button></a>                        <span></span>
                     </ul>
                    
 
@@ -393,7 +466,7 @@
                     <button onclick="like(this)" getpost="<%=cpopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=cpopularpost.post.likes%></span></li></button>
                     <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=cpopularpost.post.shares%></span></li></button> -->
     
-    <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= cpopularpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=cpopularpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=cpopularpost.post.shares%></span></li></button></a>                <span></span>
+    <a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= cpopularpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=cpopularpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=cpopularpost.post.shares%></span></li></button></a>                <span></span>
                 </ul>
 
                 </div>
@@ -464,7 +537,7 @@
                         <button onclick="like(this)" getpost="<%=pdtrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdtrendingpost.post.likes%></span></li></button>
                         <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=pdtrendingpost.post.shares%></span></li></button> -->
   
-  <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= pdtrendingpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=pdtrendingpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=pdtrendingpost.post.shares%></span></li></button></a>                      <span></span>
+  <a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= pdtrendingpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=pdtrendingpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=pdtrendingpost.post.shares%></span></li></button></a>                      <span></span>
                     </ul>
 
                     </div>
@@ -484,7 +557,7 @@
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=pdrecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdrecommendedpost.post.likes%></span></li></button>
                         <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=pdrecommendedpost.post.shares%></span></li></button> -->
-                        <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= pdrecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=pdrecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=pdrecommendedpost.post.shares%></span></li></button></a>
+                        <a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= pdrecommendedpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=pdrecommendedpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=pdrecommendedpost.post.shares%></span></li></button></a>
                         <span></span>
                     </ul>
                    
@@ -506,7 +579,7 @@
                         <button onclick="like(this)" getpost="<%=pdpopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdpopularpost.post.likes%></span></li></button>
                         <!-- <button><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count"><%=pdpopularpost.post.shares%></span></li></button> -->
    
-   <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= pdpopularpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=pdpopularpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=pdpopularpost.post.shares%></span></li></button></a>                     <span></span>
+   <a href="https://api.whatsapp.com/send?text=https://thebackbenchers.co/posts/personality-development/<%= pdpopularpost.post.slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=pdpopularpost.post.slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=pdpopularpost.post.shares%></span></li></button></a>                     <span></span>
                     </ul>
 
                     </div>
@@ -521,7 +594,7 @@
 
 
 
-        <div class="review-section">
+        <!-- <div class="review-section">
             <div class="review-img">
                 <img class="r-img" src="/images/review.png" alt="">
             </div>
@@ -562,7 +635,7 @@
                     <% } %>
                 </div>
             <button id = "right" class="review-btns"> <i class="fas fa-arrow-circle-right fa-2x"></i> </button>
-        </div>
+        </div> -->
 
     </main>
 
@@ -576,9 +649,9 @@
                     <img src="/images/final_2.png" alt="logo" height="250px" width="250px">
                 </div>
                     <div class="social">
-                        <a href="https://www.facebook.com/BackBenchers-105240558097832"><span class="fab fa-facebook-f"></span></a>
-                        <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5"><span class="fab fa-instagram"></span></a>
-                        <a href="https://www.linkedin.com/in/back-benchers-94a049202/"><span class="fab fa-linkedin-in"></span></a>
+                        <a href="https://www.facebook.com/BackBenchers-105240558097832" target="_blank"><span class="fab fa-facebook-f"></span></a>
+                    <a href="https://www.instagram.com/the.back_benchers_/?igshid=1tkr1g17rzrf5" target="_blank"><span class="fab fa-instagram"></span></a>
+                    <a href="https://www.linkedin.com/in/back-benchers-94a049202/" target="_blank"><span class="fab fa-linkedin-in"></span></a>
                     </div>
                 </div>
             </div>
@@ -601,7 +674,7 @@
                 <div class="content">
                     <ul class="links">
                     <li><a href="/aboutus"> > About Us</a></li>
-                    <!-- <li><a href="#" id="cu"> > Contact Us</a></li> -->
+                    
                     <li><a href="/termsandconditions"> > Terms and conditions</a></li>
                     <li><a href="/privacypolicy"> > Privacy Policy</a></li>
                     </ul>
@@ -620,7 +693,7 @@
                         </div>
                         <div class="msg">
                             <div class="text">Message *</div>
-                            <textarea  cols="25" rows="2" name="message"></textarea>
+                            <textarea  cols="25" rows="2" name="message" required></textarea>
                         </div>
                         <div class="btn">
                             <button type="submit">Send</button>
@@ -633,7 +706,7 @@
 
         <div class="bottom">
             <center>
-                <span class="credits">Created by <a href="#start">Backbenchers</a> | </span>
+                <span class="credits">Created by <a href="#start">BackBenchers</a> | </span>
                 <span class="far fa-copyright"></span><span> 2021 All rights reserved.</span>
             </center>
         </div>
@@ -641,185 +714,88 @@
     
 </body>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="/javascripts/review-slide.js"></script>
 
-<script>
+<script src="/javascripts/ajaxHandler_home.js"></script>
 
-
-        let slidePosition = 0;
-        const slides = document.getElementsByClassName('review-card');
-        const totalSlides = slides.length;
-
-        document.
-        getElementById('right')
-        .addEventListener("click", function() {
-            moveToNextSlide();
-        });
-        document.
-        getElementById('left')
-        .addEventListener("click", function() {
-            moveToPrevSlide();
-        });
-
-        function updateSlidePosition() {
-        for (let slide of slides) {
-            slide.classList.remove('carousel__item--visible');
-            slide.classList.add('carousel__item--hidden');
-        }
-
-        slides[slidePosition].classList.add('carousel__item--visible');
-        }
-
-        function moveToNextSlide() {
-        if (slidePosition === totalSlides - 1) {
-            slidePosition = 0;
-        } else {
-            slidePosition++;
-        }
-
-        updateSlidePosition();
-        }
-
-        function moveToPrevSlide() {
-        if (slidePosition === 0) {
-            slidePosition = totalSlides - 1;
-        } else {
-            slidePosition--;
-        }
-
-        updateSlidePosition();
-        }
-
-
-    var httpRequest;     
-    var currentUser;
-    function findUser(){
-        httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = findUserRequest;
-        httpRequest.open('GET', '/findUser');        
-        httpRequest.send();
-    }
-    window.onload = findUser();
-
-    
-    function findUserRequest(){
-        
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200 ) {
-                var resJson = JSON.parse(httpRequest.responseText)
-                currentUser = resJson.CurrentUser;
-                console.log(currentUser)
-                if(currentUser === undefined){
-                    console.log("no one is logged in");
-                } else {
-                    console.log('user found!!')
-                }
-                
-            } else {
-            alert('There was a problem with the request.');
-            }
-        }
-    }
+<script src="/javascripts/pop-alert.js">  </script>
 
 
 
 
-function like(e){
-
-        // document.getElementById('changelikecolor').style.color = "#ab2d24";
-        if(currentUser){
-            let curPostSlug = e.getAttribute('getpost');  
-            httpRequest = new XMLHttpRequest();
-            if (!httpRequest) {
-              alert('Giving up :( Cannot create an XMLHTTP instance');
-              return false;
-            }
-            httpRequest.onreadystatechange = likeRequest;
-            httpRequest.open('GET', '/posts/liked/' + curPostSlug);        
-            httpRequest.send();
-          
-          }
-         else {
-        //   document.querySelector("#message").innerHTML = "you need to log in to like this post";
-            window.location = '/register_or_login?m=0';
-        }
-      }
-
-      function likeRequest(){
-          if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-              let respJson = JSON.parse(httpRequest.responseText)
-              console.log(respJson.message)
-            //   document.querySelector('.count').innerText = respJson.message;
-            } else {
-              alert('There was a problem with the request.');
-            }
-          }
-        }
-
-
-
-        async function sharePost(e){
-        if(currentUser){
-            var curPostSlug = e.getAttribute('getpost');  
-            
-            httpRequest = new XMLHttpRequest();
-            if(!httpRequest){
-                alert('Giving up :( Cannot create an XMLHTTP instance')
-                return false;
-            }
-            httpRequest.onreadystatechange = sharePostRequest;
-            httpRequest.open('GET', '/sharePost/' +curPostSlug);
-            httpRequest.send();
-        } else {
-            console.log("you need to login to share this post")
-            window.location = '/register_or_login?m=0'
-        }
-    }
-
-    function sharePostRequest(){
-        
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200 ) {       
-                    var resJson = JSON.parse(httpRequest.responseText)
-                    document.getElementById('sharecount').innerHTML = resJson.value;
-                } else {
-                    alert('There was a problem with the request.');
-                }
-            }
-        }
-
-
-        
-
-</script>
-
-<style>
+    <style>
 
    
 
-    .carousel__item,
- .carousel__item--hidden {
-  display: none;
-}
+        .carousel__item,
+     .carousel__item--hidden {
+      display: none;
+    }
+    
+     .carousel__item--visible {
+        display: block;
+        animation: fadeVisibility 0.5s;
+      }
+    
+      @keyframes fadeVisibility {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+        transform: opacity linear;
+      }
+    }
+    
+    
+    </style>
+    
+    
+    
 
- .carousel__item--visible {
-    display: block;
-    animation: fadeVisibility 0.5s;
-  }
+    <script>
+        var progress = 0;
+        document.onreadystatechange = function()
+        {
+            if(document.readyState == "interactive")
+            {
+                var allElement = $("*");
+                var length = allElement.length;
+                for(var i=0;i<length;i++)
+                {
+                    set_element(allElement[i],length);
+                }
+            }
+        }
+        function set_element(element,totalElement)
+        {
+            var percentage= 100/totalElement;
+            if($(element).length==1)
+            {
+                $("#filll").animate({width:progress+percentage+"%"},0.6,function(){
+                    if(document.getElementById("filll").style.width=="100%")
+                    {
+                        $("mainnn").fadeOut(2500);
+                    }
+                });
+                progress=progress+percentage;
+            }
+        }
+        
+        </script>
 
-  @keyframes fadeVisibility {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-    transform: opacity linear;
-  }
-}
 
+   
 
-</style>
+<script>
+    setTimeout(function(){
+        $('.mainnn').fadeToggle();
+    }, 2500);
+</script>
 
-  
-
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
 </html>

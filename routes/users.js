@@ -128,12 +128,21 @@ router.get("/" , check ,function(req, res){
 });
 
 router.get('/delete', check ,async (req,res)=>{
-  var user = await User.findOne({_id: req.user._id});
-  user.deleted = true;
-  user.deletedAt = moment().format('MMMM Do YYYY, h:mm:ss a');
-  await user.save();
-  req.flash('success','your account was deleted');
-  res.send()
+
+    var user = await User.findOne({_id: req.user._id});
+    
+  
+    
+
+    user.deleted = true;
+    user.deletedAt = moment().format('MMMM Do YYYY, h:mm:ss a');
+    await user.save();
+
+    req.flash('success','your account was deleted.');
+    res.redirect("/")
+      
+  
+  
 })
 
 router.get("/termsandconditions", function(req, res){
@@ -177,7 +186,7 @@ router.get('/addFollower/:authname', auth , async (req,res)=>{
   console.log("req.params.authname = " + req.params.authname)
   console.log("hhhhhhhhhhhhhhhhh")
   // add currentuser to follower list of this author
-  req.flash('success','now you are following this author')
+  req.flash('success','Channel subscribed!')
   await middlewareObj.addFollower(res,req)
   .then((message)=>{
     res.json({message : message})
@@ -221,12 +230,12 @@ router.get("/savetolater/:slug", check ,(req,res)=>{
                 else {
                   console.log("after length: " + user.saved_for_later.length)
                   console.log("this is the user who wants to add to watch later list", user)
-                  res.json({message: 'saved to later successfully'});
+                  res.json({message: 'Added to saved posts.'});
                 }
               })
               
             } else {
-              res.json({message: 'you have already saved this post'});
+              res.json({message: 'Post is already saved.'});
             }
             
   
@@ -234,7 +243,7 @@ router.get("/savetolater/:slug", check ,(req,res)=>{
         })
       } else{
         console.log("no one is logged in");
-        res.json({message : "you need to login to save this post"})
+        res.json({message : "Please login to save the post."})
       }
     })
 })
@@ -325,7 +334,7 @@ router.get("/register_or_login", (req,res)=>{
   console.log(req.query.m)
   if(req.query.m === '0'){
     console.log("hhhhhhhhhhhhh")
-    req.flash('error','You need to login to perform this action')
+    req.flash('error','Login to perform this action.')
     res.redirect("/register_or_login")
   }else{
     res.render("register");
@@ -385,8 +394,30 @@ router.post("/register_old",(req,res)=>{
 
 
 
-router.post("/register",(req,res)=>{
+router.post("/register",async (req,res)=>{
+
+  try{
+
+
+    // first check if a user with provided email exist throw an eroor
+  var useralready = await User.findOne({email: req.body.email});
+  if(useralready){
+    throw new Error('Email already exists.');
+  }
+
+  if(/^\s/.test(req.body.username)){
+    throw new Error('Your username must not start with space.')
+  }
+
+  if(/\s$/.test(req.body.username)){
+      throw new Error('Your username must not end with space.')
+  }
+  
   var numberofusers;
+  // first send an email for verifying the account with a timed token if link is clicked.
+  
+  // if token is expired don't make account 
+  // if link is not clicked don't make account
     User.countDocuments({},(err, num)=>{
       if(err) console.log(err)
       else{
@@ -404,6 +435,40 @@ router.post("/register",(req,res)=>{
             user.username =  req.body.username;
             user.password =  req.body.password;
             user.email =  req.body.email;
+
+            user.emailVerificationToken = crypto.randomBytes(64).toString('hex');
+            user.emailVerificationTokenExpires = Date.now() + 1800000;    // 30 minutes
+            const link = "https://thebackbenchers.co/verifyEmail?token="+user.emailVerificationToken;
+            // send the email
+            var message = {
+
+              from: USER,
+              to: req.body.email,
+              subject: `Account Verification`,
+              
+              html: ` 
+
+
+               <p>Dear User,</p>
+                <p>Welcome to the BackBenchers community! We strongly believe that every member of the community is an asset helping us 
+                in acheiving our ultimate goal of making education highly affordable and promoting the same irrespective of the field. To
+                help us in a better way and contribute your part, kindly click the link provided below and verify your account. The given link will be
+                active for a period of 30 minutes only.</p>
+                <button style="outline:none;border:none;background-color:#5995fd;border:1px solid white;border-radius:3px;padding:7px"><a style="text-decoration:none;color:white;font-size:15px;font-family:'poppins',sans-serif" href="${link}">Verify Account</a></button>
+              
+                <br><br><br>
+                <p>Regards,</p>
+                <p>Team Backbenchers</p>
+              
+              
+              `
+            }
+            transport.sendMail(message, (err)=>{
+              if(err) console.log(err)
+              else{
+                console.log("email verification mail has been sent");
+              }
+            });
             user.bb_id =  uid;
             console.log(moment().format('MMMM Do YYYY, h:mm:ss a'))
             user.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -413,14 +478,11 @@ router.post("/register",(req,res)=>{
               const token = await user.generateAuthToken();
               res.cookie('bearer_token', token,{
                 httpOnly: true,
-                path: '/'
+                path: '/',
+                maxAge: 86400000
               });
-              req.flash('success','Welcome to the backbenchers community')
+              req.flash('success','Kindly check your mail inbox for account verification.')
               res.redirect("/");
-            }).catch((e)=>{
-              console.log(e);
-              req.flash('error','An error occured while creating your account')
-              res.status(400).redirect("/register_or_login");
             })
           }
           myfunction();
@@ -434,18 +496,126 @@ router.post("/register",(req,res)=>{
         }
       }
     });
+
+
+
+  } catch(e){
+    console.log(e, e.message);
+    req.flash('error', e.message);
+    res.redirect('/register_or_login');
+
+
+
+
+  }
+
+
+  
 })
+
+
+
+
+// if user does not verify in the first attempt generate a new link for verification
+router.get("/reVerify", check, async (req,res)=>{
+
+  try{
+    if(!req.user) throw new Error(' user not found in req.user')
+    console.log("this is user while reverifying", req.user)
+    // since user is not logged in
+    var user = await User.findOne({_id: req.user._id});
+    if(!user) throw new Error('Something went wrong, try again');
+    user.emailVerificationToken = null;
+    user.emailVerificationTokenExpires = null;
+    user.emailVerificationToken = crypto.randomBytes(64).toString('hex');
+    user.emailVerificationTokenExpires = Date.now() + 1800000;    // 30 minutes
+
+    
+    const link = "https://thebackbenchers.co/verifyEmail?token="+user.emailVerificationToken;
+    // send the email
+    var message = {
+
+      from: USER,
+      to: user.email,
+      subject: `Account Verification`,
+      
+      html: ` 
+   
+      <p>Dear User,</p>
+      <p>Welcome to the BackBenchers community! We strongly believe that every member of the community is an asset helping us 
+      in acheiving our ultimate goal of making education highly affordable and promoting the same irrespective of the field. To
+      help us in a better way and contribute your part, kindly click the link provided below and verify your account. The given link will be
+      active for a period of 30 minutes only.</p>
+      <button style="outline:none;border:none;background-color:#5995fd;border:1px solid white;border-radius:3px;padding:7px"><a style="text-decoration:none;color:white;font-size:15px;font-family:'poppins',sans-serif" href="${link}">Verify Account</a></button>
+     
+      <br><br><br>
+      <p>Regards,</p>
+      <p>Team Backbenchers</p>
+      
+
+      `
+
+      
+    }
+    transport.sendMail(message, (err)=>{
+      if(err) console.log(err)
+      else{
+        console.log("email verification mail has been sent");
+      }
+    });
+
+    await user.save(()=>{
+      req.flash('success','Kindly check your mail inbox for account verification.')
+      res.redirect("/");
+    })
+
+
+  }catch(e){
+
+    req.flash('error',e.message)
+    res.redirect('/');
+
+  }
+
+})
+
+
+router.get("/verifyEmail", async (req,res)=>{
+  try{
+    var user = await User.findOne({emailVerificationToken: req.query.token, emailVerificationTokenExpires: { $gt: Date.now() } });
+    if(!user) {
+      console.log("token is invalid");
+      throw new Error('Link sent for account verification has expired.');
+    } else {
+      user.emailVerificationToken = null;
+      user.emailVerificationTokenExpires = null;
+      user.isVerified = true;
+      await user.save();
+      req.flash('success','Your account has been verified successfully, Welcome to the BackBenchers!')
+      res.redirect("/")
+    }
+
+  } catch(err){
+    console.log(err);
+    req.flash('error', err.message)
+    res.redirect("/");
+  }
+})
+
 
 router.post("/login" , async (req,res)=>{
   try{
     
     const token = await req.cookies.bearer_token;
     // console.log("token from cookiee : ", token);
-    const user = await User.findByCredentials(req.body.username, req.body.password);
+    const user = await User.findByCredentials(req.body.username, req.body.password, req, res);
     console.log(user)
     // console.log("user: ", user);
     if(user){
       console.log("all user ids :", "google_id : ",user.google_id," fb_id : ",user.fb_id," bb_id : ",user.bb_id);
+      if(user.deleted){
+        throw new Error('Account does not exists.')
+      }
       // console.log( "req.token: " ,req.token)
       if(!token){
         // this case occors if jwt cookie is deleted on the client side
@@ -459,10 +629,11 @@ router.post("/login" , async (req,res)=>{
         console.log("token: ", newtoken);
         await res.cookie('bearer_token', newtoken,{
           httpOnly: true,
-          path: '/'
+          path: '/',
+          maxAge: 86400000
         });
         req.user = user;
-        req.flash('success','Logged in successfully')
+        req.flash('success','Welcome back!')
         res.redirect('/')
       } else{
         // first check that is that token of the same user who provided credits
@@ -480,7 +651,7 @@ router.post("/login" , async (req,res)=>{
           } else{
             req.user = await userwithtoken;
             console.log('token verified')
-            req.flash('success','Logged in successfully')
+            req.flash('success','Welcome back!')
             res.redirect('/')
           }
         } else {
@@ -490,22 +661,20 @@ router.post("/login" , async (req,res)=>{
           await res.clearCookie('bearer_token');
           await res.cookie('bearer_token', newtoken,{
             httpOnly: true,
-            path: '/'
+            path: '/',
+            maxAge: 86400000
           });
           req.user = user;
-          req.flash('success','logged in successfully')
+          req.flash('success','Welcome back!')
           res.redirect('/')
         } 
       } 
-    } else{
-      console.log('user not found with provided credentials');
-      req.flash('error','Error while logging in')
-      return res.redirect('/register_or_login')
     }
     
-  } catch(e){
-    console.log("An error occured : ", e)
-    req.flash('error','Error while logging in')
+  } catch(err){
+    console.log("An error occured : ", err.message)
+    // console.log(typeof err)
+    req.flash('error',err.message)
     res.redirect('/register_or_login')
   }
 })
@@ -560,29 +729,128 @@ router.get("/logout", auth, async (req,res)=>{
 
 
 router.post("/updateUser", auth, async (req,res)=>{
-  console.log("ah chak" , req.body.username)
+
+  try{
+
+
   var user = await User.findById(req.user._id);
   if(user.google_id){ 
+
+
+    if(!req.body.google_username){
+      throw new Error('Enter your username.')
+    }
+
+    if(/^\s/.test(req.body.google_username)){
+      throw new Error(' Username name cannot start with space.')
+    }
+    if(/\s$/.test(req.body.google_username)){
+        throw new Error(' Username name cannot end with space.')
+    }
+
+
+
     user.google_username = req.body.google_username;
   }
   else if(user.fb_id){ 
+
+
+    if(!req.body.fb_username){
+      throw new Error('Enter your username.')
+    }
+    if(/^\s/.test(req.body.fb_username)){
+      throw new Error('Username name cannot start with space.')
+    }
+    if(/\s$/.test(req.body.fb_username)){
+        throw new Error('Username name cannot end with space.')
+    }
+
+
+
     user.fb_username = req.body.fb_username;
   } else{
-    console.log(user.username , req.body.username)
-  user.username = await req.body.username;
-  console.log(user.username , req.body.username)
+
+
+    if(!req.body.username){
+      throw new Error('Enter your username.')
+    }
+    
+    if(/^\s/.test(req.body.username)){
+      throw new Error('Username name cannot start with space.')
+    }
+    if(/\s$/.test(req.body.username)){
+        throw new Error('Username name cannot end with space.')
+    }
+
+
+    user.username = await req.body.username;
   }
 
-  // user.fullName = req.body.fullName
-  user.dob = req.body.dob;
-  user.email = req.body.email
-  user.gender = req.body.gender
-  user.profession = req.body.profession
-  user.channel = req.body.channel
-  await user.save()
+
+  
+
+    if(req.body.dob){
+      var dob = req.body.dob.split('-');
+      console.log(dob);
+      // check for all under integer range then only update
+      year = (dob[0] >= 1970 && dob[0] <= 2021)
+      month = (dob[1] <= 12 && dob[1]>=1)
+      day = (dob[2]>=1 && dob[2]<=31) 
+      console.log(year, month, day)
+      if(year && month && day){
+        user.dob = req.body.dob;
+      }
+    }
+
+
+
+    validGender = req.body.gender==='Male' || req.body.gender==='Female' || req.body.gender==='Others' || req.body.gender==='';
+    if(!validGender) throw new Error('select an appropriate gender');
+    user.gender = req.body.gender
+
+    valid = req.body.profession==='Self Earning' || req.body.profession==='Student' || req.body.profession==='Others' || req.body.profession==='';
+    console.log(req.body.profession)
+    if(!valid) throw new Error('Select an appropriate profession');
+    user.profession = req.body.profession
+
+    if(user.role != "user"){
+
+    if(/^\s/.test(req.body.channel)){
+      throw new Error('Channel name cannot start with space.')
+    }
+    if(/\s$/.test(req.body.channel)){
+        throw new Error('Channel name cannot end with space.')
+    }
+
+    var userfind = await User.findOne({channel: req.body.channel});
+    if(userfind) throw new Error('A user with this channel name already exists.');
+
+    user.channel = req.body.channel
+
+  }
+
+  
+    
+ 
+  
+  await user.save(()=>{
+    req.user = user;
+  })
   console.log("uptaded user : ", user)
   // req.flash('success', 'your account details are changed')
+
+ 
   res.redirect("/dashboard")
+
+
+
+  } catch(e){
+    console.log("error : ", e);
+    req.flash('error' , e.message);
+    res.redirect('/dashboard') 
+  }
+  
+  
 })
 
 
@@ -654,49 +922,73 @@ router.get('/forgot',(req,res)=>{
   res.render('forgot', {message: req.flash('success')});
 })
 
-router.post('/forgot', (req,res,next)=>{
-  console.log("yes received : " , req.body.email)
-   var token;
-   crypto.randomBytes(20,(err,buf)=>{
-    if(err) console.log(err)
-    token = buf.toString('hex');
-    console.log(token)
-  })
-    
-  User.findOne({email: req.body.email}, async (err,user)=>{
-    if(!user){
-      console.log("no user found");
-      req.flash('error','No account with this email exists');
-      res.redirect('/forgot');
-    }
-    user.resetPasswordToken = await token;
-    user.resetPasswordExpires =  Date.now() + 3600000; //1 hr
-    await user.save((err)=>{
+router.post('/forgot', async (req,res)=>{
+
+
+  try{
+
+
+    console.log("yes received : " , req.body.email)
+    var token;
+    crypto.randomBytes(20,(err,buf)=>{
       if(err) console.log(err)
+      token = buf.toString('hex');
+      console.log(token)
     })
-
-
-
-    var link = PROTOCOL + HOSTNAME + '/reset/' + token
       
-    var mailOptions = {
-      to: req.body.recovery_email,
-      from: USER,
-      subject: 'password reset backbenchers',
-      html: `<p>click the link to reset your password</p><div>${link}</div>`
-    }
-    transport.sendMail(mailOptions,(err)=>{
-      console.log('mail sent');
-      req.flash('success' , 'An e-mail has been sent to ' + req.body.recovery_email + ' with further instructions.');
+    User.findOne({email: req.body.email}, async (err,user)=>{
+
+      try{
+
+        if(!user){
+          throw new Error('Please enter correct E-mail');
+        }
+        user.resetPasswordToken = await token;
+        user.resetPasswordExpires =  Date.now() + 3600000; //1 hr
+        await user.save((err)=>{
+          if(err) console.log(err)
+        })
+  
+        var link = PROTOCOL + HOSTNAME + '/reset/' + token
+          
+        var mailOptions = {
+          from: USER,
+          to: req.body.email,
+          subject: 'Request for password reset',
+          html: `<h2>Hello ${req.body.email},</h2>
+          <p>A request has been received to change the password for your BackBenchers account. </p>
+          <p>Please click the link provided below to reset your password. The given link is valid for one hour only.</p>
+          <button style="outline:none;border:none;background-color:#5995fd;border:1px solid white;border-radius:3px;padding:7px"><a style="text-decoration:none;color:white;font-size:15px;font-family:'poppins',sans-serif" href="${link}">Reset Password</a></button>
+          
+          <p>Regards,</p>
+          <p>Team Backbenchers</p> `
+        }
+        transport.sendMail(mailOptions,(err)=>{
+          if(err) {
+            throw new Error(err);
+          }
+          console.log('mail sent');
+          req.flash('success' , 'An e-mail has been sent to ' + req.body.email + ' for password reset.');
+          res.redirect('/');
+        })
+
+
+      } catch(err){
+        req.flash('error',err.message);
+        res.redirect('/forgot');
+      }
+      
     })
 
 
+  } catch(err){
+    
+    req.flash('error',err.message);
+    res.redirect('/forgot');
 
-  }) 
+  }
 
   
-    
-    res.redirect('/')
   })
 
 
@@ -705,7 +997,7 @@ router.get('/reset/:token',(req,res)=>{
   User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },(err,user)=>{
     if(!user){
       req.flash('error', 'Either token is invalid or expired')
-      return res.redirect('forgot')
+      res.redirect('/forgot')
     } else{
       res.render('reset',{token: req.params.token})
     }
@@ -718,43 +1010,38 @@ router.post('/reset/:token', function(req, res) {
     
   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },async function(err, user) {
     if (!user) {
-      req.flash('error', 'Password reset token is invalid or has expired.');
+      req.flash('error', 'The given link is either invalid or has expired.');
       res.redirect('/forgot');
     }
 
-    var validpass = validatePass(req.body.password)
-    if(validpass.status){
+    // var validpass = validatePass(req.body.password)
+    // if(validpass.status){
 
       if(req.body.password === req.body.confirm) {
         console.log("new password : ", req.body.password)
         user.password = await req.body.password;
+        await user.save();
         await user.hashPassword()
-        await user.save()
+        
+        console.log("This is after hashing password", user.password);
         
       } else {
           req.flash("error", "Passwords do not match.");
           res.redirect('/forgot');
       }
 
-    } else {
-      res.redirect('/reset/'+req.params.token)
-    }
+    // } else {
+    //   res.redirect('/reset/'+req.params.token)
+    // }
     
   });
-   
-      
-  var mailOptions = {
-    to: req.body.recovery_email,
-    from: USER,
-    subject: 'Your password has been changed',
-    text: 'Hello,\n\n' +
-      'This is a confirmation that the password for your account has just been changed.\n'
-  };
-  transport.sendMail(mailOptions, function(err) {
-    req.flash('success', 'Success! Your password has been changed.');
-  });
+  
 
+  req.flash('success', 'Success! Your password has been changed.');
   res.redirect("/")
+  
+
+  
 });
 
 

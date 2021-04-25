@@ -9,175 +9,605 @@
 body 
 {
   font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  width: 100%;
-  background-color: #a4152c;
-background-color: #7f5a83;
-background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
-  overflow-x: hidden;
+  background-image: url(/images/doodleart.png);
+  background-color:rgb(209, 208, 208) ;
 }
 
-#heading
-{
-    color: white;
-}
 
-ul
+.profile_dd .profile_ul li
 {
     list-style: none;
 }
-a
+
+.top-img-logo
+{
+    cursor: pointer;
+}
+
+
+
+
+.top-horiz-bar
+{
+    display: block;
+    width: 100%;
+    height: 65px;
+    background: transparent;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+}
+
+.top-img-logo
+{
+    display: inline;
+    position: absolute;
+    top: 1px;
+    height:60px;
+    width:60px;
+}
+
+.top-img2-logo
+{
+    display: inline;
+    position: absolute;
+    top: 7px;
+    left: 5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.other-icons
+{
+    float: right;
+    font-size: 20px;
+}
+
+.other-icons a
 {
     text-decoration: none;
 }
 
-.horz-top-nav-bar
+.other-icons i
 {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 50px;
-    /* background-color: lightgrey; */
-    align-items: center;
-    cursor: pointer;
-    margin-bottom: 50px;
+    color: white;
 }
 
-.horz-top-nav-bar .logo-top
+
+
+
+
+.profile .icon_wrap i
 {
-    position: relative;
-    top: 0;
-    left: 5px;
-    float: left;
+    color: black;
 }
 
-.horz-top-nav-bar .sign-in-up p
+
+.profile .icon_wrap .name
 {
-    float: right;
-    position: relative;
-    top: 6px;
-    right: 10px;
     border: 2px solid black;
-    border-radius: 25px;
-    padding: 3px 10px;
+    border-radius: 30px;
+    padding: 0px 8px;
+    font-weight: 500;
+    font-size: 17px;
+    color: black;
+
 }
+
+.profile .icon_wrap .name:hover
+{
+   background-color: #ab2d24;
+    
+}
+
+.profile .icon_wrap .navbar-image
+{
+    margin-right: 25px;
+}
+
+.profile .icon_wrap i
+{
+    margin-right: 15px;
+}
+
+
+
+
+
+
+
+
+.wrapper{
+   width: 100%;
+   height: 100%;
+ }
+ 
+ .navbar{
+   background: rgb(209, 208, 208);
+   width: 100%;
+   height: 65px;
+   padding: 0 5px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   /* box-shadow: 0 1px 2px rgba(0,0,0,0.1); */
+ }
+ 
+ .navbar .navbar_left .logo a{
+    font-family: 'Trade Winds';
+    font-size: 2px;
+ }
+ 
+ .navbar .navbar_right{
+    display: flex;
+ }
+ 
+ .navbar .navbar_right img{
+   width: 35px;
+ }
+ 
+ .navbar .navbar_right .icon_wrap{
+   cursor: pointer;
+ }
+ 
+ .navbar .navbar_right .notifications{
+   margin-right: 25px;
+ }
+ 
+ .navbar .navbar_right .notifications .icon_wrap{
+   font-size: 20px;
+ }
+ 
+ .navbar .navbar_right .profile,
+ .navbar .navbar_right .notifications{
+   position: relative;
+ }
+ 
+ .navbar .profile .profile_dd,
+ .notification_dd{
+   position: absolute;
+   top: 48px;
+   right: 0px;
+   user-select: none;
+   background: rgba(209, 208, 208, 0.897);
+   border: 2px solid rgba(0, 0, 0, 0.711);
+   width: 300px;
+   height: auto;
+   display: none;
+   border-radius: 3px;
+   box-shadow: 10px 10px 35px rgba(0,0,0,0.125),
+               -10px -10px 35px rgba(0,0,0,0.125);
+ }
+ 
+ .navbar .profile .profile_dd:before,
+ .notification_dd:before{
+     content: "";
+     position: absolute;
+     top: -20px;
+     right: 12px;
+     border: 10px solid;
+     border-color: transparent transparent black transparent;
+ }
+ 
+ .notification_dd li {
+     border-bottom: 1px solid #f1f2f4;
+     padding: 10px 20px;
+     display: flex;
+     align-items: center;
+ }
+ 
+ .notification_dd li .notify_icon{
+   display: flex;
+ }
+ 
+ .notification_dd li .notify_icon .icon{
+   display: inline-block;
+   background: url('https://i.imgur.com/MVJNkqW.png') no-repeat 0 0;
+     width: 40px;
+     height: 42px;
+ }
+ 
+ .notification_dd li.baskin_robbins .notify_icon .icon{
+   background-position: 0 -43px;
+ }
+ 
+ .notification_dd li.mcd .notify_icon .icon{
+   background-position: 0 -86px;
+ }
+ 
+ .notification_dd li.pizzahut .notify_icon .icon{
+   background-position: 0 -129px;
+ }
+ 
+ .notification_dd li.kfc .notify_icon .icon{
+   background-position: 0 -178px;
+ }
+ 
+ .notification_dd li .notify_data{
+   margin: 0 15px;
+   width: 185px;
+ }
+ 
+ .notification_dd li .notify_data .title{
+   color: #000;
+   font-weight: 600;
+ }
+ 
+ .notification_dd li .notify_data .sub_title{
+   font-size: 14px;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   margin-top: 5px;
+ }
+ 
+ .notification_dd li .notify_status p{
+   font-size: 12px;
+ }
+ 
+ .notification_dd li.success .notify_status p{
+   color: #47da89;
+ }
+ 
+ .notification_dd li.failed .notify_status p{
+   color: #fb0001;
+ }
+ 
+ .notification_dd li.show_all{
+   padding: 20px;
+   display: flex;
+   justify-content: center;
+ }
+ 
+ .notification_dd li.show_all p{
+   font-weight: 700;
+   color: #3b80f9;
+   cursor: pointer;
+ }
+ 
+ .notification_dd li.show_all p:hover{
+   text-decoration: underline;
+ }
+ 
+ .navbar .navbar_right .profile .icon_wrap{
+   display: flex;
+   align-items: center;
+ }
+ 
+ .navbar .navbar_right .profile .name{
+   display: inline-block;
+   margin: 0 10px;
+ }
+
+ .profile_dd .profile_ul li a
+ {
+     font-size: 15px;
+ }
+ 
+ .navbar .navbar_right .icon_wrap:hover,
+ .navbar .navbar_right .profile.active .icon_wrap,
+ .navbar .navbar_right .notifications.active .icon_wrap{
+   color: #ab2d24;
+ }
+  
+ .navbar .profile .profile_dd{
+   width: 200px;
+ }
+ .navbar .profile .profile_dd:before{
+   rigth: 10px;
+ }
+ 
+ .navbar .profile .profile_dd ul li {
+     border-bottom: 1px solid #f1f2f4;
+ }
+ 
+ .navbar .profile .profile_dd ul li  a{
+     display: block;
+     padding: 10px 25px;
+     position: relative;
+ }
+ 
+ .navbar .profile .profile_dd ul li  a .picon{
+   display: inline-block;
+   width: 30px;
+ }
+.logout .picon i
+{
+    color: black;
+}
+.my-account .picon i
+{
+    color: black;
+}
+.my-account
+{
+    color: black;
+}
+.saved-later-post .picon i
+{
+    color: black;
+}
+.saved-later-post
+{
+    color: black;
+}
+
+.logout
+{
+    color: black;
+}
+ .navbar .profile .profile_dd ul li  a:hover{
+   color: #ab2d24;
+   background: rgba(255, 255, 255, 0.5);
+   border-bottom-left-radius: 0;
+   border-bottom-right-radius: 0;
+ }
+ 
+ .navbar .profile .profile_dd ul li.profile_li a:hover {
+     background: transparent;
+     cursor: default;
+     color: black;
+ }
+ 
+ .navbar .profile .profile_dd ul li .btn{
+     height: 32px;
+     padding: 7px 10px;
+     color:  black;
+     border-radius: 3px;
+     cursor: pointer;
+     text-align: center;
+     background: #ab2d24;
+     width: 125px;
+     margin: 5px auto 15px;
+ }
+ 
+ .navbar .profile .profile_dd ul li .btn:hover{
+   background: green;
+ }
+ 
+ .navbar .profile.active .profile_dd,
+ .navbar .notifications.active .notification_dd{
+   display: block;
+ }
+ 
+ .popup {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     transition: all 0.2s ease;
+     display: none;
+ }
+ 
+ .popup .shadow {
+     width: 100%;
+     height: 100%;
+     background: #000;
+     opacity: 0.5;
+ }
+ 
+ .popup .inner_popup {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%,-50%);
+     width: 100%;
+     height: auto;
+ }
+ 
+ .popup .notification_dd{
+   display: block;
+   position: static;
+   margin: 0 auto;
+   height: 357px;
+   overflow: auto;
+ }
+ 
+ .popup .notification_dd:before{
+    display: none;
+ }
+ 
+ .popup .notification_dd li.title{
+   font-weight: 700;
+   color: #3b80f9;
+   display: flex;
+   justify-content: center;
+   position: relative;
+ }
+ 
+ .popup .notification_dd li.title .close{
+   position: absolute;
+   top: 2px;
+   right: 10px;
+   font-size: 20px;
+   cursor: pointer;
+ }
+ 
+ .popup .notification_dd li.title .close:hover{
+   opacity: 0.5;
+ }
+
+
+
+
+
+
+
+
+
+ .profile .icon_wrap .name
+ {
+     border: 2px solid black;
+     border-radius: 30px;
+     padding: 0px 8px;
+     font-weight: 500;
+     font-size: 17px;
+ }
+
+ .profile .icon_wrap .navbar-image
+ {
+     margin-right: 25px;
+ }
+
+ .profile .icon_wrap i
+ {
+     margin-right: 15px;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .container
 {
-
-    width: 1400px;
-    height: auto;
-    margin: 40px  auto 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
-    grid-gap: 70px;
-    padding: 10px;
-    box-sizing: border-box;
+    width: 95%;
+    margin: 100px auto;
 }
 
-.box
+.row
 {
-    position: relative;
-    width: 350px;
-    height: 610px;
-    border-radius: 10px;
-    box-shadow: 2px 10px 12px rgba(0,0,0,0.5);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-flow: wrap;
+
+}
+
+.container .row a
+{
+    width: 24%;
+    background: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    margin-bottom: 50px;
+    transition: 0.3s;
+    /* background-color: #2b4162;
+    background-image: linear-gradient(315deg, #2b4162 0%, #12100e 74%); */
+    background-color: #6daddb;
+background-image: linear-gradient(185deg, #6daddb 0%, #313131 74%);
+}
+
+.card-header
+{
+
+    border-radius: 30px;
+    font-size: 11px;
     text-align: center;
-    box-sizing: border-box;
-    margin: 20px auto;
-    padding-top: 20px;
-    overflow: hidden;
-}
-
-.container .box:nth-child(1)
-{
-    background-color: #ad1c1c;
-    background-image:linear-gradient(147deg, #000000 0%, #2c3e50 74%);
-
-}
-.container .box:nth-child(2)
-{
-
-background-color: #537895;
-background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
-
-}
-.container .box:nth-child(3)
-{
-   
-    background-color: #f8ceec;
-    background-image: linear-gradient(315deg, #f8ceec 0%, #a88beb 74%);
-
-} 
-
-
-.container .box:nth-child(4)
-{
-
-    background-color: #000000;
-    background-image: linear-gradient(147deg, #000000 0%, #04619f 74%);
-}
-
-.container .box:nth-child(4) .details .logo
-{
-    height: 90px;
-    width: 200px;
-}
-
-.container .box:nth-child(1) .details .logo
-{
-    padding-top: 25px;
-    height: 100px;
-    width: 180px;
-}
-
-.model
-{
-    height: 350px;
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.details
-{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-}
-
-.details .logo
-{
-    height: 150px;
-    width: 320px;
-}
-
-.details p
-{
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
+    padding: 30px 10px; 
     color: black;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 12px;
-    margin-bottom: 25px;
+    font-weight: 900;
+    text-decoration: none;
 }
 
-.container .box:hover
+.card-img
 {
-    cursor: pointer;
-    transform: scale(1.02);
-    transition: ease-in 0.1s;
+    text-align: center;
 }
+
+.card-body
+{
+    padding: 30px;
+    text-align: center;
+    font-size: 15px;
+    color: white;
+    font-weight: 600;
+}
+
+.container .row a:hover
+{
+    transform: scale(1.05);
+    box-shadow: 0 0 40px -10px rgba(0,0,0,0.25);
+    cursor: pointer;
+}
+
+@media screen and (max-width:1250px)
+{
+    .container .row a
+    {
+        width: 35%;
+    }
+}
+
+@media screen and (max-width:1000px)
+{
+    .container .row a
+    {
+        width: 48%;
+    }
+}
+
+@media screen and (max-width:700px)
+{
+    .container .row a
+    {
+        width: 100%;
+    }
+    .card-header
+    {
+        font-size: 10px;
+        
+    }
+
+    .top-img2-logo
+    {
+        display: none;
+    }
+}
+
+
 
 
 

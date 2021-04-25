@@ -49,7 +49,7 @@ showObj.getSimilarArticles = async (theslug, subject)=>{
     return new Promise(async (resolve)=>{
 
         var cmpstring = theslug;
-        var beposts = await Post.find({subject: subject})
+        var beposts = await Post.find({subject: subject, isReviewedByAdmin: true})
 
         var similarArticles = [];
         for(var i=0; i<beposts.length; i++){

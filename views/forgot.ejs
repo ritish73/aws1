@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/forgot-page-css1.css">
     <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
-        <!-- <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"> -->
+        <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
     <title>Forgot-pass</title>
 </head>
 
@@ -30,7 +30,13 @@ nav img{
         <a href="/"><img src="/images/final_2.png" alt="" class="logo-top" ></a>
     </nav>
 
-  <h3><%=message%></h3>
+
+  <% if(successmessage.length){ %>
+    <h3 class="flash_bg_color"><%=successmessage%></h3>
+<% } else { %>
+  <h3 class="flash_bg_color"><%=errormessage%></h3>
+<% } %>
+
     <div class="container">
 
         <div class="form-container">
@@ -42,14 +48,9 @@ nav img{
 
                     <h2 class="title">Forgot password?</h2>
                     <div class="input-field">
-                        <i class="fas fa-user"></i>
+                        <i class="far fa-envelope"></i>
                     <input type="email" name="email" placeholder="Enter your email " required>
                     
-                    </div>
-
-                    <div class="input-field">
-                        <i class="fas fa-user"></i>
-                        <input type="email" name="recovery_email" placeholder="Enter your gmail where you will get the password reset link" required> 
                     </div>
 
                     <input type="submit" value="Submit" class="btn solid">

@@ -773,6 +773,7 @@ middlewareObj.helperGoogleAuth = async function(accessToken, refreshToken, profi
         newuser.google_id = profile.id
         newuser.google_email = profile.emails[0].value
         newuser.google_username = profile.name.givenName + profile.name.familyName;
+        newuser.isVerified = true;
         var numberofusers = await User.countDocuments({})
         console.log("numberofusers : " ,numberofusers)
         newuser.bb_id = await numberofusers+1;
@@ -827,6 +828,7 @@ middlewareObj.helperFacebookAuth = async (accessToken, refreshToken, profile, do
               newUser.fb_username  = profile.name.givenName + profile.name.familyName; // look at the passport user profile to see how names are returned
               newUser.fb_email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
               newUser.bb_id = await numberofusers+1;
+              newUser.isVerified = true;
               newUser.password = await bcrypt.hash('PaSs',8);
               // newUser.gender = profile.gender
               // newUser.pic = profile.photos[0].value

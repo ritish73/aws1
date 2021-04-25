@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const moment = require("moment");
 const User = require('../models/user.js')
 const check = async (req,res,next)=>{
 
@@ -8,6 +9,10 @@ const check = async (req,res,next)=>{
 
             if(req.user.fb_id || req.user.google_id){
                 if(req.isAuthenticated()){
+                    const user = await User.findById(req.user._id)
+                    if(!user) throw new Error('No user found');
+                    user.last_seen = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    await user.save();
                     res.locals.currentUser = await req.user;
                     next();
                 } else{
@@ -31,17 +36,18 @@ const check = async (req,res,next)=>{
                         // await console.log("user is found : " ,founduser);
                     }
                 });
-                if(user.deleted === true){
-                    throw new Error('you are no longer a user! Please sign-up')
-                }
+                
                 if(!user){
                     next();
                 } else {
-
+                    console.log(moment().format('MMMM Do YYYY, h:mm:ss a'))
+                    user.last_seen = moment().format('MMMM Do YYYY, h:mm:ss a');
+                    await user.save()
                     req.user = await user;
                     res.locals.currentUser = await req.user;
                     // console.log("inside check user added to currentUser : ", res.locals.currentUser);
                     req.token = await token;
+                    
                     // console.log("req.user before " , req.user, user)
                     next();
                 }
@@ -50,8 +56,9 @@ const check = async (req,res,next)=>{
             
         }
     }catch(e){
-        console.log("in auth catch")
+        console.log(e.message)
         // req.flash('error',e)
+        // req.flash('error',e.message)
         res.redirect('/register_or_login')
         // res.status(401).send({error: "please authenticate with correct creds"})
     }

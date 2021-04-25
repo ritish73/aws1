@@ -88,11 +88,11 @@
                 </form>
                 <div><button onclick="deletePost(this)" getpost="<%=posts[i].slug%>" >delete post</button></div>
             <% } %>
-            <a href="/posts/<%=posts[i+1].subject%>/<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
+            <a href="/posts/<%=posts[i].subject%>/<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
             <ul class="btns-on-blogcard">
                 <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
                 <button onclick="like(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span onclick="count(this)" class="count" id="likecount" ><%=posts[i].likes%></span></li></button>
-                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/<%=posts[i+1].subject%>/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
+                <a href="https://api.whatsapp.com/send?text=<%=hostname%>/posts/<%=posts[i].subject%>/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
          
                 <span></span>
             </ul>

@@ -48,12 +48,289 @@ var upload = multer({
 
 
 
+router.get("/general-search/:subject", async (req,res)=>{
 
+  try{
+
+
+    var page = parseInt(req.query.page);
+    if(page<=0){
+      res.render("errorPage");
+    }
+
+
+    var popularposts = [];
+    var recommendedPosts = [];
+    var  tc=0,pc=0,rc=0;
+    var r = await Recommended.find({});
+    var array = [];
+    // console.log("r length : ", r.length)
+    for(var i=0; i<r.length; i++){
+      // console.log(r[i].rank)
+      array.push(r[i].rank);
+    }
+
+
+
+    // if empty string return error
+    if(!req.query.search) throw new Error('No matches found, please try again!')
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
+    await Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], isReviewedByAdmin: true}, async function(err,allposts){
+      try{
+
+        console.log("sscscs",allposts)
+
+      if(err) throw new Error(err)
+      if(allposts.length<1){
+        
+        throw new Error('No matches found, please try again!')
+      }
+    
+
+
+      await Recommended.find({subject: req.params.subject}).populate('post').exec(async (err,posts)=>{
+        if(err) res.send(err)
+        else{
+          recommendedPosts = posts;
+          console.log("recommended posts : " ,posts)
+          // rc = posts.length;
+          rc = (posts.length>=3)?3:posts.length;
+        }
+      })
+      await Popular.find({subject: req.params.subject}).populate("post").exec(async (err,posts)=>{
+        if(err) console.log(err)
+        else{
+          popularposts = await posts;
+          pc = posts.length
+          pc = (posts.length>=3)?3:posts.length;
+        }
+      })
+
+
+
+      await Trending.find({subject: req.params.subject}).populate('post').exec((err,trendingPosts)=>{
+        if(err) console.log(err)
+        else {
+
+
+          tc = trendingPosts.length;
+          tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+          let pageoffset = 0;
+          let len = allposts.length;
+          let val = pageoffset*10;
+          let limit=0;
+          var page = parseInt(req.query.page);
+          var nextpage = page+1;
+
+          console.log("next",nextpage, " page : ",page)
+          let start = val;
+          var showsidebox=true, shownextbutton=false;
+          // impoertant
+          // len-val gives number of cards to be shown on a particular page
+          if(len-val <= 2){
+            showsidebox=false;
+          }
+          if(len-val>10){
+            shownextbutton=true;
+          }
+          if(len-val <= 9){
+             limit = len-1;
+          } else {
+            limit = val+9;
+          }
+
+
+          console.log(tc,rc,pc)
+          res.render(req.params.subject, {
+            posts: allposts, 
+      
+            message: req.flash('success'), 
+            trendingPosts: trendingPosts, 
+            popularPosts: popularposts, 
+            recommendedPosts: recommendedPosts,
+            start: start, 
+            limit: limit,
+            nextpage: nextpage,
+            page:page,
+            showsidebox:showsidebox,
+            shownextbutton: shownextbutton,
+            array: array,
+            trendingCount: tc,
+            recommendedCount: rc,
+            popularCount: pc
+          });
+        }
+      })
+
+
+
+
+      } catch(e){
+        req.flash('error', e.message);
+    res.redirect("/posts/" + req.params.subject + "?page=1" );
+      }
+      
+
+
+
+    })
+
+  } catch(e){
+    req.flash('error', e.message);
+    res.redirect("/posts/" + req.params.subject + "?page=1");
+  }
+})
+
+
+
+
+
+
+
+router.get("/general-search/:slug/:subject", async (req,res)=>{
+
+  try{
+
+
+    var page = parseInt(req.query.page);
+    if(page<=0){
+      res.render("errorPage");
+    }
+
+
+    var popularposts = [];
+    var recommendedPosts = [];
+    var  tc=0,pc=0,rc=0;
+    var r = await Recommended.find({});
+    var array = [];
+    // console.log("r length : ", r.length)
+    for(var i=0; i<r.length; i++){
+      // console.log(r[i].rank)
+      array.push(r[i].rank);
+    }
+
+
+
+    // if empty string return error
+    if(!req.query.search) throw new Error('No matches found, please try again!')
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi') 
+    await Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], isReviewedByAdmin: true}, async function(err,allposts){
+      try{
+
+        console.log("sscscs",allposts)
+
+      if(err) throw new Error(err)
+      if(allposts.length<1){
+        
+        throw new Error('No matches found, please try again!')
+      }
+    
+
+
+      await Recommended.find({subject: req.params.subject}).populate('post').exec(async (err,posts)=>{
+        if(err) res.send(err)
+        else{
+          recommendedPosts = posts;
+          console.log("recommended posts : " ,posts)
+          // rc = posts.length;
+          rc = (posts.length>=3)?3:posts.length;
+        }
+      })
+      await Popular.find({subject: req.params.subject}).populate("post").exec(async (err,posts)=>{
+        if(err) console.log(err)
+        else{
+          popularposts = await posts;
+          pc = posts.length
+          pc = (posts.length>=3)?3:posts.length;
+        }
+      })
+
+
+
+      await Trending.find({subject: req.params.subject}).populate('post').exec((err,trendingPosts)=>{
+        if(err) console.log(err)
+        else {
+
+
+          tc = trendingPosts.length;
+          tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+          let pageoffset = 0;
+          let len = allposts.length;
+          let val = pageoffset*10;
+          let limit=0;
+          var page = parseInt(req.query.page);
+          var nextpage = page+1;
+
+          console.log("next",nextpage, " page : ",page)
+          let start = val;
+          var showsidebox=true, shownextbutton=false;
+          // impoertant
+          // len-val gives number of cards to be shown on a particular page
+          if(len-val <= 2){
+            showsidebox=false;
+          }
+          if(len-val>10){
+            shownextbutton=true;
+          }
+          if(len-val <= 9){
+             limit = len-1;
+          } else {
+            limit = val+9;
+          }
+
+
+          console.log(tc,rc,pc)
+          res.render(req.params.subject, {
+            posts: allposts, 
+      
+            message: req.flash('success'), 
+            trendingPosts: trendingPosts, 
+            popularPosts: popularposts, 
+            recommendedPosts: recommendedPosts,
+            start: start, 
+            limit: limit,
+            nextpage: nextpage,
+            page:page,
+            showsidebox:showsidebox,
+            shownextbutton: shownextbutton,
+            array: array,
+            trendingCount: tc,
+            recommendedCount: rc,
+            popularCount: pc
+          });
+        }
+      })
+
+
+
+
+      } catch(e){
+        req.flash('error', e.message);
+    res.redirect("/posts/" + req.params.subject + "/" + req.params.slug);
+      }
+      
+
+
+
+    })
+
+  } catch(e){
+    req.flash('error', e.message);
+    res.redirect("/posts/" + req.params.subject + "/" + req.params.slug);
+  }
+})
 
 
 
 
 router.get("/business-economics", check ,async (req,res)=>{
+  var page = parseInt(req.query.page);
+  // check if page is a number only
+  if(!(/^\d+$/.test(page)) || Math.sign(page) === -1){
+    res.render("errorPage")
+  }
+ 
+
   var popularposts = [];
   var recommendedPosts = [];
   var  tc=0,pc=0,rc=0;
@@ -83,74 +360,102 @@ router.get("/business-economics", check ,async (req,res)=>{
       pc = (posts.length>=3)?3:posts.length;
     }
   })
+  console.log("nn",req.query.search)
 
   if(req.query.search){
+    console.log("qq",req.query.search)
     if(!req.query.page){
       req.query.page = 1;
     }
     var noMatch;
 // gives search results on author name, content and title of the post
+    // check if search query has white spaces or is empty
     const regex = await new RegExp(escapeRegex(req.query.search), 'gi') 
-    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "business-economics", isReviewedByAdmin: true}, function(err,allposts){
+    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], isReviewedByAdmin: true}, function(err,allposts){
       if(err) res.send(err)
       else{
-        
-        if(allposts.length<1){
-          noMatch = "No posts matched the search results , please try again"
-        }
-        Trending.find({subject: 'business-economics'}).populate('post').exec((err,trendingPosts)=>{
-          if(err) console.log(err)
-          else {
+      
+
+        try{
 
 
-            tc = trendingPosts.length;
-            tc = (trendingPosts.length>=3)?3:trendingPosts.length;
-            let pageoffset = req.query.page-1;
-            let len = allposts.length;
-            let val = pageoffset*10;
-            let limit=0;
-            var page = parseInt(req.query.page);
-            var nextpage = page+1;
-
-            console.log("next",nextpage, " page : ",page)
-            let start = val;
-            var showsidebox=true, shownextbutton=false;
-            // impoertant
-            // len-val gives number of cards to be shown on a particular page
-            if(len-val <= 2){
-              showsidebox=false;
-            }
-            if(len-val>10){
-              shownextbutton=true;
-            }
-            if(len-val <= 9){
-               limit = len-1;
-            } else {
-              limit = val+9;
-            }
 
 
-            console.log(tc,rc,pc)
-            res.render("business-economics", {
-              posts: allposts, 
-              noMatch: noMatch, 
-              message: req.flash('success'), 
-              trendingPosts: trendingPosts, 
-              popularPosts: popularposts, 
-              recommendedPosts: recommendedPosts,
-              start: start, 
-              limit: limit,
-              nextpage: nextpage,
-              page:page,
-              showsidebox:showsidebox,
-              shownextbutton: shownextbutton,
-              array: array,
-              trendingCount: tc,
-              recommendedCount: rc,
-              popularCount: pc
-            });
+
+
+
+          if(allposts.length<1){
+            throw new Error('No matches found, please try again!')
           }
-        })
+          Trending.find({subject: 'business-economics'}).populate('post').exec((err,trendingPosts)=>{
+            if(err) console.log(err)
+            else {
+  
+             
+  
+  
+  
+                tc = trendingPosts.length;
+              tc = (trendingPosts.length>=3)?3:trendingPosts.length;
+              let pageoffset = req.query.page-1;
+              let len = allposts.length;
+              let val = pageoffset*10;
+              let limit=0;
+              var page = parseInt(req.query.page);
+              var nextpage = page+1;
+  
+              console.log("next",nextpage, " page : ",page)
+              let start = val;
+              var showsidebox=true, shownextbutton=false;
+              // impoertant
+              // len-val gives number of cards to be shown on a particular page
+              if(len-val <= 2){
+                showsidebox=false;
+              }
+              if(len-val>10){
+                shownextbutton=true;
+              }
+              if(len-val <= 9){
+                 limit = len-1;
+              } else {
+                limit = val+9;
+              }
+  
+  
+              console.log(tc,rc,pc)
+              res.render("business-economics", {
+                posts: allposts, 
+                noMatch: noMatch, 
+                message: req.flash('success'), 
+                trendingPosts: trendingPosts, 
+                popularPosts: popularposts, 
+                recommendedPosts: recommendedPosts,
+                start: start, 
+                limit: limit,
+                nextpage: nextpage,
+                page:page,
+                showsidebox:showsidebox,
+                shownextbutton: shownextbutton,
+                array: array,
+                trendingCount: tc,
+                recommendedCount: rc,
+                popularCount: pc
+              })
+            }
+          })
+
+
+
+
+
+        }catch(e){
+
+          req.flash('error',e.message);
+          res.redirect("/posts/business-economics?page=1")
+
+        }
+
+        
         
       }
     })
@@ -228,6 +533,12 @@ router.get("/business-economics", check ,async (req,res)=>{
 
 
 router.get("/commerce", check ,async (req,res)=>{
+
+  var page = parseInt(req.query.page);
+  // check if page is a number only
+  if(!(/^\d+$/.test(page)) || Math.sign(page) === -1){
+    res.render("errorPage")
+  }
   var popularposts = [];
   var recommendedPosts = [];
   var  tc=0,pc=0,rc=0;
@@ -265,12 +576,14 @@ router.get("/commerce", check ,async (req,res)=>{
     var noMatch;
 // gives search results on author name, content and title of the post
     const regex = await new RegExp(escapeRegex(req.query.search), 'gi') 
-    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "commerce", isReviewedByAdmin: true}, function(err,allposts){
+    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], isReviewedByAdmin: true}, function(err,allposts){
       if(err) res.send(err)
       else{
+
+        try{
         
         if(allposts.length<1){
-          noMatch = "No posts matched the search results , please try again"
+          throw new Error('No matches found, please try again!')
         }
         Trending.find({subject: 'commerce'}).populate('post').exec((err,trendingPosts)=>{
           if(err) console.log(err)
@@ -325,6 +638,14 @@ router.get("/commerce", check ,async (req,res)=>{
             });
           }
         })
+
+
+      }catch(e){
+
+        req.flash('error',e.message);
+        res.redirect("/posts/commerce?page=1")
+
+      }
         
       }
     })
@@ -405,6 +726,12 @@ router.get("/commerce", check ,async (req,res)=>{
 
 
 router.get("/engineering", check ,async (req,res)=>{
+
+  var page = parseInt(req.query.page);
+  // check if page is a number only
+  if(!(/^\d+$/.test(page)) || Math.sign(page) === -1){
+    res.render("errorPage")
+  }
   var popularposts = [];
   var recommendedPosts = [];
   var  tc=0,pc=0,rc=0;
@@ -442,12 +769,14 @@ router.get("/engineering", check ,async (req,res)=>{
     var noMatch;
 // gives search results on author name, content and title of the post
     const regex = await new RegExp(escapeRegex(req.query.search), 'gi') 
-    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "engineering", isReviewedByAdmin: true}, function(err,allposts){
+    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], isReviewedByAdmin: true}, function(err,allposts){
       if(err) res.send(err)
       else{
+
+        try{
         
         if(allposts.length<1){
-          noMatch = "No posts matched the search results , please try again"
+          throw new Error('No matches found, please try again!')
         }
         Trending.find({subject: 'engineering'}).populate('post').exec((err,trendingPosts)=>{
           if(err) console.log(err)
@@ -502,6 +831,14 @@ router.get("/engineering", check ,async (req,res)=>{
             });
           }
         })
+
+
+      }catch(e){
+
+        req.flash('error',e.message);
+        res.redirect("/posts/engineering?page=1")
+
+      }
         
       }
     })
@@ -575,6 +912,12 @@ router.get("/engineering", check ,async (req,res)=>{
 
 
 router.get("/personality-development", check ,async (req,res)=>{
+
+  var page = parseInt(req.query.page);
+  // check if page is a number only
+  if(!(/^\d+$/.test(page)) || Math.sign(page) === -1){
+    res.render("errorPage")
+  }
   var popularposts = [];
   var recommendedPosts = [];
   var  tc=0,pc=0,rc=0;
@@ -611,12 +954,14 @@ router.get("/personality-development", check ,async (req,res)=>{
     var noMatch;
 // gives search results on author name, content and title of the post
     const regex = await new RegExp(escapeRegex(req.query.search), 'gi') 
-    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], subject: "personality-development", isReviewedByAdmin: true}, function(err,allposts){
+    Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], isReviewedByAdmin: true}, function(err,allposts){
       if(err) res.send(err)
       else{
+
+        try{
         
         if(allposts.length<1){
-          noMatch = "No posts matched the search results , please try again"
+          throw new Error('No matches found, please try again!')
         }
         Trending.find({subject: 'personality-development'}).populate('post').exec((err,trendingPosts)=>{
           if(err) console.log(err)
@@ -671,6 +1016,13 @@ router.get("/personality-development", check ,async (req,res)=>{
             });
           }
         })
+
+      }catch(e){
+
+        req.flash('error',e.message);
+        res.redirect("/posts/engineering?page=1")
+
+      }
         
       }
     })
@@ -774,7 +1126,7 @@ router.get("/personality-development", check ,async (req,res)=>{
 //       else{
         
 //         if(allposts.length<1){
-//           noMatch = "No posts matched the search results , please try again"
+//           noMatch = "No matches found, please try again!"
 //         }
 //         Trending.find({subject: 'commerce'},(err,trendingPosts)=>{
 //           if(err) console.log(err)
@@ -829,7 +1181,7 @@ router.get("/personality-development", check ,async (req,res)=>{
 //       else{
         
 //         if(allposts.length<1){
-//           noMatch = "No posts matched the search results , please try again"
+//           noMatch = "No matches found, please try again!"
 //         }
 //         Trending.find({subject: 'engineering'},(err,trendingPosts)=>{
 //           if(err) console.log(err)
@@ -882,7 +1234,7 @@ router.get("/personality-development", check ,async (req,res)=>{
 //       else{
         
 //         if(allposts.length<1){
-//           noMatch = "No posts matched the search results , please try again"
+//           noMatch = "No matches found, please try again!"
 //         }
 //         Trending.find({subject: 'personality-development'},(err,trendingPosts)=>{
 //           if(err) console.log(err)
@@ -1004,6 +1356,10 @@ router.get("/personality-development", check ,async (req,res)=>{
 
 // show page of an commerce blog
 router.get("/business-economics/:slug", check , async function(req,res){
+
+  // first check whether slug exists or not
+  var post = await Post.findOne({slug: req.params.slug});
+  if(!post) res.render("errorPage");
   var rc=0,tc=0,pc=0;
   await showObj.recordViews(req).then((v)=>{
     console.log(v)
@@ -1059,6 +1415,9 @@ router.get("/business-economics/:slug", check , async function(req,res){
 // show page of an commerce blog
 router.get("/commerce/:slug", check , async function(req,res){
 
+  var post = await Post.findOne({slug: req.params.slug});
+  if(!post) res.render("errorPage");
+
   await showObj.recordViews(req).then((v)=>{
     console.log(v)
   })
@@ -1111,6 +1470,9 @@ router.get("/commerce/:slug", check , async function(req,res){
 
 // show page of an commerce blog
 router.get("/engineering/:slug", check , async function(req,res){
+
+  var post = await Post.findOne({slug: req.params.slug});
+  if(!post) res.render("errorPage");
 
   await showObj.recordViews(req).then((v)=>{
     console.log(v)
@@ -1166,6 +1528,9 @@ router.get("/engineering/:slug", check , async function(req,res){
 
 // show page of an commerce blog
 router.get("/personality-development/:slug", check , async function(req,res){
+
+  var post = await Post.findOne({slug: req.params.slug});
+  if(!post) res.render("errorPage");
 
   await showObj.recordViews(req).then((v)=>{
     console.log(v)
@@ -1383,7 +1748,9 @@ router.get("/allblogs",(req,res)=>{
 })
 
 
-
+router.get("*", async (req,res)=>{
+  res.render("errorPage");
+})
 
 
 function convertDate(given_date){

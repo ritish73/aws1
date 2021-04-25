@@ -10,21 +10,6 @@
     <link rel="stylesheet" href="/stylesheets/delete_pop.css">
     <!-- <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css"> -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script>
-      $(document).ready(function(){
-        $('.click').click(function(){
-          $('.popup_box').css("display", "block");
-        });
-        $('.btn1').click(function(){
-          $('.popup_box').css("display", "none");
-        });
-        $('.btn2').click(function(){
-          $('.popup_box').css("display", "none");
-          alert("Account Permanently Deleted.");
-        });
-      });
-
-    </script>
 
 
     
@@ -38,9 +23,7 @@
             padding-left: 20px;
         }
     </style>
-    <% if(successmessage){ %>
-        <h2 id="messagebox"><%=successmessage%></h2>
-    <% } %>
+    
     
   
     <input type="checkbox" id="sidebar-toggle">
@@ -128,6 +111,33 @@
                     
                     <div></div>
                 </div>
+
+
+                
+<% if(successmessage.length || errormessage.length){ %>
+    <div class="alert show showAlert">
+        <span class="fas fa-exclamation-circle"></span>
+        <% if(successmessage.length){ %>
+            <span id="success-message-color" class="msg-alert"><%=successmessage%></span>
+        <% } else if(errormessage.length) { %>
+            <span id="error-message-color" class="msg-alert"><%=errormessage%></span>
+        <% } %>
+        <div class="close-btn">
+          <span class="ti-close"></span>
+        </div>
+    </div>
+    <% } else{ %>
+        <div class="alert hide">
+            <span class="fas fa-exclamation-circle"></span>
+            <span class="msg-alert"></span>
+            <div class="close-btn">
+              <span class="ti-close"></span>
+            </div>
+        </div>
+    <% } %>
+
+
+
             </header>
 
             <main>
@@ -185,6 +195,17 @@
                         <h3 class="heading-top" id="ending">PERSONAL INFO</h3>
 
                         <form action="/updateUser" method="POST" class="sign-in-form">
+
+
+
+                            <div class="profile-pic-div">
+                                <img src="/images/so.jpeg" id="photo">
+                                <input type="file" id="file">
+                                <label for="file" id="uploadBtn">Edit profile pic</label>
+                            </div>
+
+
+
                             <!-- <h2 class="title">Personal info</h2> -->
                             <h3>Username</h3>
                             <div class="input-field">
@@ -213,16 +234,17 @@
                             <div class="input-field">
                                 <i class="fas fa-envelope"></i>
                                 <% if(currentUser.google_id){ %>
-                                    <input type="text" name="email" value="<%=currentUser.google_email%>" readonly >
+                                    <input type="text" class = "check-change-mailg" name="email" value="<%=currentUser.google_email%>" readonly>
     
                                 <% } else if(currentUser.fb_id){ %>
-                                    <input type="text" name="email" value="<%=currentUser.fb_email%>" readonly>
+                                    <input type="text" class = "check-change-mailf" name="email" value="<%=currentUser.fb_email%>" readonly>
     
                                 <% } else { %>
-                                    <input type="text" name="email" value="<%=currentUser.email%>" readonly>
+                                    <input type="text" class = "check-change-mail" name="email" value="<%=currentUser.email%>" readonly>
                                 <% } %>
                             
                             </div>
+                            <p id="error-message"></p>
         
                             <h3>Password</h3>
                             <div class="input-field">
@@ -236,12 +258,12 @@
                             <h3>Gender</h3>
                             <% if(currentUser.gender == undefined || !currentUser.gender){ %>
 
-                                <select name="gender" class="option" readonly>
+                                <select name="gender" class="option">
                                     <i class="fas fa-user-tie"></i>
-                                    <option selected="selected" readonly><%=currentUser.gender%> </option>
-                                    <option value="Male" readonly>Male</option>
-                                    <option value="Female" readonly>Female</option>
-                                    <option value="Others" readonly>Others</option>
+                                    <option value="">--Please choose an option--</option>
+                                    <option value="Male" >Male</option>
+                                    <option value="Female" >Female</option>
+                                    <option value="Others" >Others</option>
                                 </select>
 
                             <% } else { %>
@@ -249,42 +271,63 @@
                                 <select name="gender" class="option" value="<%=currentUser.gender%>" readonly>
                                     <i class="fas fa-user-tie"></i>
                                     <option selected="selected" readonly><%=currentUser.gender%></option>
-                                    <option value="Male" readonly>Male</option>
-                                    <option value="Female" readonly>Female</option>
-                                    <option value="Others" readonly>Others</option>
+                                    
                                 </select>
 
                             <% } %>
                            
                              
         
-                            <h3>Year of Birth</h3>
+                            <h3>Date of Birth</h3>
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
                             <% if(getdob === undefined){ %>
-                                <input type="date" placeholder="Date of birth" name = "dob" >
+                                <input type="date" placeholder="Date of birth" min="1920-12-31" max="2021-12-31" name = "dob" >
                             <% } else { %>
-                                <input type="date" placeholder="Date of birth" name = "dob" value="<%= getdob %>" >
+                                <input type="date" placeholder="Date of birth"  min="1920-12-31" max="2021-12-31" name = "dob" value="<%= getdob %>" readonly>
                             <% } %>
                             
                             </div>
 
-                            <!-- <h3>Country</h3>
-                            <div class="input-field">
-                                <i class="fas fa-lock"></i>
-                            <input type="text" name="" id="">
-                           
-                            </div> -->
-                            <% if(currentUser.role === 'author' || currentUser.role == 'admin'){ %>
+                            
+                            
                             <h3>Profession</h3>
                             <select name="profession" class="option" id="" >
                             <i class="fas fa-user-tie"></i>
-                            <option selected="selected" ><%=currentUser.profession%></option>
-                            <option value="Self earning">Self earning</option>
-                            <option value="Student">Student</option>
-                            <option value="Others">Others</option>
-                            </select>  
+                            <% if(currentUser.profession === 'Self Earning'){ %>
+
+                                <option selected value="Self Earning">Self Earning</option>
+                                <option value="Student">Student</option>
+                                <option value="Others">Others</option>
+
+                            <% } else if(currentUser.profession === 'Student'){ %>
+
+                                <option value="Self Earning">Self Earning</option>
+                                <option selected value="Student">Student</option>
+                                <option value="Others">Others</option>
+
+                            <% } else if(currentUser.profession === 'Others'){ %>
+
+                                <option value="Self Earning">Self Earning</option>
+                                <option value="Student">Student</option>
+                                <option selected value="Others">Others</option>
+
+                            <% } else if(currentUser.profession === ''){ %>
+
+                                <option selected value="">--Please choose an option--</option>
+                                <option value="Self Earning">Self Earning</option>
+                                <option value="Student">Student</option>
+                                <option value="Others">Others</option>
+
+                            <% } else { %>
+                                <option value="">--Please choose an option--</option>
+                                <option value="Self Earning">Self Earning</option>
+                                <option value="Student">Student</option>
+                                <option value="Others">Others</option>
                             <% } %>
+                            
+                            </select>  
+                            
                             
                             <div class="input-field">
                                 <i class="fas fa-lock"></i>
@@ -366,10 +409,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="image-dash">
+                        <!-- <div class="image-dash">
                             <img class="dash-image-person" src="/images/97 (2) - Copy.png" alt="" height="600px" width="270px">
                         
-                        </div>
+                        </div> -->
 
                     </div>                    
                     </div>
@@ -379,32 +422,13 @@
 
 </body>
 
-<script>
-var httpRequest;
-function deleteAccount(e){
-    
-    httpRequest = new XMLHttpRequest();
-    if (!httpRequest) {
-        alert('Giving up :( Cannot create an XMLHTTP instance');
-        return false;
-    }
-    httpRequest.onreadystatechange = deleteAccountRequest;
-    httpRequest.open('GET', '/delete');        
-    httpRequest.send();   
-    
-}
 
-function deleteAccountRequest(){
-    if (httpRequest.readyState === XMLHttpRequest.DONE) {
-        if (httpRequest.status === 200) {
-            // let respJson = JSON.parse(httpRequest.responseText);
-            window.location = '/logout';
-        } else {
-            alert('There was a problem with the request.');
-        }
-    }
-}
+<script src="/javascripts/dashboard-profile-pic.js"></script>
 
-</script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="/javascripts/dashboard.js"></script>
+<script src="/javascripts/pop-alert.js">  </script>
+
+
     
 </html>

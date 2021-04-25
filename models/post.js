@@ -30,12 +30,18 @@ var postSchema = new mongoose.Schema({
   isReviewedByAuditor: {type: Boolean, default: false},
   filename: {type: String},
   deleted: {type: Boolean, default: false},
+
+  comments: [ {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Comment"
+  } ],
+
   author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
   },
   authorName: String,
-
+  authorLinkedIn: String,
   publishDate:{
     type: Date
   },

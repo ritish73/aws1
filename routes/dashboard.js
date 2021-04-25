@@ -56,9 +56,22 @@ router.get("/showAllArticles", auth,  async (req,res)=>{
   
   
   router.get("/showSavedArticles", auth,  async (req,res)=>{
-    var getSavedArticles;
+
+
+
+    try{
+
+
+
+
+
+
+      var getSavedArticles;
     await dashboardObj.getSavedArticles(req)
     .then((SavedArticles)=>{
+      if(SavedArticles.length === 0){
+        throw new Error('You have not saved any article currently.')
+      }
       console.log("SavedArticles : ..............", SavedArticles)
       getSavedArticles = SavedArticles;
     })
@@ -93,16 +106,37 @@ router.get("/showAllArticles", auth,  async (req,res)=>{
       nextpage: nextpage,
       page:page,
       shownextbutton: shownextbutton
-    });
+    })
+
+
+
+
+
+
+    } catch(e){
+
+      req.flash('error', e.message);
+        res.redirect('/dashboard');
+
+    }
+
   
   })
   
   
   
   router.get("/showSharedArticles", auth,  async (req,res)=>{
-    var getSharedArticles;
+
+    try{
+
+
+
+      var getSharedArticles;
     await dashboardObj.getSharedArticles(req)
     .then((SharedArticles)=>{
+      if(SharedArticles.length === 0){
+        throw new Error('You have not shared any article.')
+      }
       console.log("SharedArticles : ..............", SharedArticles)
       getSharedArticles = SharedArticles;
     })
@@ -137,6 +171,17 @@ router.get("/showAllArticles", auth,  async (req,res)=>{
       page:page,
       shownextbutton: shownextbutton
     });
+
+
+
+
+    } catch(e){
+
+      req.flash('error', e.message)
+        res.redirect("/dashboard");
+      
+    }
+    
   
   })
   

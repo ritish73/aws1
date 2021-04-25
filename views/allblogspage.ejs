@@ -4,73 +4,264 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/all-sections-blog-page.css">
-    <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
-    <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png"> 
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>All sections</title>
+
+
+    <script>
+		$(document).ready(function(){
+			$(".profile .icon_wrap").click(function(){
+			  $(this).parent().toggleClass("active");
+			  $(".notifications").removeClass("active");
+			});
+
+			$(".notifications .icon_wrap").click(function(){
+			  $(this).parent().toggleClass("active");
+			   $(".profile").removeClass("active");
+			});
+
+			$(".show_all .link").click(function(){
+			  $(".notifications").removeClass("active");
+			  $(".popup").show();
+			});
+
+			$(".close").click(function(){
+			  $(".popup").hide();
+			});
+		});
+	</script>
+
 </head>
-
-
-<style>
-    .details p{
-        color: white;
-    }
-</style>
-
 <body>
 
-    <div class="horz-top-nav-bar">
-        <a href="/"><div class="nav-bar">
+
+
+    <header>
+
+        <div class="top-horiz-bar">
+
+
+            <a href="/"><div class="logo-section-in-bar">
+                <img class="top-img-logo" src="/images/final_2.png" alt="logo-pic" height="60rem" width="60rem">
+                <img class="top-img2-logo" src="/images/5.png" alt="logo-pic" height="60rem" width="145rem">
+            </div>    
+            </a>
+
+    
+            <div class="other-icons">
+
+                
+                <div class="wrapper">
+                    <div class="navbar">
+                  
+                      <div class="navbar_right">
+                  
+                        <div class="profile">
+                          <div class="icon_wrap">
+                            
+      
+      
+                            <% if(currentUser && currentUser.isVerified  && !currentUser.deleted){ %>
+      
+                              <% if(currentUser.google_id){ %>
+                                <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+      
+                                <!-- <span class="name"> <%= currentUser.google_username.substring(0,8)%></span> -->
+                            
+                            <i class="fas fa-chevron-down"></i>
+                          </div>
+                  
+                          <div class="profile_dd">
+                            <ul class="profile_ul">
+                              <!-- <li class="profile_li"><a class="profile" href="#"><span class="picon"><i class="fas fa-user-alt"></i>
+                                  </span></a>
+                                 <div class="btn">My Account</div> 
+                              </li> -->
+                              <li><a class="my-account" href="/dashboard"><span class="picon"><i class="fas fa-user"></i></span>My Account</a></li>
+                              <li><a class="saved-later-post" href="/showSavedArticles?page=1"><span class="picon"><i class="fas fa-bookmark"></i></span>Saved to Later</a></li>
+                              <li><a class="logout" href="/logout"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+                            </ul>
+                          </div>
+      
+                          <% } else if(currentUser.fb_id){ %>
+                            <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                            
+                            <!-- <span class="name"> <%= currentUser.fb_username.substring(0,8)%></span> -->
+                            <i class="fas fa-chevron-down"></i>
+                          </div>
+                  
+                          <div class="profile_dd">
+                            <ul class="profile_ul">
+                              <!-- <li class="profile_li"><a class="profile" href="#"><span class="picon"><i class="fas fa-user-alt"></i>
+                                  </span></a>
+                                 <div class="btn">My Account</div> 
+                              </li> -->
+                              <li><a class="my-account" href="/dashboard"><span class="picon"><i class="fas fa-user"></i></span>My Account</a></li>
+                              <li><a class="saved-later-post" href="/showSavedArticles?page=1"><span class="picon"><i class="fas fa-bookmark"></i></span>Saved to Later</a></li>
+                              <li><a class="logout" href="/logout"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+                            </ul>
+                          </div>
+      
+                          <% } else { %>
+      
+                            <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                            <!-- <span class="name"> <%= currentUser.username.substring(0,8)%></span> -->
+                            <i class="fas fa-chevron-down"></i>
+                          </div>
+                  
+                          <div class="profile_dd">
+                            <ul class="profile_ul">
+                              <!-- <li class="profile_li"><a class="profile" href="#"><span class="picon"><i class="fas fa-user-alt"></i>
+                                  </span></a>
+                                 <div class="btn">My Account</div> 
+                              </li> -->
+                              <li><a class="my-account" href="/dashboard"><span class="picon"><i class="fas fa-user"></i></span>My Account</a></li>
+                              <li><a class="saved-later-post" href="/showSavedArticles?page=1"><span class="picon"><i class="fas fa-bookmark"></i></span>Saved to Later</a></li>
+                              <li><a class="logout" href="/logout"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+                            </ul>
+                          </div>
+      
+      
+                            <% } %>
+      
+      
+                          <% } else { %>
+      
+                            <a href="/register_or_login"><span class="name" >Sign-in</span></a>
+                          </div>
+      
+                            <% } %>
+      
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                  </div>
+
+
+            </div>
+    
+        </div>
+</header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <div class="horz-top-nav-bar">
+        <div class="nav-bar">
             <img src="/images/final_2.png" alt="" class="logo-top" height="50px" width="50px">
-        </div></a>
-        <!-- <div class="sign-in-up">
-            <p>sign-in/up</p>
-        </div> -->
-    </div>
+        </div>
+    </div> -->
+
 
     <div class="container">
 
-        <a href="/posts/engineering?page=1"><div class="box">
-            <img src="/images/engineering.png" alt="" class="model">
+    <div class="row">
 
-            <div class="details">
-                <!-- <img src="/images/131 (4) - Copy.png " alt="" class="logo" width="100px" style="height:auto;"> -->
-                <h3 id="heading">ENGINEERING</h3>
-                <p>Engineering is something which is challenging as well as exciting. It uses a complex blend of specialized knowledge, science, math, design, construction, and empiricism in order to build valuable products or services for society. Engineering drives innovation of technology and uses technology to create advancement around us.</p>
+        <a href="/posts/engineering?page=1">
+            <div class="card">
+                <div class="card-header">
+                    <h1>ENGINEERING</h1>
+                </div>
+                <div class="card-img">
+                    <img src="/images/2585513 - Copy.png" alt="engineering-pic" height="220px" width="200px">
+                </div>
+                <div class="card-body">
+                    <p>Engineering is something which is challenging as well as exciting. It uses a complex blend of specialized knowledge, science, math, design, construction, and empiricism in order to build valuable products or services for society. Engineering drives innovation of technology and uses technology to create advancement around us.</p>
+                </div>
             </div>
-        </div></a>
+        </a>
 
-        <a href="/posts/business-economics?page=1"><div class="box">
-            <img src="/images/business.png" alt="" class="model">
 
-            <div class="details">
-                <!-- <img src="/images/Untitled-12 (2).png " alt="" class="logo" width="100px" style="height:auto;"> -->
-                <h3 id="heading">BUSINESS & ECONOMICS</h3>
-                <p>Businesses foster innovation and competition. They are called the growth drivers of economy of a nation. Economics focuses on the behaviour and interactions of economic agents and how economies work. Both work so closely that it is impossible to evidently distinguish them in real life.</p>
+
+
+        <a href="/posts/business-economics?page=1">
+            <div class="card">
+                <div class="card-header">
+                    <h1>BUSINESS & ECONOMICS</h1>
+                </div>
+                <div class="card-img">
+                    <img src="/images/business.png" alt="engineering-pic" height="220px" width="200px">
+                </div>
+                <div class="card-body">
+                    <p>Businesses foster innovation and competition. They are called the growth drivers of economy of a nation. Economics focuses on the behaviour and interactions of economic agents and how economies work. Both work so closely that it is impossible to evidently distinguish them in real life.</p>
+                </div>
             </div>
-        </div></a>
+        </a>
 
-        <a href="/posts/commerce?page=1"><div class="box">
-            <img src="/images/commerce.png" alt="" class="model">
-            
 
-            <div class="details">
-                <h3 id="heading">COMMERCE</h3>
-                <!-- <img src="/images/97 (4) - Copy.png " alt="" class="logo" width="100px" style="height:auto;"> -->
-                <p> Commerce has contributed significantly towards the economic development of society and quality of life of people. It provides the necessary link between the producers and consumers of goods. Commerce paramounts to the buying and selling part of business and all the activities for successful flow of it. </p>
+
+
+        <a href="/posts/commerce?page=1">
+
+        <div class="card">
+            <div class="card-header">
+                <h1>COMMERCE</h1>
             </div>
-        </div></a>
-
-        <a href="/posts/personality-development?page=1"><div class="box">
-            <img src="/images/personality.png" alt="" class="model">
-
-            <div class="details">
-                <h3 id="heading">PERSONALITY DEVELOPMENT</h3>
-                <!-- <img src="/images/commerce-bg (4) - Copy.png " alt="" class="logo" width="100px" style="height:auto;"> -->
-                <p>Personality development plays an essential role not only in an individual’s professional but also personal lives. It makes an individual disciplined, punctual and an asset for his/her organization. It makes us look good and presentable but also helps us face the world with a smile.</p>
+            <div class="card-img">
+                <img src="/images/commerce.png" alt="engineering-pic" height="220px" width="200px">
             </div>
-        </div></a>
+            <div class="card-body">
+               <p>Commerce has contributed significantly towards the economic development of society and quality of life of people. It provides the necessary link between the producers and consumers of goods. Commerce paramounts to the buying and selling part of business and all the activities for successful flow of it.</p>
+            </div>
+        </div>
+    </a>
+
+
+
+    <a href="/posts/personality-development?page=1">
+        <div class="card">
+            <div class="card-header">
+                <h1>PERSONALITY DEVLOPMENT</h1>
+            </div>
+            <div class="card-img">
+                <img src="/images/personality.png" alt="engineering-pic" height="220px" width="200px">
+            </div>
+            <div class="card-body">
+               <p>Personality development plays an essential role not only in an individual’s professional but also personal lives. It makes an individual disciplined, punctual and an asset for his/her organization. It makes us look good and presentable but also helps us face the world with a smile.</p>
+            </div>
+        </div>
+
+    </a>
 
     </div>
+    </div>
+
+    
+
     
 </body>
+<script src="/javascripts/dropdownicontoggle.js"></script>
 </html>

@@ -141,6 +141,11 @@ function getUserId(req, res){
   return getAllCookies(req)['userId'];
 } 
 
+app.get("*", async (req,res)=>{
+  res.render("errorPage");
+})
+
+
 app.listen(3000, HOST , function(){
   console.log("server has started at 80", " with host as ", HOST);
 })

@@ -5,6 +5,64 @@
     <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
     <link rel="stylesheet" href="/stylesheets/personality-development.css">
     <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
+
+
+
+
+
+
+    
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/stylesheets/trying-search-box.css">
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".active").click(function(){
+                $(".search-boxx").toggle();
+                // $("input[type='text']").focus();
+            });
+        });
+        </script>
+
+
+
+
+
+	<script>
+		$(document).ready(function(){
+			$(".profile .icon_wrap").click(function(){
+			  $(this).parent().toggleClass("active");
+			  $(".notifications").removeClass("active");
+			});
+
+			$(".notifications .icon_wrap").click(function(){
+			  $(this).parent().toggleClass("active");
+			   $(".profile").removeClass("active");
+			});
+
+			$(".show_all .link").click(function(){
+			  $(".notifications").removeClass("active");
+			  $(".popup").show();
+			});
+
+			$(".close").click(function(){
+			  $(".popup").hide();
+			});
+		});
+	</script>
+
+
+
+
+
+
+
+
+
+
     <title>Blogs</title>
 </head>
 <body>
@@ -35,21 +93,163 @@
 
 
         <div class="other-icons">
-        <form method="get" action="/posts/personality-development">
-            <div class="search-box">
-                
-                <input id="search-font" class="search-txt" type="text" name="search" placeholder="Type to search">
-                <button class="search-btn" >
-                    <i class="fas fa-search"></i>
-                </button>
-            
-            </div>
-        </form>
         
-        <%- include('partials/toprightname.ejs') %>
-        </div>
+
+
+
+            
+            <div class="wrapper">
+                <div class="navbar">
+              
+                  <div class="navbar_right">
+              
+                    <div class="profile">
+                      <div class="icon_wrap">
+                        
+  
+  
+                        <% if(currentUser && currentUser.isVerified  && !currentUser.deleted){ %>
+  
+                          <% if(currentUser.google_id){ %>
+                            <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+  
+                            <!-- <span class="name"> <%= currentUser.google_username.substring(0,8)%></span> -->
+                        
+                        <i class="fas fa-chevron-down"></i>
+                      </div>
+              
+                      <div class="profile_dd">
+                        <ul class="profile_ul">
+                          <!-- <li class="profile_li"><a class="profile" href="#"><span class="picon"><i class="fas fa-user-alt"></i>
+                              </span></a>
+                             <div class="btn">My Account</div> 
+                          </li> -->
+                          <li><a class="my-account" href="/dashboard"><span class="picon"><i class="fas fa-user"></i></span>My Account</a></li>
+                          <li><a class="saved-later-post" href="/showSavedArticles?page=1"><span class="picon"><i class="fas fa-bookmark"></i></span>Saved to Later</a></li>
+                          <li><a class="logout" href="/logout"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+                        </ul>
+                      </div>
+  
+                      <% } else if(currentUser.fb_id){ %>
+                        <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                        
+                        <!-- <span class="name"> <%= currentUser.fb_username.substring(0,8)%></span> -->
+                        <i class="fas fa-chevron-down"></i>
+                      </div>
+              
+                      <div class="profile_dd">
+                        <ul class="profile_ul">
+                          <!-- <li class="profile_li"><a class="profile" href="#"><span class="picon"><i class="fas fa-user-alt"></i>
+                              </span></a>
+                             <div class="btn">My Account</div> 
+                          </li> -->
+                          <li><a class="my-account" href="/dashboard"><span class="picon"><i class="fas fa-user"></i></span>My Account</a></li>
+                          <li><a class="saved-later-post" href="/showSavedArticles?page=1"><span class="picon"><i class="fas fa-bookmark"></i></span>Saved to Later</a></li>
+                          <li><a class="logout" href="/logout"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+                        </ul>
+                      </div>
+  
+                      <% } else { %>
+  
+                        <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                        <!-- <span class="name"> <%= currentUser.username.substring(0,8)%></span> -->
+                        <i class="fas fa-chevron-down"></i>
+                      </div>
+              
+                      <div class="profile_dd">
+                        <ul class="profile_ul">
+                          <!-- <li class="profile_li"><a class="profile" href="#"><span class="picon"><i class="fas fa-user-alt"></i>
+                              </span></a>
+                             <div class="btn">My Account</div> 
+                          </li> -->
+                          <li><a class="my-account" href="/dashboard"><span class="picon"><i class="fas fa-user"></i></span>My Account</a></li>
+                          <li><a class="saved-later-post" href="/showSavedArticles?page=1"><span class="picon"><i class="fas fa-bookmark"></i></span>Saved to Later</a></li>
+                          <li><a class="logout" href="/logout"><span class="picon"><i class="fas fa-sign-out-alt"></i></span>Logout</a></li>
+                        </ul>
+                      </div>
+  
+  
+                        <% } %>
+  
+  
+                      <% } else { %>
+  
+                        <a href="/register_or_login"><span class="name" >Sign-in</span></a>
+                      </div>
+  
+                        <% } %>
+  
+                    </div>
+                  </div>
+                </div>
+                
+                
+              </div>
+
+
+
+
+
+              <form method="get" action="/posts/general-search/commerce?page=1">
+
+                <div class="final-search-box">
+                    <input type="text"  placeholder="Search Here..">
+                    
+                        <div class="icon">
+                        <button id="disable-search-btn" class="search-btn" >
+                            <span>&#9906;</span>
+                        </button>
+                        </div>
+                    
+                </div>
+                <style>
+                    .search-btn{
+                        outline: none;
+                        /* background: none; */
+                        /* text-decoration: none; */
+                        border: none;
+                    }
+                </style>
+
+                </form>
+
+
+
+
+
+                <% if(successmessage.length || errormessage.length){ %>
+                    <div class="alert show showAlert">
+                        <span class="fas fa-exclamation-circle"></span>
+                        <% if(successmessage.length){ %>
+                            <span id="success-message-color" class="msg-alert"><%=successmessage%></span>
+                        <% } else if(errormessage.length) { %>
+                            <span id="error-message-color" class="msg-alert"><%=errormessage%></span>
+                        <% } %>
+                        <div class="close-btn">
+                          <span class="fas fa-times"></span>
+                        </div>
+                    </div>
+                    <% } else{ %>
+                        <div class="alert hide">
+                            <span class="fas fa-exclamation-circle"></span>
+                            <span class="msg-alert"></span>
+                            <div class="close-btn">
+                              <span class="fas fa-times"></span>
+                            </div>
+                        </div>
+                    <% } %>
+
+
+
+            </div>
 
         </div>
+
+
+
+
+
+
 
         <%- include('partials/vertical_navbar.ejs') %>
 </header>
@@ -72,16 +272,16 @@
         <div class="column">
             <div class="blog-post">
             <div class="blog-post__img">
-            <img src="/uploads/img/posts/<%=posts[i].imagename%>" alt="<%=posts[i].imagename%>" class="blog-post__article-img">
+                <a href="/posts/personality-development/<%=posts[i].slug%>"><img src="/uploads/img/posts/<%=posts[i].imagename%>" alt="<%=posts[i].imagename%>" class="blog-post__article-img"></a>
             </div>
             <div class="blog-post__info">
             <div class="blog-post__date">
-                <span><%= posts[i].publishDate.toDateString()%></span>
+                <span><%= posts[i].publishDate.toDateString().substr(0,10)%> , <%=posts[i].publishDate.toDateString().substr(10,15)%></span>
                 <span><%= posts[i].publish_date %></span>
             </div>
             <div class="author-name">
                 <ul class="author-content">
-                    <button onclick="addFollower(this)" getauthor="<%= posts[i].authorName %>"> <li class="name-aut"><%= posts[i].authorName %>></li></button>
+                    <button onclick="addFollower(this)" getauthor="<%= posts[i].authorName %>"> <li class="name-aut"><%= posts[i].authorName.substr(0,10) %></li></button>
                     <button onclick="saveToLater(this)" getpost="<%=posts[i].slug%>"> <li class="save-to-later"><i class="fas fa-plus "></i></li></button>
                 </ul>
             </div>
@@ -123,16 +323,16 @@
             <div class="column">
                 <div class="blog-post">
                 <div class="blog-post__img">
-                <img src="/uploads/img/posts/<%=posts[i+1].imagename%>" alt="<%=posts[i+1].imagename%>" class="blog-post__article-img">
+                    <a href="/posts/peersonality-development/<%=posts[i].slug%>"><img src="/uploads/img/posts/<%=posts[i+1].imagename%>" alt="<%=posts[i+1].imagename%>" class="blog-post__article-img"></a>
                 </div>
                 <div class="blog-post__info">
                 <div class="blog-post__date">
-                    <span><%= posts[i+1].publishDate.toDateString()%></span>
+                    <span><%= posts[i+1].publishDate.toDateString().substr(0,10)%> , <%=posts[i+1].publishDate.toDateString().substr(10,15)%></span>
                     <span><%= posts[i+1].publish_date %></span>
                 </div>
                 <div class="author-name">
                     <ul class="author-content">
-                        <button onclick="addFollower(this)" getauthor="<%= posts[i+1].authorName %>" > <li class="name-aut"><%= posts[i+1].authorName %>></li></button>
+                        <button onclick="addFollower(this)" getauthor="<%= posts[i+1].authorName %>" > <li class="name-aut"><%= posts[i+1].authorName.substr(0,10) %></li></button>
                         <button onclick="saveToLater(this)" getpost="<%=posts[i+1].slug%>" > <li class="save-to-later"><i class="fas fa-plus "></i></li></button>
                     </ul>
                 </div>
@@ -201,201 +401,20 @@
     <%- include('partials/footer.ejs') %>
 
 
+
+
+    <script>
+        setTimeout(function(){
+            $('.bookshelf_wrapper').fadeToggle();
+        }, 500);
+    </script>
+
+
 </body>
 
-
-
-<script>  
-    var httpRequest;     
-    var currentUser;
-    var messagebox = document.getElementById('messagebox')
-    function findUser(){
-        httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = findUserRequest;
-        httpRequest.open('GET', '/findUser');        
-        httpRequest.send();
-    }
-    window.onload = findUser();
-
-    
-    function findUserRequest(){
-        
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200 ) {
-                var resJson = JSON.parse(httpRequest.responseText)
-                currentUser = resJson.CurrentUser;
-                console.log(currentUser)
-                if(currentUser === undefined){
-                    console.log("no one is logged in");
-                } else {
-                    console.log('user found!!')
-                }
-                
-            } else {
-            alert('There was a problem with the request.');
-            }
-        }
-    }
- 
-        function saveLaterRequest(){
-        
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200 ) {
-                    var resJson = JSON.parse(httpRequest.responseText)
-                    console.log(resJson.message);
-                    messagebox.innerText = resJson.message;
-                } else {
-                alert('There was a problem with the request.');
-                }
-            }
-        }
-
-
-        async function addFollowerRequest(){
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200 ) {
-                    var resJson = JSON.parse(httpRequest.responseText)
-                    console.log(resJson.message);
-                    messagebox.innerText = resJson.message;
-                } else {
-                alert('There was a problem with the request.');
-                }
-            }
-        }
-
-
-
-        function deletePostRequest(){
-        
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200 ) {
-                    
-                    console.log('post deleted')
-                } else {
-                alert('There was a problem with the request.');
-                }
-            }
-        }
-
-
-        function sharePostRequest(){
-        
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200 ) {       
-                    var resJson = JSON.parse(httpRequest.responseText)
-                    document.getElementById('sharecount').innerHTML = resJson.value;
-                } else {
-                    alert('There was a problem with the request.');
-                }
-            }
-        }
-    
-          
-       function saveToLater(e){
-         
-         var curPostSlug = e.getAttribute('getpost');    
-         console.log("curpostslug " + curPostSlug)
-         if(currentUser){
-             httpRequest = new XMLHttpRequest();
-         if (!httpRequest) {
-           alert('Giving up :( Cannot create an XMLHTTP instance');
-           return false;
-         }
-         httpRequest.onreadystatechange = saveLaterRequest;
-         httpRequest.open('GET', '/savetolater/' + curPostSlug);        
-         httpRequest.send();
-       } else {
-           console.log("you need to login to save this post")
-           window.location = '/register_or_login?m=0'
-       }
-     }   
-
-     function deletePost(e){
-        var curPostSlug = e.getAttribute('getpost');   
-        if(currentUser){
-            httpRequest = new XMLHttpRequest();
-            if (!httpRequest) {
-            alert('Giving up :( Cannot create an XMLHTTP instance');
-            return false;
-            }
-            httpRequest.onreadystatechange = deletePostRequest;
-            httpRequest.open('GET', '/posts/delete/' + curPostSlug);        
-            httpRequest.send();
-       } else {
-        //    console.log("you need to login to save this post")
-        window.location = '/register_or_login?m=0'
-       }
-    }
-
-    async function addFollower(e){
-        if(currentUser){
-            var authname = await e.getAttribute('getauthor');
-            console.log("authname : ", authname);
-            httpRequest = new XMLHttpRequest();
-            if(!httpRequest){
-                alert('Giving up :( Cannot create an XMLHTTP instance')
-                return false;
-            }
-            httpRequest.onreadystatechange = addFollowerRequest;
-            httpRequest.open('GET', '/addfollower/' +authname);
-            httpRequest.send();
-        } else {
-            console.log("you need to login to follow an author")
-            var message = "you need to login first to follow an author"
-            window.location = '/register_or_login?m=0'
-        }
-    }
-
-    async function sharePost(e){
-        if(currentUser){
-            var curPostSlug = e.getAttribute('getpost');  
-            
-            httpRequest = new XMLHttpRequest();
-            if(!httpRequest){
-                alert('Giving up :( Cannot create an XMLHTTP instance')
-                return false;
-            }
-            httpRequest.onreadystatechange = sharePostRequest;
-            httpRequest.open('GET', '/sharePost/' +curPostSlug);
-            httpRequest.send();
-        } else {
-            window.location = '/register_or_login?m=0'
-        }
-    }
-
-
-
-    function like(e){
-        
-        if(currentUser){
-            var curPostSlug = e.getAttribute('getpost');  
-            httpRequest = new XMLHttpRequest();
-            if (!httpRequest) {
-              alert('Giving up :( Cannot create an XMLHTTP instance');
-              return false;
-            }
-            httpRequest.onreadystatechange = likeRequest;
-            httpRequest.open('GET', '/posts/liked/' + curPostSlug);        
-            httpRequest.send();
-          
-          }
-         else {
-            window.location = '/register_or_login?m=0'
-        }
-      }
-
-      function likeRequest(){
-          if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-              var respJson = JSON.parse(httpRequest.responseText)
-              console.log(respJson)
-              messagebox.innerText = respJson.message;
-            } else {
-              alert('There was a problem with the request.');
-            }
-          }
-        }
-
- </script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="/javascripts/ajaxHandler_pd.js"></script>  </script>
+<script src="/javascripts/pop-alert.js">  </script>
+<script src="/javascripts/dropdownicontoggle.js"></script>
 
 </html>
