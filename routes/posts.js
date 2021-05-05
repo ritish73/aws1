@@ -8,6 +8,7 @@ var Post = require('../models/post.js');
 var User = require('../models/user.js');
 var Trending = require('../models/trending.js');
 var Recommended = require('../models/recommended.js');
+var Comment = require('../models/comments.js');
 var Viewed = require('../models/viewed.js');
 var Popular = require('../models/popular.js');
 var moment = require('moment');
@@ -45,12 +46,86 @@ var upload = multer({
 
 
 
+router.get("/getcomments/:slug", async (req,res)=>{
+  var comments = await Comment.find({post: req.params.slug}).sort({timestamp: -1});  
+  console.log(comments)
+  if(comments.length){ 
+    res.json({comments: comments, status: 1})
+  } else {
+    res.json({comments: 'Nothing', status: 0})
+  }
+
+})
+
+
+router.post("/submitComment/:subject/:slug", auth , async (req,res)=>{
+  try{    
+
+    if(!req.body.comment) throw new Error('Cannot post empty comment');
+
+    if(/^\s/.test(req.body.comment)){
+      throw new Error('Your comment must not start with space.')
+    }
+  
+    if(/\s$/.test(req.body.comment)){
+        throw new Error('Your comment must not end with space.')
+    }
+
+    if(req.body.comment.length > 3000){
+      throw new Error('Comment needs to be shorter')
+  }
+
+    // find the post in populate mode
+    await Post.findOne({slug: req.params.slug}).populate('comments').exec( async (err,postfound)=>{
+      if(err) throw new Error(err)
+      else{
+
+        var newcomment = new Comment();
+        if(req.user.username){
+          newcomment.writer = req.user.username;
+        } else if(req.user.google_username){
+          newcomment.writer = req.user.google_username
+        }else if(req.user.fb_username){
+          newcomment.writer = req.user.fb_username
+        } 
+
+        if(req.user.image){
+          newcomment.writer_image = req.user.image;
+        } else {
+          newcomment.writer_image = 'sd.png';
+        }
+        
+        newcomment.creation_time = moment().format('MMMM Do YYYY, h:mm:ss a');
+        newcomment.content = req.body.comment;
+        newcomment.timestamp = Date.now();
+        newcomment.post = req.params.slug;
+        await newcomment.save();
+        await postfound.comments.push(newcomment);
+        
+        await postfound.save();
+      }
+    })
+    const link = `/posts/${req.params.subject}/${req.params.slug}`
+    res.redirect(link)
+    
+
+  }catch(e){
+    req.flash('error',e.message);
+    const link = `/posts/${req.params.subject}/${req.params.slug}`
+    res.redirect(link)
+  }
+})
 
 
 
-router.get("/general-search/:subject", async (req,res)=>{
+// for second page
+
+
+router.get("/general-search/:subject/:type", async (req,res)=>{
 
   try{
+
+
 
 
     var page = parseInt(req.query.page);
@@ -78,7 +153,7 @@ router.get("/general-search/:subject", async (req,res)=>{
     await Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], isReviewedByAdmin: true}, async function(err,allposts){
       try{
 
-        console.log("sscscs",allposts)
+        console.log("sscscs   :   ",allposts.length)
 
       if(err) throw new Error(err)
       if(allposts.length<1){
@@ -115,7 +190,7 @@ router.get("/general-search/:subject", async (req,res)=>{
 
           tc = trendingPosts.length;
           tc = (trendingPosts.length>=3)?3:trendingPosts.length;
-          let pageoffset = 0;
+          let pageoffset = req.query.page-1;
           let len = allposts.length;
           let val = pageoffset*10;
           let limit=0;
@@ -140,6 +215,7 @@ router.get("/general-search/:subject", async (req,res)=>{
           }
 
 
+          console.log(start, limit)
           console.log(tc,rc,pc)
           res.render(req.params.subject, {
             posts: allposts, 
@@ -157,7 +233,9 @@ router.get("/general-search/:subject", async (req,res)=>{
             array: array,
             trendingCount: tc,
             recommendedCount: rc,
-            popularCount: pc
+            popularCount: pc,
+            search_next: true,
+            searched_query: req.query.search
           });
         }
       })
@@ -167,7 +245,17 @@ router.get("/general-search/:subject", async (req,res)=>{
 
       } catch(e){
         req.flash('error', e.message);
-    res.redirect("/posts/" + req.params.subject + "?page=1" );
+
+        if(req.params.type === 'saved'){
+          res.redirect("/showSavedArticles?page=1" );
+        } else if(req.params.type === 'shared'){
+          res.redirect("/showSharedArticles?page=1" );
+        } else if(req.params.type === 'author_articles'){
+          res.redirect("/showAllArticles?page=1" );
+        } else {
+          res.redirect("/posts/" + req.params.subject + "?page=1" );
+        }
+    
       }
       
 
@@ -177,14 +265,22 @@ router.get("/general-search/:subject", async (req,res)=>{
 
   } catch(e){
     req.flash('error', e.message);
-    res.redirect("/posts/" + req.params.subject + "?page=1");
+    if(req.params.subject === 'saved'){
+      res.redirect("/showSavedArticles?page=1" );
+    } else if(req.params.subject === 'shared'){
+      res.redirect("/showSharedArticles?page=1" );
+    } else if(req.params.subject === 'author_articles'){
+      res.redirect("/showAllArticles?page=1" );
+    } else {
+      res.redirect("/posts/" + req.params.subject + "?page=1" );
+    }
   }
 })
 
 
 
 
-
+// for third page
 
 
 router.get("/general-search/:slug/:subject", async (req,res)=>{
@@ -217,7 +313,7 @@ router.get("/general-search/:slug/:subject", async (req,res)=>{
     await Post.find({$or: [{title:regex} , {content:regex}, {'author.username':regex}], isReviewedByAdmin: true}, async function(err,allposts){
       try{
 
-        console.log("sscscs",allposts)
+        console.log("sscscs",allposts.length)
 
       if(err) throw new Error(err)
       if(allposts.length<1){
@@ -254,7 +350,7 @@ router.get("/general-search/:slug/:subject", async (req,res)=>{
 
           tc = trendingPosts.length;
           tc = (trendingPosts.length>=3)?3:trendingPosts.length;
-          let pageoffset = 0;
+          let pageoffset = req.query.page-1;
           let len = allposts.length;
           let val = pageoffset*10;
           let limit=0;
@@ -296,7 +392,10 @@ router.get("/general-search/:slug/:subject", async (req,res)=>{
             array: array,
             trendingCount: tc,
             recommendedCount: rc,
-            popularCount: pc
+            popularCount: pc,
+            search_next: true,
+            searched_query: req.query.search,
+            third_page: true
           });
         }
       })
@@ -512,7 +611,8 @@ router.get("/business-economics", check ,async (req,res)=>{
               array: array,
               trendingCount: tc,
               recommendedCount: rc,
-              popularCount: pc
+              popularCount: pc,
+              search_next: false
             });
           }
         })
@@ -634,7 +734,8 @@ router.get("/commerce", check ,async (req,res)=>{
               array: array,
               trendingCount: tc,
               recommendedCount: rc,
-              popularCount: pc
+              popularCount: pc,
+              search_next: false
             });
           }
         })
@@ -702,7 +803,8 @@ router.get("/commerce", check ,async (req,res)=>{
               array: array,
               trendingCount: tc,
               recommendedCount: rc,
-              popularCount: pc
+              popularCount: pc,
+              search_next: false
             });
           }
         })
@@ -895,7 +997,8 @@ router.get("/engineering", check ,async (req,res)=>{
               array: array,
               trendingCount: tc,
               recommendedCount: rc,
-              popularCount: pc
+              popularCount: pc,
+              search_next: false
             });
           }
         })
@@ -1079,7 +1182,8 @@ router.get("/personality-development", check ,async (req,res)=>{
               array: array,
               trendingCount: tc,
               recommendedCount: rc,
-              popularCount: pc
+              popularCount: pc,
+              search_next: false
             });
           }
         })
@@ -1389,6 +1493,14 @@ router.get("/business-economics/:slug", check , async function(req,res){
     getSimilarArticles = posts;
   })
 
+  var getComments;
+  await showObj.getComments(req.params.slug)
+  .then((comments)=>{
+    getComments = comments;
+    // console.log("getComments.length : ", getComments.length);
+  })
+
+
   var post = await Post.findOne({slug: req.params.slug});
   var displaydate = post.publishDate.toDateString();
   console.log("........................................", getSimilarArticles.length)
@@ -1404,7 +1516,8 @@ router.get("/business-economics/:slug", check , async function(req,res){
     trendingCount: tc,
     recommendedCount: rc,
     popularCount: pc,
-    showsidebox: true
+    showsidebox: true,
+    comments: getComments
   });
 })
 
@@ -1445,6 +1558,18 @@ router.get("/commerce/:slug", check , async function(req,res){
   .then((posts)=>{
     getSimilarArticles = posts;
   })
+
+
+
+  var getComments;
+  await showObj.getComments(req.params.slug)
+  .then((comments)=>{
+    getComments = comments;
+    console.log(getComments.length);
+  })
+
+
+
   var showsidebox = true;
   var post = await Post.findOne({slug: req.params.slug});
   var displaydate = post.publishDate.toDateString();
@@ -1461,7 +1586,8 @@ router.get("/commerce/:slug", check , async function(req,res){
     trendingCount: tc,
     recommendedCount: rc,
     popularCount: pc,
-    showsidebox: true
+    showsidebox: true,
+    comments: getComments
   });
 })
 
@@ -1502,6 +1628,18 @@ router.get("/engineering/:slug", check , async function(req,res){
     getSimilarArticles = posts;
   })
 
+
+
+  var getComments;
+  await showObj.getComments(req.params.slug)
+  .then((comments)=>{
+    getComments = comments;
+    // console.log(getComments.length);
+  })
+
+
+
+
   var post = await Post.findOne({slug: req.params.slug});
   var displaydate = post.publishDate.toDateString();
   console.log("........................................", getSimilarArticles.length)
@@ -1517,7 +1655,8 @@ router.get("/engineering/:slug", check , async function(req,res){
     trendingCount: tc,
     recommendedCount: rc,
     popularCount: pc,
-    showsidebox: true
+    showsidebox: true,
+    comments: getComments
   });
 })
 
@@ -1560,6 +1699,19 @@ router.get("/personality-development/:slug", check , async function(req,res){
     getSimilarArticles = posts;
   })
 
+
+
+  var getComments;
+  await showObj.getComments(req.params.slug)
+  .then((comments)=>{
+    getComments = comments;
+    console.log(getComments.length);
+  })
+
+
+
+
+
   var post = await Post.findOne({slug: req.params.slug});
   var displaydate = post.publishDate.toDateString();
   console.log("........................................", getSimilarArticles.length)
@@ -1575,7 +1727,8 @@ router.get("/personality-development/:slug", check , async function(req,res){
     trendingCount: tc,
     recommendedCount: rc,
     popularCount: pc,
-    showsidebox: true
+    showsidebox: true,
+    comments: getComments
   });
 })
 

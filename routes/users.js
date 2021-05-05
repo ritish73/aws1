@@ -23,6 +23,7 @@ const dashboardObj = require("../controllers/dashboardcontroller.js");
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken");
 const ejsLint = require('ejs-lint');
+var multer = require('multer');
 const nodemailerSendgrid = require('nodemailer-sendgrid');
 const {USER, PASS, HOSTNAME, PROTOCOL} = require("../config/index")
 const { 
@@ -30,12 +31,39 @@ const {
   GOOGLE_APP_ID,GOOGLE_APP_SECRET,G_callback_url        
 } = require("../config/third_party_auth.js")
 
-// app.use((req,res,next)=>{
-//   res.locals.successmessage = req.flash('success')
-//   res.locals.errormessage = req.flash('error')
-//   res.locals.warningmessage = req.flash('warning')
-//   next();
-// })
+
+
+// multer setup
+
+var storage = multer.diskStorage({
+  destination: function(req,file,cb){
+    cb(null,'public/uploads/img/profile-pics');
+  },
+  filename: function(req,file,cb){
+      var uid = req.user.bb_id;
+      // const extension = file.mimetype.split('/')[1];
+      // console.log(uid +"_"+ file.originalname, extension);
+      cb(null,uid + "_" + file.originalname);
+  }
+});
+
+var multerFilter = (req,file,cb)=>{
+  const extension = file.mimetype.split('/')[1];
+  console.log(extension)
+  if(extension === 'jpeg' || extension === 'png' || extension === 'jpg' || extension === 'JPEG' || extension === 'PNG' || extension === 'JPG'){
+    cb(null,true);
+  } else {
+    return cb(new Error('Only png, jpg, jpeg format allowed!'), false);
+  }
+};
+
+var upload = multer({
+  storage: storage,
+  multerFilter: multerFilter
+});
+
+
+
 
 
 const transport = nodemailer.createTransport(
@@ -45,9 +73,30 @@ const transport = nodemailer.createTransport(
   )
 
 
+
+
+  // remove profile picture
+  router.get("/removeProfilePic", auth, async (req,res)=>{
+
+    try{
+      User.findOneAndUpdate({_id: req.user._id}, {image: null}, ()=>{
+        res.json({message: 'profile picture removed', status : 1});
+      });  
+
+    } catch(e) {
+      res.json({message: e.message, status: 0});
+    }
+    
+
+    
+  })
+
+
+
 router.get('/aboutus',(req,res)=>{
   res.render('aboutus');
 })
+
 
 
 router.get("/" , check ,function(req, res){
@@ -130,13 +179,55 @@ router.get("/" , check ,function(req, res){
 router.get('/delete', check ,async (req,res)=>{
 
     var user = await User.findOne({_id: req.user._id});
-    
-  
-    
-
     user.deleted = true;
     user.deletedAt = moment().format('MMMM Do YYYY, h:mm:ss a');
     await user.save();
+
+    // send an email
+    var cust;
+
+    if(user.google_email){
+      cust = user.google_email;
+
+    } else if(user.fb_email){
+      cust = user.fb_email;
+    } else {
+      cust = user.email;
+    }
+
+
+    var message = {
+
+      from: USER,
+      to: cust,
+      subject: `Account Terminated`,
+      
+      html: ` 
+   
+      <p>Dear User,</p>
+      <p>If you wish to delete your account, all of your data will be permanently deleted.
+      You will not be able to restore it once you continue to delete your account.
+      In case you want to reactivate your account, kindly mail us your BackBenchers username and BackBenchers email at 
+      teambackbenchers@gmail.com within 45 days
+      from the date of deletion of your account. </p>
+      
+     
+      <br>
+      <p>Regards,</p>
+      <p>Team Backbenchers</p>
+      
+
+      `
+
+    }
+    transport.sendMail(message, (err)=>{
+      if(err) console.log(err)
+      else{
+        console.log("account deletion mail has been sent");
+      }
+    });
+
+
 
     req.flash('success','your account was deleted.');
     res.redirect("/")
@@ -437,7 +528,7 @@ router.post("/register",async (req,res)=>{
             user.email =  req.body.email;
 
             user.emailVerificationToken = crypto.randomBytes(64).toString('hex');
-            user.emailVerificationTokenExpires = Date.now() + 1800000;    // 30 minutes
+            user.emailVerificationTokenExpires = Date.now() + 86400000;    // 24 hours  24*60*60*1000
             const link = "https://thebackbenchers.co/verifyEmail?token="+user.emailVerificationToken;
             // send the email
             var message = {
@@ -473,7 +564,7 @@ router.post("/register",async (req,res)=>{
             console.log(moment().format('MMMM Do YYYY, h:mm:ss a'))
             user.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
             await user.hashPassword()
-            user.save().then(async ()=>{
+            await user.save().then(async ()=>{
               // console.log(user);
               const token = await user.generateAuthToken();
               res.cookie('bearer_token', token,{
@@ -528,7 +619,7 @@ router.get("/reVerify", check, async (req,res)=>{
     user.emailVerificationToken = null;
     user.emailVerificationTokenExpires = null;
     user.emailVerificationToken = crypto.randomBytes(64).toString('hex');
-    user.emailVerificationTokenExpires = Date.now() + 1800000;    // 30 minutes
+    user.emailVerificationTokenExpires = Date.now() + 86400000;    // 24 hrs
 
     
     const link = "https://thebackbenchers.co/verifyEmail?token="+user.emailVerificationToken;
@@ -612,7 +703,7 @@ router.post("/login" , async (req,res)=>{
     console.log(user)
     // console.log("user: ", user);
     if(user){
-      console.log("all user ids :", "google_id : ",user.google_id," fb_id : ",user.fb_id," bb_id : ",user.bb_id);
+      // console.log("all user ids :", "google_id : ",user.google_id," fb_id : ",user.fb_id," bb_id : ",user.bb_id);
       if(user.deleted){
         throw new Error('Account does not exists.')
       }
@@ -1088,6 +1179,117 @@ router.get("/sharepost/:slug", (req,res)=>{
       }
     })
 })
+
+
+
+
+
+
+
+
+router.post("/profile-pic-update", check, upload.single("photo"),async (req,res)=>{
+  try{
+    var file = req.file;
+    console.log(file)
+    if(!file) throw new Error('File not attached');
+    var user = await User.findById(req.user._id);
+    if(!user) throw new Error('An internal error occured, try again')
+
+
+    const extension = file.mimetype.split('/')[1];
+    console.log(extension)
+    if(extension === 'jpeg' || extension === 'png' || extension === 'jpg' || extension === 'JPEG' || extension === 'PNG' || extension === 'JPG'){
+      // good
+    } else {
+      throw new Error('Only png, jpg, jpeg formats are allowed!')
+    }
+
+
+
+    var uid = req.user.bb_id;
+    const filename = `${uid}_${file.originalname}`
+    
+    user.image = filename;
+    await user.save();
+    res.redirect("/dashboard");
+  }catch(err){
+    req.flash("error", err.message);
+    res.redirect("/dashboard")
+  }
+})
+
+
+
+
+router.get("/hhh", async (req,res)=>{
+  res.render("login_page")
+})
+
+
+
+
+router.get("/registerUserValidation/:username/:email", async (req,res)=>{
+  // check username and email must not be taken
+  
+
+  var message="";
+  var status = 1; 
+
+  var emailunique = await User.findOne({email: req.params.email});
+  var usernameunique = await User.findOne({username: req.params.username});
+  if(emailunique){
+    message = 'Email already exists.';
+    status = 0; 
+  }
+  if(usernameunique){
+    message = 'username already exists.';
+    status = 0; 
+  }
+
+  if(/^\s/.test(req.params.username)){
+    message = 'Your username must not start with space.'
+    status = 0; 
+  }
+
+  if(/\s$/.test(req.params.username)){
+      message = 'Your username must not end with space.'
+      status = 0; 
+  } 
+  
+
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+
+  if (!(re.test(req.params.email))){
+    message = 'Please enter a valid email address.'
+    status = 0;
+  }
+
+
+  if (!/\S/.test(req.params.username)) {
+    // Didn't find something other than a space which means it's empty
+    message = 'Please provide a username'
+    status = 0; 
+  }
+
+
+  
+  if (!/\S/.test(req.params.email)) {
+    // Didn't find something other than a space which means it's empty
+    message = 'Please provide an email'
+    status = 0; 
+  }
+
+
+
+  res.json({message: message, status: status});
+
+  
+})
+
+
+
+
 
 
 

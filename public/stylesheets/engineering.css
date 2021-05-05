@@ -9,13 +9,25 @@
     box-sizing: border-box;
 }
 
+.makeitblack{
+    text-decoration: none;
+}
+
+.profile .icon_wrap .name:hover
+{
+   background-color: #ab2d24;
+    
+}
+
+
+
 html
 {
     font-family: 'poppins',cursive;
     font-size: 12px;
      background-color: rgba(0, 0, 0, 0.932);
     background-image: url('/images/sameer_12draft.jpeg');
-    cursor: pointer;
+    /* cursor: pointer; */
     overflow-x: hidden;   
 }
 
@@ -29,11 +41,7 @@ body
 
 
 
-.profile .icon_wrap .name:hover
-{
-   background-color: #ab2d24;
-    
-}
+
 
 
 
@@ -51,6 +59,7 @@ body
  .profile .icon_wrap .navbar-image
  {
      margin-right: 25px;
+     /* border-radius: 90px; */
  }
 
  .profile .icon_wrap i
@@ -112,7 +121,10 @@ body
   }
   
   .navbar .navbar_right img{
-    width: 35px;
+    width: 40px;
+    height: 40px;
+    border-radius:50%;
+    border: 1.5px solid black;
   }
   
   .navbar .navbar_right .icon_wrap{
@@ -215,7 +227,7 @@ body
   }
   
   .notification_dd li.success .notify_status p{
-    color: #47da89;
+    /* color: #47da89; */
   }
   
   .notification_dd li.failed .notify_status p{
@@ -263,7 +275,7 @@ body
     width: 200px;
   }
   .navbar .profile .profile_dd:before{
-    rigth: 10px;
+    right: 10px;
   }
   
   .navbar .profile .profile_dd ul li {
@@ -957,7 +969,7 @@ border-radius: 25px;
 }
 
 
-.side-box h2:hover
+.side-box .title-side-box:hover
 {
     text-decoration: underline;
 }
@@ -1008,7 +1020,7 @@ border-radius: 25px;
 {
     width: 100%;
     max-width: 28rem;
-    height: 34rem;
+    height: 41rem;
     padding: 1.5rem;
     background:rgba(209, 208, 208, 0.911) ;
     box-shadow: 0 1.4rem 8rem rgba(1, 1,1, 0.4);
@@ -1056,13 +1068,16 @@ border-radius: 25px;
 .blog-post__info
 {
     position: relative;
-    top: 65px;
+    top: 68px;
     left: -24rem;
+
 }
 
 .blog-post__date
 {
     display: inline-block;
+    margin-top: 20px; 
+
 }
 
 .blog-post__date span
@@ -1472,17 +1487,20 @@ border-radius: 25px;
             padding: 15px 5px;
             border-radius: 10px;
             background: rgba(209, 208, 208, 0.904);
+            text-decoration: none;
         }
   
         .two-of-3-heading
         {
             padding-top: 15px;
+            text-decoration: none;
         }
 
         
         .three-of-3-heading
         {
             padding-top: 15px;
+            text-decoration: none;
             
         }
         
@@ -1496,8 +1514,10 @@ border-radius: 25px;
             max-width: 90px;
             border-bottom: 5px solid #ab2d24;
             margin-bottom: 15px;
+            text-decoration: none;
         }
 
+        
         
         .side-box-heading-two
         {
@@ -1509,6 +1529,7 @@ border-radius: 25px;
             max-width: 130px;
             border-bottom: 5px solid #ab2d24;
             margin-bottom: 15px;
+            text-decoration: none;
         }
 
         
@@ -1522,6 +1543,7 @@ border-radius: 25px;
             max-width: 80px;
             border-bottom: 5px solid #ab2d24;
             margin-bottom: 15px;
+            text-decoration: none;
         }
 
         .sub-part-section
@@ -1533,7 +1555,10 @@ border-radius: 25px;
             margin-bottom: 15px;
             max-width: 360px;
             border-bottom: 1px solid black;
+            text-decoration: none;
         }
+
+        
 
         .date-side-box
         {
@@ -1641,7 +1666,7 @@ border-radius: 25px;
        {
            list-style: none;
            padding-bottom: 10px;
-           font-size: 1.356em;
+           font-size: 1.456em;
            font-weight: 500;
        }
 
@@ -1655,7 +1680,7 @@ border-radius: 25px;
        {
            list-style: none;
            padding-bottom: 10px;
-           font-size: 1.356em;
+           font-size: 1.456em;
            font-weight: 500;
        }
 
@@ -1731,7 +1756,7 @@ border-radius: 25px;
        .bottom center
        {
            padding: 5px;
-           font-size: 1em;
+           font-size: 1.3em;
            background:#ab2d24;
        }
 
@@ -1843,7 +1868,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 38rem;
+               height: 42rem;
            }
 
            .table-all
@@ -1948,7 +1973,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:30rem ;
-               height: 38rem;
+               height: 41rem;
            }
 
            .table-all
@@ -2050,7 +2075,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 34rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2154,7 +2179,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 34rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2262,7 +2287,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 34rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2337,7 +2362,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 34rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2386,7 +2411,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 34rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2437,7 +2462,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:30.5rem ;
-               height: 35rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2475,6 +2500,15 @@ border-radius: 25px;
 
        }
 
+       @media screen and (max-width:768px) and (orientation:landscape){
+           .vertical-nav-bar{
+           top: 130%;
+           }
+            .all-engineering-articles{
+                top: 8.5rem;
+           }
+       }
+
        @media screen and (max-width:650px)
        {
 
@@ -2491,7 +2525,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:30.5rem ;
-               height: 35rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2551,7 +2585,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 35rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2612,7 +2646,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 35rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2673,7 +2707,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 35rem;
+               height: 37rem;
            }
 
            .table-all
@@ -2734,7 +2768,7 @@ border-radius: 25px;
            .blog-post
            {
                max-width:28rem ;
-               height: 35rem;
+               height: 37rem;
            }
 
            .table-all

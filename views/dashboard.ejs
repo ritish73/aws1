@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <link rel="stylesheet" href="/stylesheets/dashboard_css.css">
+    <link rel="stylesheet" href="/stylesheets/notification_dashboard.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
     <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
 
@@ -54,9 +55,16 @@
                 </li>
 
                 <li>
-                    <a href="/contactus">
+                    <a href="/query/contactus">
                         <span class="ti-mobile"></span>
                         <span>Contact us</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/showSavedArticles?page=1">
+                        <span class="ti-bookmark"></span>
+                        <span>Saved Articles</span>
                     </a>
                 </li>
 
@@ -76,7 +84,7 @@
 
                 <% if(currentUser.role === 'admin'){ %>
                 <li>
-                    <a href="/adminportal" target="_blank">
+                    <a href="/adminportal">
                         <span class="ti-settings"></span>
                         <span>adminportal</span>
                     </a>
@@ -116,7 +124,7 @@
                 
 <% if(successmessage.length || errormessage.length){ %>
     <div class="alert show showAlert">
-        <span class="fas fa-exclamation-circle"></span>
+        <span style="color:black;font-size:20px;background:white;border-radius: 50%;padding:3.5px" class="ti-bell"></span>
         <% if(successmessage.length){ %>
             <span id="success-message-color" class="msg-alert"><%=successmessage%></span>
         <% } else if(errormessage.length) { %>
@@ -128,7 +136,7 @@
     </div>
     <% } else{ %>
         <div class="alert hide">
-            <span class="fas fa-exclamation-circle"></span>
+            <span class="ti-bell"></span>
             <span class="msg-alert"></span>
             <div class="close-btn">
               <span class="ti-close"></span>
@@ -156,7 +164,7 @@
                         </div>
                         <div class="card-footer">
                             <% if(currentUser.role == 'author' || currentUser.role == 'admin'){ %>
-                            <a href="/showAllArticles?page=1" target="_blank">View all</a>
+                            <a href="/showAllArticles?page=1" >View all</a>
                             <% } %>
                         </div>
                     </div>
@@ -194,19 +202,33 @@
                       <div class="activity-card">
                         <h3 class="heading-top" id="ending">PERSONAL INFO</h3>
 
+
+                        <form action="/profile-pic-update" method="POST" enctype="multipart/form-data">
+                            <div class="profile-pic-div">
+                                <% if(currentUser.image){ %>
+                                    <img src="/uploads/img/profile-pics/<%=currentUser.image%>" id="photo">
+                                <% } else { %>
+                                    <img src="/images/sd.png" id="photo">
+                                <% } %>
+                                
+                                <input type="file" name="photo" id="file">
+                                <label for="file" id="uploadBtn">Edit pic</label>
+                                
+                            </div>
+                            <button class="update-info" type="submit" style="margin:15px 58px;padding:5px;border-radius: 50%;font-size:15px;font-weight: bolder;"> <i class="ti-pencil"></i></button>
+                            
+                        </form>
+
+                        <% if(currentUser.image){ %>
+                            <button onclick="removeProfilePic(this)" class="update-info" type="submit" style="margin-top:-44px;padding:5px;margin-left:130px;border-radius: 50%;font-weight: bolder;"><i class="ti-close"></i></button>
+                        <% } %>
+                        
+
+
+
                         <form action="/updateUser" method="POST" class="sign-in-form">
 
-
-
-                            <div class="profile-pic-div">
-                                <img src="/images/so.jpeg" id="photo">
-                                <input type="file" id="file">
-                                <label for="file" id="uploadBtn">Edit profile pic</label>
-                            </div>
-
-
-
-                            <!-- <h2 class="title">Personal info</h2> -->
+                           <!-- <h2 class="title">Personal info</h2> -->
                             <h3>Username</h3>
                             <div class="input-field">
                                 <i class="fas fa-user"></i>
@@ -251,7 +273,7 @@
                                 <!-- <i class="fas fa-lock"></i>
                             <input type="password" value="<%=currentUser.fullName%>"> -->
 
-                            <span class="R-button"><a href="/forgot" target="_blank">Reset password</a></span>
+                            <span class="R-button"><a href="/forgot">Reset password</a></span>
                            
                             </div>
 
@@ -284,7 +306,7 @@
                             <% if(getdob === undefined){ %>
                                 <input type="date" placeholder="Date of birth" min="1920-12-31" max="2021-12-31" name = "dob" >
                             <% } else { %>
-                                <input type="date" placeholder="Date of birth"  min="1920-12-31" max="2021-12-31" name = "dob" value="<%= getdob %>" readonly>
+                                <input type="date" placeholder="Date of birth"  min="1920-12-31" max="2021-12-31" name = "dob" value="<%= getdob %>"  readonly>
                             <% } %>
                             
                             </div>
@@ -381,7 +403,7 @@
                             <div class="summary-single">
                                 <span class="ti-file"></span>
                                 <div>
-                                    <h5><a href="/showSavedArticles?page=1" target="_blank"><%=savedArticlesCount%></a></h5>
+                                    <h5><a href="/showSavedArticles?page=1" id="makeitblack" ><%=savedArticlesCount%></a></h5>
                                     <small>Saved for later posts</small>
                                 </div>
                             </div>
@@ -389,7 +411,7 @@
                             <div class="summary-single">
                                 <span class="ti-share"></span>
                                 <div>
-                                    <h5><a href="/showSharedArticles?page=1" target="_blank"><%=sharedArticlesCount%></a></h5>
+                                    <h5><a href="/showSharedArticles?page=1" id="makeitblack" ><%=sharedArticlesCount%></a></h5>
                                     <small>No. of post shared</small>
                                 </div>
                             </div>
@@ -399,9 +421,9 @@
                             <div class="bday-info">
                                 <h5>Publish your Blog</h5>
                                 <div>
-                                  <a href="/publish" target="_blank">
+                                  <a href="/publish" >
                                     <button>
-                                        <span>
+                                        <span id="click-here-btn">
                                             click here
                                         </span>
                                     </button>

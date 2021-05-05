@@ -1,3 +1,15 @@
+
+
+
+var freeze = ()=>{
+  document.body.style.overflow = 'hidden';
+  document.querySelector('html').scrollTop = window.scrollY;
+}
+
+function enableScroll() {
+document.body.style.overflow = null;
+}
+
 setTimeout(function(){
   alert.removeClass("show");
   alert.addClass("hide");
@@ -32,21 +44,24 @@ $('.close-btn').click(function(){
 
 // document.body.style.cursor="wait";
 
-
-
+var box = $('.popup_box');
+var openpopup = document.querySelector('.click');
+var boxp = document.querySelector('.popup_box');
 $(document).ready(function(){
-    $('.click').click(function(){
-      $('.popup_box').css("display", "block");
+  $('.click').click(function(){
+      box.css("display", "block");
+      freeze();
     });
     $('.btn1').click(function(){
-      $('.popup_box').css("display", "none");
+      box.css("display", "none");
+      enableScroll()
     });
     $('.btn2').click(function(){
-      $('.popup_box').css("display", "none");
+      box.css("display", "none");
+      enableScroll()
       alert("Account Permanently Deleted.");
     });
   });
-
 
 
 
@@ -74,5 +89,61 @@ function deleteAccountRequest(){
         }
     }
 }
+
+
+var removeProfilePic = async (e)=>{
+
+  httpRequest = new XMLHttpRequest();
+    if (!httpRequest) {
+        alert('Giving up :( Cannot create an XMLHTTP instance');
+        return false;
+    }
+    httpRequest.onreadystatechange = removeProfilePicRequest;
+    httpRequest.open('GET', '/removeProfilePic');        
+    httpRequest.send();   
+
+}
+
+function removeProfilePicRequest(){
+  if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+          let respJson = JSON.parse(httpRequest.responseText);
+          if(respJson.status){
+            showAlert(respJson.message)
+          } else {
+            showAlert(respJson.message)
+          }
+          
+      } else {
+          alert('There was a problem with the request.');
+      }
+  }
+}
+
+
+var showAlert = async (msg)=>{
+
+  var messaged = $('.msg-alert');      
+  var alert  = $('.alert');
+      messaged.text(msg) 
+      alert.addClass("show");
+      alert.removeClass("hide");
+      alert.addClass("showAlert");
+
+      setTimeout(function(){
+      alert.removeClass("show");
+      alert.addClass("hide");
+      },5000);
+
+  $('.close-btn').click(function(){
+      alert.removeClass("show");
+      alert.addClass("hide");
+  })
+
+}
+
+
+
+
 
 

@@ -46,6 +46,7 @@ var userSchema = new mongoose.Schema({
   emailVerificationToken: String,
   emailVerificationTokenExpires: Date,
   isVerified: {type: Boolean, default: false},
+  image: String,
   deleted: {
     type:Boolean,
     default: false
@@ -152,7 +153,7 @@ userSchema.methods.hashPassword = async function(next){
         } else {
           console.log("new hash : ", hash)
           user.password =  hash;
-          user.save();
+          await user.save();
           console.log("hashed password is set");
         }
       })

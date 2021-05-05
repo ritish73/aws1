@@ -1,92 +1,24 @@
 
 
 <html lang="en">
-  <head>
+  <head >
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Backbenchers</title>
       <link rel="shortcut icon" type="image/x-icon" href="/images/1_logo.png" />
       <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
       <link rel="stylesheet" href="/stylesheets/2nd_dark.css">
+      <link rel="stylesheet" href="/stylesheets/notification.css">
       <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="/stylesheets/trying-search-box.css">
 
 
-
-
-
-
-
-
-      <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/stylesheets/trying-search-box.css">
-
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $(".active").click(function(){
-                $(".search-boxx").toggle();
-                // $("input[type='text']").focus();
-            });
-        });
-        </script>
-
-
-
-
-
-	<script>
-		$(document).ready(function(){
-			$(".profile .icon_wrap").click(function(){
-			  $(this).parent().toggleClass("active");
-			  $(".notifications").removeClass("active");
-			});
-
-			$(".notifications .icon_wrap").click(function(){
-			  $(this).parent().toggleClass("active");
-			   $(".profile").removeClass("active");
-			});
-
-			$(".show_all .link").click(function(){
-			  $(".notifications").removeClass("active");
-			  $(".popup").show();
-			});
-
-			$(".close").click(function(){
-			  $(".popup").hide();
-			});
-		});
-	</script>
-
-
-
-
-
-
-
-
-
-
-
-
+     
 
       </head>
-      <style>
-        #message {
-          position: absolute;
-          top: 0;
-          color: #ab2d24;
-          background-color: white;
-        }
-
-        .makeitblack{
-            color: black;
-            text-decoration: none;
-        }
-
-      </style>
-  <body>
+      
+  <body onmouseover="getcomments(this); this.onmouseover = null;" getslug="<%=post.slug%>">
 
 
 
@@ -106,7 +38,7 @@
     
 
       
-      <header>
+      <header >
   
           <div class="top-horiz-bar">
               <a href="/">
@@ -161,9 +93,6 @@
 
 
 
-
-
-
               
             <div class="wrapper">
               <div class="navbar">
@@ -172,13 +101,16 @@
             
                   <div class="profile">
                     <div class="icon_wrap">
-                      
-
+           
 
                       <% if(currentUser && currentUser.isVerified  && !currentUser.deleted){ %>
 
                         <% if(currentUser.google_id){ %>
-                          <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                           <% if(currentUser.image){ %>
+                                  <img src="/uploads/img/profile-pics/<%=currentUser.image%>" alt="profile_pic" class="navbar-image">
+                                <% } else { %>
+                                    <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                                <% } %>
 
                           <!-- <span class="name"> <%= currentUser.google_username.substring(0,8)%></span> -->
                       
@@ -198,7 +130,11 @@
                     </div>
 
                     <% } else if(currentUser.fb_id){ %>
-                      <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                       <% if(currentUser.image){ %>
+                                  <img src="/uploads/img/profile-pics/<%=currentUser.image%>" alt="profile_pic" class="navbar-image">
+                                <% } else { %>
+                                    <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                                <% } %>
                       
                       <!-- <span class="name"> <%= currentUser.fb_username.substring(0,8)%></span> -->
                       <i class="fas fa-chevron-down"></i>
@@ -218,7 +154,11 @@
 
                     <% } else { %>
 
-                      <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                       <% if(currentUser.image){ %>
+                                  <img src="/uploads/img/profile-pics/<%=currentUser.image%>" alt="profile_pic" class="navbar-image">
+                                <% } else { %>
+                                    <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                                <% } %>
                       <!-- <span class="name"> <%= currentUser.username.substring(0,8)%></span> -->
                       <i class="fas fa-chevron-down"></i>
                     </div>
@@ -252,14 +192,14 @@
               
               
             </div>
-
-            <form method="get" action="/posts/general-search/business-economics?page=1">
+            
+            <form method="get" action="/posts/general-search/<%=post.slug%>/<%=post.subject%>">
 
               <div class="final-search-box">
-                  <input type="text"  placeholder="Search Here..">
-                  
+                  <input type="text" name="search" class="search-txt" placeholder="Search Here..">
+                  <input type="number" name="page" style="display: none;" value=1>
                       <div class="icon">
-                      <button id="disable-search-btn">
+                      <button id="disable-search-btn" class="search-btn">
                           <span>&#9906;</span>
                       </button>
                       </div>
@@ -332,7 +272,7 @@
                           <% if(trendingPosts[i].post){ %>
           
                               <div class="sub-part-section">
-                                  <h2 class="title-side-box"><a href="/posts/<%=trendingPosts[i].post.subject%>/<%=trendingPosts[i].post.slug%>" class="makeitblack"><%=trendingPosts[i].post.title%></a></h2>
+                                  <h2 class="title-side-box"><a href="/posts/<%=trendingPosts[i].post.subject%>/<%=trendingPosts[i].post.slug%>" style="color:black;text-decoration: none;" class="makeitblack"><%=trendingPosts[i].post.title%></a></h2>
                                   <div class="date-side-box">
                                   <span><%=trendingPosts[i].post.publishDay%></span>
                               </div>
@@ -348,7 +288,7 @@
                       <% for(var i=0;i<recommendedCount;i++){ %>
                       <% if(recommendedPosts[i].post){ %>
                       <div class="sub-part-section">
-                          <h2 class="title-side-box"><a href="/posts/<%=recommendedPosts[i].post.subject%>/<%=recommendedPosts[i].post.slug%>" class="makeitblack"><%=recommendedPosts[i].post.title%></a></h2>
+                          <h2 class="title-side-box"><a href="/posts/<%=recommendedPosts[i].post.subject%>/<%=recommendedPosts[i].post.slug%>" style="color:black;text-decoration: none;" class="makeitblack"><%=recommendedPosts[i].post.title%></a></h2>
                           <div class="date-side-box">
                               <span><%=recommendedPosts[i].post.publishDay%></span>
                           </div>
@@ -364,7 +304,7 @@
                       <% if(trendingPosts[i].post){ %>
                           <div class="sub-part-section">
                               <h2 class="title-side-box">
-                                  <a href="/posts/<%=popularPosts[i].post.subject%>/<%=popularPosts[i].post.slug%>" class="makeitblack"><%=popularPosts[i].post.title%></a></h2>
+                                  <a href="/posts/<%=popularPosts[i].post.subject%>/<%=popularPosts[i].post.slug%>" style="color:black;text-decoration: none;" class="makeitblack"><%=popularPosts[i].post.title%></a></h2>
                               <div class="date-side-box">
                                   <span><%=popularPosts[i].post.publishDay%></span>
                               </div>
@@ -377,7 +317,7 @@
               
               
   
-             <div class="central-part-total">
+             <div class="central-part-total" >
               <div class="article-content">
                   <h2 class="article-heading-3p"> <%= post.title %> </h2>
                   <h3 class="overall-prop"> - <%=post.authorName%>    <span id="last-page-date"><a href="<%=post.authorLinkedIn%>"><span id="author-linkedin"><i class="fab fa-linkedin-in"></i></span></a>  |  <%=displaydate%></span> <span id="entity-save-subscribe"><span><button onclick="addFollower(this)" getauthor="<%= post.authorName %>" id="channel-name"><%=post.authorName%></button></span><span id="susbscribe-id-plus">  <button id="save-to-later" onclick="saveToLater(this)" getpost="<%=post.slug%>"> <i class="fas fa-plus "></i> </button> </span></span></h3>
@@ -407,7 +347,7 @@
                   <% } %>
               </div>
   
-<!-- 
+
               <div class="detailBox">
                 <div class="titleBox">
                   <label>Comments</label>
@@ -416,68 +356,50 @@
 
                 <div class="actionBox">
                     <ul class="commentList">
-                        <li>
+
+                      <% if(comments){%>
+
+                        <% for(var i=0; i<Math.min(2,comments.length); i++){ %>
+                          
+                          <li>
                             <div class="commenterImage">
-                              <img src="/images/final_2.png">
+                              <img src="/uploads/img/profile-pics/<%=comments[i].writer_image%>">
                             </div>
                             <div class="commentText">
-                                <p class="">Hello this is a test comment.</p> 
-                                <span class="date sub-text">on April 7th, 2021</span>
-                                <button class="date sub-text-1">Sourav</button>
+                                <p class=""><%=comments[i].content%></p> 
+                                <span class="date sub-text">on <%=comments[i].creation_time%></span>
+                                <button class="date sub-text-1"><%=comments[i].writer%></button>
                                 
                             </div>
                         </li>
-                        <li>
-                            <div class="commenterImage">
-                              <img src="/images/final_2.png">
-                            </div>
-                            <div class="commentText">
-                                <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and is a test commemt</p> 
-                                <span class="date sub-text">on April 7th, 2021</span>
-                                <button class="date sub-text-1">Sourav</button>
-            
-                            </div>
-                        </li>
-                        <li>
-                            <div class="commenterImage">
-                              <img src="/images/final_2.png" />
-                            </div>
-                            <div class="commentText">
-                                <p class="">Hello this is a test comment.</p>
-                                 <span class="date sub-text">on April 7th, 2021</span>
-                                 <button class="date sub-text-1">Sourav</button>
-            
-                            </div>
-                        </li>
 
+                        <% } %>
 
-                        <li>
-                            <div class="commenterImage">
-                              <img src="/images/final_2.png" />
-                            </div>
-                            <div class="commentText">
-                                <p class="">Hello this is a test comment.</p>
-                                 <span class="date sub-text">on April 7th, 2021</span>
-                                 <button class="date sub-text-1">Sourav</button>
-            
-                            </div>
-                        </li>
+                      <% } %>
+                        
 
-                            <button class="btn-default-1">Read all comments</button>
-                    
+                     
+                      
 
                     </ul>
-                    <form class="form-inline" role="form">
+
+
+                    <button class="btn-default-1" onclick="loadmore()">Read all comments</button>
+
+                    
+                    
+
+                    <form  action="/posts/submitComment/<%=post.subject%>/<%=post.slug%>" method="POST" class="form-inline" role="form">
                         <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Your comments" />
+                            <input class="form-control" type="text" name="comment" placeholder="Your comments" />
                         </div>
                        
-                            <button class="btn-default-2">Post</button>
+                        <button class="btn-default-2">Post</button>
                
                     </form>
                 </div>
             </div>
-   -->
+   
   
   
   
@@ -496,7 +418,7 @@
                                   <img src="/uploads/img/posts/<%=similarArticles[i].imagename%>" height="130px" width="100%">
                               </div>
                               <div class="similar-button">
-                                  <button><a href="/posts/<%=similarArticles[i].subject%>/<%=similarArticles[i].slug%>" class="makeitblack">Read more</a></button>
+                                  <button><a href="/posts/<%=similarArticles[i].subject%>/<%=similarArticles[i].slug%>" style="text-decoration: none;color:black;" class="makeitblack">Read more</a></button>
                               </div>
                           </div>
                       </div>
@@ -515,12 +437,14 @@
               <h2 class="new-page-blogs">-Page 1 of 1- <span class="next-page-btn"><a href="">Next page</a></span></h2>
           </div>
    -->
-                 
+   
   
   
               </div>
           </section> 
           </main>
+
+          
   
   
   
@@ -530,7 +454,7 @@
                   <div class="left box">
                       <div class="content">
                           <div class="logo-footer-img">
-                          <img src="/images/2.png" alt="logo" height="250px" width="250px">
+                          <a href="/"><img src="/images/2.png" alt="logo" height="250px" width="250px"></a>
                       </div>
                           <div class="social">
                             <a href="https://www.facebook.com/BackBenchers-105240558097832" target="_blank"><span class="fab fa-facebook-f"></span></a>
@@ -559,7 +483,7 @@
                       <div class="content">
                           <ul class="links">
                             <li><a href="/aboutus"> > About Us</a></li>
-                            <!-- <li><a href="#" id="cu"> > Contact Us</a></li> -->
+                            <li><a href="/query/contactus" id="cu"> > Contact Us</a></li>
                             <li><a href="/termsandconditions"> > Terms and conditions</a></li>
                             <li><a href="/privacypolicy"> > Privacy Policy</a></li>
                           </ul>
@@ -592,7 +516,7 @@
               <div class="bottom">
                   <center>
                       <span class="credits">Created by <a href="#">BackBenchers</a> | </span>
-                      <span class="far fa-copyright"></span><span> 2020 All rights reserved.</span>
+                      <span class="far fa-copyright"></span><span> 2021 All rights reserved.</span>
                   </center>
               </div>
           </footer>
@@ -609,11 +533,61 @@
 
 
 
+
+  
+
+  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  
+
+  <script type="text/javascript">
+      $(document).ready(function(){
+          $(".active").click(function(){
+              $(".search-boxx").toggle();
+              // $("input[type='text']").focus();
+          });
+      });
+      </script>
+
+
+
+
+
+<script>
+  $(document).ready(function(){
+    $(".profile .icon_wrap").click(function(){
+      $(this).parent().toggleClass("active");
+      $(".notifications").removeClass("active");
+    });
+
+    $(".notifications .icon_wrap").click(function(){
+      $(this).parent().toggleClass("active");
+       $(".profile").removeClass("active");
+    });
+
+    $(".show_all .link").click(function(){
+      $(".notifications").removeClass("active");
+      $(".popup").show();
+    });
+
+    $(".close").click(function(){
+      $(".popup").hide();
+    });
+  });
+</script>
+
+
+
+
+
   
 
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   <script src="/javascripts/ajaxHandler_show.js"></script>
   <script src="/javascripts/dropdownicontoggle.js"></script>
+  <script src="/javascripts/show_comments.js"></script>
+  <script src="/javascripts/search_validate.js"></script>
   </html>
 
   

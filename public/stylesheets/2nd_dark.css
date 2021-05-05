@@ -17,7 +17,7 @@ html
     font-size: 12px;
     background: black;
     background-image: url('/images/sameer_14draft.jpeg');
-    cursor: pointer;
+    
     overflow-x: hidden;
 }
 
@@ -27,6 +27,14 @@ html
    background-color: #ab2d24;
     
 }
+
+
+.navbar .navbar_right img{
+    width: 40px;
+    height: 40px;
+    border-radius:50%;
+    border: 1.5px solid black;
+  }
 
 
 .name{
@@ -141,10 +149,7 @@ html
      display: flex;
   }
   
-  .navbar .navbar_right img{
-    width: 35px;
-  }
-  
+ 
   .navbar .navbar_right .icon_wrap{
     cursor: pointer;
   }
@@ -892,7 +897,7 @@ html
 
 .sub-text-1:hover
 {
-    text-decoration: underline;
+    /* text-decoration: underline; */
     color: #ab2d24;
     cursor: pointer;
 }
@@ -939,17 +944,22 @@ border-radius: 25px;
 
 .btn-default-1
 {
+
+    cursor: pointer;
     background-color: #ab2d24;
     color: white;
     outline: none;
     border: none;
     padding: 4px;
     border-radius: 10px;
-    margin-top: 17px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 17px;
 }
 
 .btn-default-2
 {
+    cursor: pointer;
     background-color: #ab2d24;
     color: white;
     outline: none;
@@ -1644,7 +1654,7 @@ body
 
  .side-box
         {
-          
+            cursor: pointer;
             position: relative;
             right: 220px;
             top: 0rem;
@@ -1681,6 +1691,7 @@ body
             max-width: 90px;
             border-bottom: 5px solid #ab2d24;
             margin-bottom: 15px;
+            text-decoration: none;
         }
 
         
@@ -1694,6 +1705,7 @@ body
             max-width: 130px;
             border-bottom: 5px solid #ab2d24;
             margin-bottom: 15px;
+            text-decoration: none;
         }
 
         
@@ -1706,6 +1718,7 @@ body
             display: block;
             max-width: 80px;
             border-bottom: 5px solid #ab2d24;
+            text-decoration: none;
             margin-bottom: 15px;
         }
 
@@ -1735,7 +1748,7 @@ body
             margin-bottom: 300px;
         }
 
-        .side-box h2:hover
+        .side-box .title-side-box:hover
         {
             text-decoration: underline;
         }
@@ -1977,6 +1990,10 @@ body
            cursor: pointer;
        }
 
+       #save-to-later{
+           cursor: pointer;
+       }
+
        #entity-save-subscribe
        {
            float: right;
@@ -2087,7 +2104,7 @@ body
        {
            list-style: none;
            padding-bottom: 10px;
-           font-size: 1.356em;
+           font-size: 1.456em;
            font-weight: 500;
        }
 
@@ -2101,7 +2118,7 @@ body
        {
            list-style: none;
            padding-bottom: 10px;
-           font-size: 1.356em;
+           font-size: 1.456em;
            font-weight: 500;
        }
 
@@ -2177,7 +2194,8 @@ body
        .bottom center
        {
            padding: 5px;
-           font-size: 1em;
+           font-size: 1.3em;
+
            background:#ab2d24;
        }
 
@@ -3762,6 +3780,30 @@ body
 
        }
 
+       @media screen and (max-width:830px) and (orientation:landscape){
+           .all-engineering-articles{
+               top: 3.5rem;
+               
+           }
+           .right form input,
+       .right form textarea
+       {
+           width: 100%;
+           font-size: 1.556em;
+           background: white;
+           padding-left: 8px;
+           border: 1px solid #222222;
+       }
+
+
+
+       .right form textarea{
+           height: 90px;
+       }
+
+
+
+       }
 
        @media screen and (max-width:830px)
        {
@@ -6718,6 +6760,7 @@ body
            .all-engineering-articles
            {
                left: 1.4rem;
+               top: 7rem;
            }
 
 

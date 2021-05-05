@@ -1,100 +1,687 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/stylesheets/about-us-css.css">
     <title>About Us</title>
+
+    <!-- aos css file cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
+    <!-- magnific popup css cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+
+    <!-- bootstrap cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="/stylesheets/about-us-css.css">
+
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/review-css.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.css"/>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
-
-    <div class="logo">
-        <a href = "/"><img id="logoo" src="/images/final_2.png" alt=""></a>
-    </div>
-
-    <div class="why-us">
-        <div class="img-why">
-            <img src="/images/ffff-01.png" alt="" height="250px" width="250px">
-        </div>
-        <div class="why-us-heading">
-            <h1>Why Us</h1>
-        </div>
-        <div class="why-us-content">
-            <p>As all the articles/blogs will be posted in four broad subjects, people will get to see variety of content. 
-
-                Genuine content will be posted which will be based on facts, plagiarism free, and error free. 
-               
-                If any user wants to frame an article/blog and faces any issues, we are there to help them out! 
-               
-                The website is completely user-friendly.</p>
-        </div>
-    </div>
-
-    <div class="all-subjects">
-        <div class="engineering">
-            <div class="heading-1">
-                <h1>ENGINEERING</h1>
-            </div>
-            <div class="img-1">
-                <img id="11" src="/images/2585513 - Copy.png" alt="" height="250px" width="250px">
-            </div>
-            <div class="content-1">
-                <p>“Scientists investigate that which already is; Engineers create that which has never been.”<br>
-                    Engineering is something which is challenging as well as exciting. It uses a complex blend of specialized 
-                    knowledge, science, math, design, construction, and empiricism in order to build valuable products or services
-                    for society. It drives innovation of technology and uses technology to create advancement around us. 
-                    In this advanced technological world, we need engineers to bring ideas into reality. By applying the 
-                    principles of mathematics and science, engineers develop solutions to the world’s biggest technical issues.</p>
-            </div>
-
-        </div>
-        <div class="Business">
-            <div class="heading-2">
-                <h1>BUSINESS & ECONOMICS</h1>
-            </div>
-            <div class="img-2">
-                <img id="22" src="/images/business.png" alt="" height="280px" width="250px">
-            </div>
-            <div class="content-2">
-                <p>Business is all about taking risks. If you succeed, you will be happy but if you fail, you will be wiser!
-                    Entrepreneurs are amazing innovators and carry a main purpose of finding ideal solutions to any set of problems. Businesses foster innovation and competition. By having multiple similar businesses in a market, healthy competition can create better goods and services. Business economics integrates theories of economics with business practice. In short, business economics is a decision making science. That's why they are called growth drivers of economy of a nation!</p>
-            </div>
-            
-        </div>
-        <div class="Commerce">
-            <div class="heading-3">
-                <h1>COMMERCE</h1>
-            </div>
-            <div class="img-3">
-                <img id="33" src="/images/p2 (2) - Copy.png" alt="" height="250px" width="180px">
-            </div>
-            <div class="content-3">
-                <p>"Commerce is the equalizer of wealth of the nations."<br>
-                    Commerce has contributed significantly
-                     towards the economic development of society and quality of life of people.
-                      It provides the neces­sary link between the producers and consumers of goods.
-                       It has brought countries close to one another and the world has become one big market.
-                    Since it requires a lot of processes to be completed, it easily generates various employment 
-                    opportunities in other areas such as transport and logistics, banking, and retail.</p>
-            </div>
-            
-        </div>
-        <div class="personality">
-            <div class="heading-4">
-                <h1>PERSONALITY DEVLOPMENT</h1>
-            </div>
-            <div class="img-4">
-                <img id="44" src="/images/personality.png" alt="" height="250px" width="250px">
-            </div>
-            <div class="content-4">
-                <p>"Personality development is a major time-saver. The better you become, the less time it takes you to achieve your goals."<br>
-                    It grooms an individual and helps to make a mark of his/her own. It plays an essential role not only in an individual’s professional but also personal lives. It makes an individual disciplined, punctual and an asset for his/her organization. It makes us look good and presentable but also helps us face the world with a smile.
-                    Individuals ought to master the art of expressing their thoughts and feelings in the most desired way. Personality Development helps an individual to inculcate positive qualities like punctuality, flexible attitude, willingness to learn, eagerness to help others and so on.</p>
-            </div>
-            
-        </div>
-    </div>
-
-
     
+
+<!-- header section starts  -->
+
+<header>
+
+<div class="container">
+
+    <!-- <a href="#" class="logo"><span>H</span>ealth<span>C</span>are.</a> -->
+    <a href="/"><img src="/images/5.png" alt=""  height="60rem" width="180rem"></a>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="/">home</a></li>
+            <!-- <li><a href="#about">about</a></li>
+            <li><a href="#facility">facility</a></li>
+            <li><a href="#review">review</a></li>-->
+            <li><a href="/query/contactus">contact Us</a></li>
+            <li><a href="/publish">publish here</a></li>
+            <li><a href="/register_or_login">Sign-in/up</a></li>
+        </ul>
+    </nav>
+
+    <div class="fas fa-bars"></div>
+
+</div>
+
+</header>
+
+<!-- header section ends  -->
+
+<!-- home section starts  -->
+
+<section class="home" id="home">
+
+<div class="container">
+
+    <div class="row min-vh-100 align-items-center text-center text-md-left">
+
+        <div class="col-md-6 pr-md-5" data-aos="zoom-in">
+            <img src="/images/final_2.png" id="first-pic">
+        </div>
+
+        <div class="col-md-6 pl-md-5 content" data-aos="fade-left">
+            <h1><span>Knowledge</span> possess <span> no</span> Boundries.</h1>
+            <p id="vision-para">BackBenchers is an edu-tech startup which aims to overcome major barriers in learning and education. We provide a platform where all bloggers and content writers from all around the world can share their knowledge and ideas in Business and Economics, Commerce, Engineering and Personality Development. We are building a community which believes in active learning and promotes education irrespective of the field. Rightly said "BOOKISH KNOWLEDGE MAY GUIDES THE WAY BUT PRACTICAL KNOWLEDGE EXPERIENCES THE WAY". Be a part of our community and share your knowledge. Start publishing with us!!!</p>
+            <a href="#about"><button class="button">Know more</button></a>
+        </div>
+
+    </div>
+
+</div>
+
+</section> 
+
+
+<!-- home section ends -->
+
+<!-- about section start  -->
+
+<section class="about" id="about">
+
+<div class="container">
+
+    <div class="row min-vh-100 align-items-center">
+
+        <div class="col-md-6 content" data-aos="fade-right">
+
+            <h1 id="heading-abt">ABOUT US</h1>
+
+            <div class="box">
+                <h3 id="heading-in-abt"><i class="fas fa-graduation-cap"></i>What is BackBenchers?</h3>
+                <p> <span id="dots">•</span>	open source educational blogging platform. </p>
+            </div>
+
+            <div class="box">
+                <h3  id="heading-in-abt"><i class="fas fa-glasses"></i>Our Vision</h3>
+                <p>•	to change the education sphere in the world.    <br>
+                   •	make it a fun, interactive and affordable place for all.
+                </p>
+            </div>
+
+            <div class="box">
+                <h3  id="heading-in-abt"><i class="fas fa-book"></i>What domains we deal with?</h3>
+                <p>•	Business and Economics <br>
+                    •	Commerce   <br>
+                    •	Engineering <br>
+                    •	Personality Development
+                </p>
+            </div>
+
+            <div class="box">
+                <h3  id="heading-in-abt"> <i class="fas fa-crosshairs"></i>Our Mission</h3>
+                <p>	•	growing together, as a community. <br>
+                    •	invite content writers, bloggers and educators for a 
+                         complete new experience. <br>
+                    •	build the future of education together. <br>
+                    •	educate. enable. empower.  <br>
+                    
+                </p>
+            </div>
+
+        </div>
+
+        <div class="col-md-6 d-none d-md-block" data-aos="fade-left">
+            <img src="/images/personality.png" width="100%" alt="">
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+<!-- about section ends -->
+
+<!-- facility section starts  -->
+
+<!-- <section class="facility" id="facility">
+
+<div class="container">
+
+<h1 class="heading"><span>'</span> our facilities <span>'</span></h1>
+
+<div class="box-container">
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img1.jpg" title="our team">
+            <img src="images/img1.jpg" alt="">
+        </a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img2.jpg" title="our lab">
+            <img src="images/img2.jpg" alt="">
+        </a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img3.jpg" title="emergency rooms">
+            <img src="images/img3.jpg" alt="">
+        </a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img4.jpg" title="expert doctors">
+            <img src="images/img4.jpg" alt="">
+        </a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img5.jpg" title="expert doctors">
+            <img src="images/img5.jpg" alt="">
+        </a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img6.jpg" title="emergency rooms">
+            <img src="images/img6.jpg" alt="">
+        </a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img7.jpg" title="expert doctors">
+            <img src="images/img7.jpg" alt="">
+        </a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img8.jpg" title="emergency rooms">
+            <img src="images/img8.jpg" alt="">
+        </a>
+    </div>
+
+    <div class="box" data-aos="zoom-in">
+        <a href="images/img9.jpg" title="enough beds">
+            <img src="images/img9.jpg" alt="">
+        </a>
+    </div>
+
+</div>
+
+</div>
+
+</section> -->
+
+<!-- facility section ends -->
+
+<!-- review section starts  -->
+
+<!-- <section class="review" id="review">
+
+<div class="container">
+
+<h1 class="heading"><span>'</span> people's review <span>'</span></h1>
+
+<div class="box-container">
+
+    <div class="box" data-aos="fade-right">
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur accusantium error numquam dolore atque. Atque totam ad sint ducimus! Maxime!</p>
+        <h3>someone's name</h3>
+        <span>jan 5, 2021</span>
+        <img src="images/pic1.png" alt="">
+    </div>
+
+    <div class="box" data-aos="fade-up">
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur accusantium error numquam dolore atque. Atque totam ad sint ducimus! Maxime!</p>
+        <h3>someone's name</h3>
+        <span>jan 7, 2021</span>
+        <img src="images/pic2.png" alt="">
+    </div>
+
+    <div class="box" data-aos="fade-left">
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur accusantium error numquam dolore atque. Atque totam ad sint ducimus! Maxime!</p>
+        <h3>someone's name</h3>
+        <span>jan 10, 2021</span>
+        <img src="images/pic3.png" alt="">
+    </div>
+
+</div>
+
+</div>
+
+</section> -->
+
+<!-- review section ends  -->
+
+<!-- counter section starts  -->
+<!-- 
+<section class="counter">
+
+    <div class="container">
+
+        <div class="box-container">
+
+            <div class="box" data-aos="fade-up">
+                <i class="fas fa-hospital"></i>
+                <span>120+</span>
+                <h3>Hospitals</h3>
+            </div>
+
+            <div class="box" data-aos="fade-up">
+                <i class="fas fa-users"></i>
+                <span>100+</span>
+                <h3>staff</h3>
+            </div>
+
+            <div class="box" data-aos="fade-up">
+                <i class="fas fa-smile"></i>
+                <span>1200+</span>
+                <h3>happy patients</h3>
+            </div>
+
+            <div class="box" data-aos="fade-up">
+                <i class="fas fa-procedures"></i>
+                <span>130+</span>
+                <h3>bed facility</h3>
+            </div>
+
+        </div>
+
+    </div>
+
+</section> -->
+
+<!-- counter section ends -->
+
+<!-- contact section starts  -->
+
+<!-- <section class="contact" id="contact">
+
+    <div class="container min-vh-100">
+
+        <div class="row justify-content-center">
+
+            <h1 class="heading"><span>'</span> make an appointment <span>'</span></h1>
+
+            <div class="col-md-10" data-aos="flip-down">
+
+                <form action="">
+
+                    <div class="inputBox">
+                        <input type="text" placeholder="full name">
+                        <input type="number" placeholder="phone">
+                    </div>
+
+                    <div class="inputBox">
+                        <input type="email" placeholder="your email">
+                        <select name="" id="">
+                            <option value="" disabled selected>make an appointment</option>
+                            <option value="09-11 am">09-11 am</option>
+                            <option value="11-03 pm">11-03 pm</option>
+                            <option value="03-06 pm">03-06 pm</option>
+                            <option value="06-09 pm">06-09 pm</option>
+                        </select>
+                    </div>
+
+                    <textarea name="" id="" cols="30" rows="10" placeholder="message ( optional )"></textarea>
+
+                    <input type="submit" name="" id="" value="make appointment" class="button">
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section> -->
+
+<!-- contact section ends -->
+
+<!-- post section starts  -->
+
+<section class="post" id="post">
+
+    <div class="container min-vh-100">
+
+        <h1 class="heading"><span></span> Why we choose these 4 feilds <span></span></h1>
+
+        <div class="box-container">
+
+            <div class="box" data-aos="fade-right">
+                <!-- <img src="images/img2.jpg" alt=""> -->
+                <div class="content">
+                    <!-- <span>jan 5, 2021</span> -->
+                    <a href="#"><h3>ENGINEERING</h3></a>
+                   <p>Engineering is undoubtedly the most sought after career option in India. India prides itself on the fact that the country has one of the largest pools of engineers all over the world. These engineering graduates work across several domains and industries, handling a huge range of operations from development and production to quality check and distribution. Being one of the largest suppliers of engineers in the world, India’s engineering education should be at par with the global standards as well as the requirements of the industries, which is not the case. We, at BackBenchers, therefore chose this as one of the domains to be talked and taught through and through. Although the resources available for the same are in abundance, they’re all paid and have often proven to be inadequate in the long run ultimately leading to ruining of personal resources and time of an individual. Engineering also happens to be the most talked-about career option. When people discuss, they come across various views and notions – some of which are true whereas others, just myths. As global industries are involved, it is important to understand engineering education in India and its significance. It is important to have conceptual knowledge but it is equally important to have an engineering mindset. Engineering education in India, therefore, needs to evolve, to be able to cater to the demands of industries all over the world and pave way for the new age engineers.</p>
+                    <a href="/posts/engineering?page=1"><button class="button">Explore more</button></a>
+                </div>
+            </div>
+
+            <div class="box" data-aos="fade-up">
+                <!-- <img src="images/img4.jpg" alt=""> -->
+                <div class="content">
+                    <!-- <span>jan 5, 2021</span> -->
+                    <a href="#"><h3>BUSINESS & ECONOMICS</h3></a>
+                   <P>Economics and business is the cornerstone of several social issues such as inflation, poverty, unemployment, and human rights. Despite vigorous economic expansion, India is still facing major hurdles widening the economic and business factor across the nation.
+                    On the greener side, India is also the most favorable destination for the foreign investors who are willing to start their business in a nation which has a middle class population of 50 millions, indicating an expanding consumer market. The nation's strength lies in Information technology, chemicals, apparels, pharmaceuticals and jewellery. And since the resources for economics and business are so limited and not easily accessible, we, at BackBenchers, believe it to be one of the subjects of utmost importance that need to be brought available to the people of our society. We aim to bring forth the latest studies and research about India from the areas of economics and business along with an expertise in problem-solving skills in order to cultivate a rational method of observing and solving problems in our readers. We help people develop the right skill set in order to pursue jobs that’ll maximise their potential, jobs worth investing in, jobs that’ll ultimately lead to the growth and development of the community as a whole.</P>
+                    <a href="/posts/business-economics?page=1"><button class="button">Explore more</button></a>
+                </div>
+            </div>
+
+            <div class="box" data-aos="fade-left">
+                <!-- <img src="images/img5.jpg" alt=""> -->
+                <div class="content">
+                    <!-- <span>jan 5, 2021</span> -->
+                    <a href="#"><h3>COMMERCE</h3></a>
+                  <p>Commerce education is considered as one of the most popular career options in India. It is the backbone of business, trade and industry. Unlike economics, it gives you a much wider but macro level approach. Whilst Commerce is concerned with how the modern business world works, Economics attempts to explain why it works as it does. It stresses on developing people to make optimum utilization of available resources. Traditional Commerce education has become irrelevant in the modern era of globalization and digitalization. There is an urgent need to modify its structure in order to cope up with the dynamic environment of businesses today. The current condition of commerce education is such that it lacks employability skills and does not enable students to face complexities of business. Commerce students are facing many problems like lack of resources, finance and interaction between industry and students or institutions. Commerce education sector provide numbers of opportunities to students but commerce students are not capable to crack it because they have insufficient knowledge related to it. To keep pace with growing complexities, the need of the hour is to ensure that appropriate change occurs in commerce education so that the students opting for it will find a place for themselves in the job market. We, at backbenchers therefore strive to bring its learners world-class quality education in a domain that has so much potential and success stored. We aim to bring about new education policy like practical based knowledge and students-centered method and skillful technique.</p>
+                    <a href="/posts/commerce?page=1"><button class="button">Explore more</button></a>
+                </div>
+            </div>
+
+            <div class="box" data-aos="fade-left">
+                <!-- <img src="images/img5.jpg" alt=""> -->
+                <div class="content">
+                    <!-- <span>jan 5, 2021</span> -->
+                    <a href="#"><h3>PERSONALITY DEVLOPMENT</h3></a>
+                    <p>Speech and personality development are one of the most important aspects of an individual especially during his/her formative years. Developing and enhancing our communication and speech helps us to be better presenters of our ideas.Business is evolving and it’s no longer about CEO’s hiding in ivory towers. Business is social, and it includes being genuine, authentic and speaking with prospective clients in ways that are new and innovative. You want strategies with real-world application, not fluff or unproven ideas that sound nice but leave you empty-handed.
+                        These things may not be a part of your educational curriculum but they are equally important and so we, BackBenchers, decided to make available the resources and experience  needed by you in this sphere, to help you with the courage and tools you need to fight for your freedom & create a life that’s actually worth living. By working on ourselves and growing to become better individuals, we can uplift those around us and create a more positive planet for everyone.</p>
+                    <a href="/posts/personality-development?page=1"><button class="button">Explore more</button></a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="about" id="about">
+
+    <div class="container">
+    
+        <div class="row min-vh-100 align-items-center">
+    
+            <div class="col-md-6 content" data-aos="fade-right">
+    
+                <h1 id="heading-abt">WHY US</h1>
+    
+                <div class="box">
+                    <!-- <h3><i class="fas fa-graduation-cap"></i>What is BackBenchers?</h3> -->
+                    <p> •	brings the perfect win-win opportunity for both you and your learners. <br><br>
+                        •	you can share, collaborate, build and learn and ultimately help the community thrive.  <br> <br>
+                        •	attach content from a variety of softwares, edit and publish as per your liking.   <br><br>
+                        •	learn and grow because you will always be looking for more things to teach your readers.  <br><br>
+                        •	give you a sense of recognition that often gets lost.   <br><br>
+                        •	only Genuine People that are interested in your content are there on our platform.  <br><br>
+                        •	help you extend reach to a newer audience and let you connect with your subscribers.  <br><br>
+                        •	we encourage frequent employee recognition and appreciation.   <br><br>
+                        </p>
+                </div>
+    
+            </div>
+    
+            <div class="col-md-6 d-none d-md-block" data-aos="fade-left">
+                <img src="/images/personality.png" width="100%" alt="">
+            </div>
+    
+        </div>
+    
+    </div>
+    
+    </section>
+
+
+
+
+
+
+
+    <!-- <section class="review" id="review">
+
+        <div class="container">
+        
+        <h1 class="heading"><span>'</span>Reviews<span>'</span></h1>
+        
+        <div class="box-container">
+        
+            <div class="box" data-aos="fade-right">
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur accusantium error numquam dolore atque. Atque totam ad sint ducimus! Maxime!</p>
+                <h3>someone's name</h3>
+                <span>jan 5, 2021</span>
+                <img src="images/pic1.png" alt="">
+            </div>
+        
+            <div class="box" data-aos="fade-up">
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur accusantium error numquam dolore atque. Atque totam ad sint ducimus! Maxime!</p>
+                <h3>someone's name</h3>
+                <span>jan 7, 2021</span>
+                <img src="images/pic2.png" alt="">
+            </div>
+        
+            <div class="box" data-aos="fade-left">
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur accusantium error numquam dolore atque. Atque totam ad sint ducimus! Maxime!</p>
+                <h3>someone's name</h3>
+                <span>jan 10, 2021</span>
+                <img src="images/pic3.png" alt="">
+            </div>
+        
+        </div>
+        
+        </div>
+        
+        </section> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section id="trying-review-new">
+            <div class="container">
+                <div class="section-title">
+                    <h2>REVIEWS</h2>
+                    <span class="section-separator"></span>
+                    <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> -->
+                </div>
+            </div>
+            <div class="testimonials-carousel-wrap">
+                <div class="listing-carousel-button listing-carousel-button-next"><i class="fa fa-caret-right" style="color: #fff"></i></div>
+                <div class="listing-carousel-button listing-carousel-button-prev"><i class="fa fa-caret-left" style="color: #fff"></i></div>
+                <div class="testimonials-carousel">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+
+
+
+
+                            
+
+                            <div class="swiper-slide">
+                                <div class="testi-item">
+                                    <div class="testi-avatar"><img src="/images/so.jpeg"></div>
+                                    <!-- <div class="testimonials-text-before"><i class="fa fa-quote-right"></i></div> -->
+                                    <div class="testimonials-text">
+                                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione, aperiam voluptas illo inventore culpa similique porro est incidunt at eum maxime nisi eveniet nobis, amet nesciunt numquam nihil minus, dolorem itaque vero perspiciatis dolor provident. Voluptatibus, iure! Eos autem natus placeat fugiat harum pariatur quisquam blanditiis tenetur sapiente ea quaerat aperiam cupiditate aliquam provident error saepe voluptatum, incidunt numquam reiciendis quo a accusantium nobis minus deleniti. Exercitationem, debitis a officiis, error vel saepe qui nobis dolorem, suscipit asperiores necessitatibus placeat.</p>
+                                        <a href="#" class="text-link"></a>
+                                        <div class="testimonials-avatar">
+                                            <h3>John Doe</h3>
+                                            <h4>Owner</h4>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="testimonials-text-after"><i class="fa fa-quote-left"></i></div>  -->
+                                </div>
+                            </div>
+
+
+        
+                           
+                           
+        
+                           
+        
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="tc-pagination"></div>
+            </div>
+        </section>
+
+
+
+
+
+
+
+
+        
+    
+        
+
+
+
+
+
+
+
+
+<!-- post section ends -->
+
+<!-- footer section starts  -->
+
+<!-- <section class="footer">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-4" data-aos="fade-right">
+                <a href="#" class="logo"><span>H</span>ealth<span>C</span>are.</a>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur nemo porro quasi minima consequuntur dolorum, quas amet in autem id?</p>
+            </div>
+
+            <div class="col-md-4 text-center" data-aos="fade-up">
+                <h3>links</h3>
+                <a href="#">home</a>
+                <a href="#">about</a>
+                <a href="#">facility</a>
+                <a href="#">review</a>
+                <a href="#">contact</a>
+                <a href="#">post</a>
+            </div>
+
+            <div class="col-md-4 text-center" data-aos="fade-left">
+                <h3>share</h3>
+                <a href="#">facebook</a>
+                <a href="#">twitter</a>
+                <a href="#">instagram</a>
+                <a href="#">github</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <h1 class="credit text-center mx-auto">created by <span>mr. web designer</span> | all rights reserved.</h1>
+
+</section> -->
+
+<!-- footer section ends -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- jquery cdn link  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- magnific popup js link  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+<!-- aos js file cdn link  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+<!-- custom js link  -->
+<script src="/javascripts/new-about-us-js.js"></script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.8/swiper-bundle.min.js"></script>
+  <script src="/javascripts/reviewww-script.js"></script>
+
+
+<script>
+
+AOS.init({
+    duration:800,
+    delay:300
+});
+
+</script>
+
 </body>
 </html>

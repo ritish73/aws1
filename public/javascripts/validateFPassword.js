@@ -22,7 +22,7 @@ invalidInput2 = (err) =>{
 
 
 password_field.addEventListener('input', ()=>{
-    password_field.type = 'text';
+    
     if(password_field.value.length < 8){
         alertmessage1.classList.remove('hide');
         invalidInput("Password must be more than 8 characters long");

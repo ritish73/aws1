@@ -63,13 +63,15 @@
                         <div class="profile">
                           <div class="icon_wrap">
                             
-      
-      
                             <% if(currentUser && currentUser.isVerified  && !currentUser.deleted){ %>
       
                               <% if(currentUser.google_id){ %>
-                                <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
-      
+                                <% if(currentUser.image){ %>
+                                  <img src="/uploads/img/profile-pics/<%=currentUser.image%>" alt="profile_pic" class="navbar-image">
+                                <% } else { %>
+                                    <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                                <% } %>
+                                
                                 <!-- <span class="name"> <%= currentUser.google_username.substring(0,8)%></span> -->
                             
                             <i class="fas fa-chevron-down"></i>
@@ -88,7 +90,11 @@
                           </div>
       
                           <% } else if(currentUser.fb_id){ %>
-                            <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                            <% if(currentUser.image){ %>
+                              <img src="/uploads/img/profile-pics/<%=currentUser.image%>" alt="profile_pic" class="navbar-image">
+                            <% } else { %>
+                                <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                            <% } %>
                             
                             <!-- <span class="name"> <%= currentUser.fb_username.substring(0,8)%></span> -->
                             <i class="fas fa-chevron-down"></i>
@@ -108,7 +114,11 @@
       
                           <% } else { %>
       
-                            <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                            <% if(currentUser.image){ %>
+                              <img src="/uploads/img/profile-pics/<%=currentUser.image%>" alt="profile_pic" class="navbar-image">
+                            <% } else { %>
+                                <img src="/images/sd.png" alt="profile_pic" class="navbar-image">
+                            <% } %>
                             <!-- <span class="name"> <%= currentUser.username.substring(0,8)%></span> -->
                             <i class="fas fa-chevron-down"></i>
                           </div>

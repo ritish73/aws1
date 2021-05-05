@@ -1,6 +1,20 @@
 const drop = document.querySelector('.profile')
 const icon = document.querySelector('.fa-chevron-down');
 const img = document.querySelector('.navbar-image')
+
+
+if(icon){
+
+
+
+
+
+
+
+
+
+    
+
 icon.addEventListener('click', ()=>{
     icon.classList.toggle("fa-chevron-up")
     icon.classList.toggle("fa-chevron-down")
@@ -22,3 +36,16 @@ document.querySelector('.container').addEventListener('click',()=>{
     icon.classList.add("fa-chevron-down")
     icon.classList.remove("fa-chevron-up")
 })
+
+
+
+
+
+
+
+
+
+
+
+
+}

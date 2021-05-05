@@ -86,9 +86,14 @@ var currentUser;
     if(currentUser){
       if (httpRequest.readyState === XMLHttpRequest.DONE) {
       if (httpRequest.status === 200) {
-        var respJson = JSON.parse(httpRequest.responseText)
-        console.log(respJson);
-        showAlert(respJson.message)
+        if(httpRequest.responseText){
+
+          var respJson = JSON.parse(httpRequest.responseText)
+          console.log(respJson);
+          showAlert(respJson.message)
+
+        }
+        
       } else {
         alert('There was a problem with the request.');
         }
@@ -185,47 +190,3 @@ var currentUser;
     })
 
 }
-
-const searchBtn = document.querySelector('#disable-search-btn')
-const searchInput = document.querySelector('.search-txt')
-
-// console.log(searchInput.value)
-
-if(searchInput)
-searchBtn.addEventListener('click', ()=>{
-  if(!searchInput.value){
-    
-    showAlert("Cannot search empty string")
-    searchBtn.setAttribute('disabled', true);
-  }
-})
-if(searchInput){
-searchInput.addEventListener("input", ()=>{
-  if(!searchInput.value){
-
-    console.log("empty")
-    searchBtn.setAttribute('disabled', true);
-    showAlert("Cannot search empty string")
-
-  } else {
-
-    console.log("something")
-    searchBtn.removeAttribute('disabled');
-
-  }
-})
-}
-
-// searchBtn.addEventListener("mouseover", (()=>{
-//   if(!searchInput.value){
-
-//     console.log("empty")
-//     searchBtn.setAttribute('disabled', true);
-//     showAlert("Cannot search empty string")
-
-//   } else {
-//     console.log("something")
-//     searchBtn.removeAttribute('disabled');
-//   } 
-// })
-// )

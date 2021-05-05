@@ -24,7 +24,7 @@ input {
 }
 
 .logo-top{
-  top: 20px;
+  top: 0px;
 }
 
 
@@ -137,7 +137,7 @@ line-height: 40px;
 .container {
   position: relative;
   width: 100%;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0);
   min-height: 100vh;
   overflow: hidden;
 }

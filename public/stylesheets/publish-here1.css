@@ -539,6 +539,19 @@ form.sign-in-form {
   }
 }
 
+
+
+@media screen and (max-width:768px) and (orientation:landscape){
+
+  .image{
+    display: none;
+  }
+
+  .signin-signup{
+    top: 45%;
+  }
+}
+
 @media (max-width: 570px) {
   form {
     padding: 0 1.5rem;
@@ -562,5 +575,43 @@ form.sign-in-form {
   .container.sign-up-mode:before {
     bottom: 28%;
     left: 50%;
+  }
+}
+
+
+
+@media screen and (max-width:425px)
+{
+  .signin-signup
+  {
+    top: 75%;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width:387px)
+{
+  .signin-signup
+  {
+    top: 85%;
+    width: 100%;
+  }
+  .title
+  {
+    font-size: 2rem;
+  }
+}
+
+
+@media screen and (max-width:355px)
+{
+  .signin-signup
+  {
+    top: 90%;
+    width: 100%;
+  }
+  .title
+  {
+    font-size: 1.8rem;
   }
 }

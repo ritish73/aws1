@@ -7,7 +7,14 @@ httpRequest.onreadystatechange = findUserRequest;
 httpRequest.open('GET', '/findUser');        
 httpRequest.send();
 }
+
+var freeze = ()=>{
+    document.body.style.overflow = 'hidden';
+    document.querySelector('html').scrollTop = window.scrollY;
+}
+
 window.onload = findUser();
+
 
 
 function findUserRequest(){

@@ -1,4 +1,9 @@
 
+
+.final-search-box input::selection { background: black; }
+
+
+
 .final-search-box{
     position: absolute;
     display: flex;

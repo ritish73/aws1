@@ -43,7 +43,7 @@ const auth = async (req,res,next)=>{
                 throw new Error('User was not found with jwt token in the cookie.');
             }
             if(!user.isVerified){
-                req.flash('error','Please verify your account via email.');
+                // req.flash('error','Please verify your account via email.');
                 throw new Error('Please verify your account via email.');
                 
             }

@@ -9,10 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/fontawesome-free-5.15.1-web/css/all.css">
     <link rel="stylesheet" href="/stylesheets/one-first-css.css">
+    <link rel="stylesheet" href="/stylesheets/notification.css">
     <!-- <link rel="stylesheet" href="/stylesheets/review-css.css"> -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"> -->
     <link rel="shortcut icon" type="image/x-icon" href="/images/final_2.png">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/stylesheets/preloader_front.css">
     
     <title>BackBenchers</title>
@@ -87,7 +88,6 @@
             
         </style>
 
-
     <!-- show a message to the user with a link to re-verify his account if not verified  -->
         <% if(currentUser && !currentUser.isVerified){ %>
     
@@ -161,17 +161,11 @@
                     <div class="boxx">
                         <h2 class="knowledge-fade">KNOWLEDGE POSSESS NO BOUNDARIES</h2>
                         <p>
-                        BackBenchers is an edu-tech startup which aims to overcome major barriers in learning
-                        and education. We provide a platform where all bloggers and content writers from all 
-                        around the world can share their knowledge and ideas in Business and Economics, Commerce,
-                        Engineering and Personality Development. We are  building  a community which believes 
-                        in active learning and promotes education irrespective of the field. Rightly said <span id="vision-highlight">"Bookish
-                        knowledge may guides the way but practical knowledge experiences the way".</span>
-                        Be a part of our community and share your knowledge. Start publishing with us!!!
+                        Knowledge knows no limits. Our collective human wisdom has long been built through the exchange of ideas, from our first navigational knowledge of the seas to our ongoing exploration of the heavens. Backbenchers is an edu-tech startup that aims to overcome prime hurdles in the field of learning and education. Our goal is to make education affordable and add a mode of how it can be imparted. We provide an open-source education blogging platform where all bloggers and content writers from all around the world can share their knowledge and ideas in Business and Economics, 
                         </p>
                         <div id="publish-btn">
                             <span class="account-infoo" href="#">
-                                <a href="/publish" target="_blank" class="finalll"> Publish here !</a>
+                                <a href="/publish" class="finalll"> Publish here !</a>
                             </span>
                         </div>
                     </div>
@@ -201,7 +195,7 @@
                         <div class="blog-post__info">
 
                         <h1 class="blog-post__title-1"><%=etrendingpost.post.title%></h1>
-                        <p id="testone" class="blog-post__text-1" id="card-text"><%=etrendingpost.post.content.substring(0,210)%></p>
+                        <p id="testone" class="blog-post__text-1"><%=etrendingpost.post.content.substring(0,210)%></p>
                         <a href="/posts/engineering/<%=etrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                         <ul class="btns-on-blogcard">
                             <button class="make-pop" onclick="like(this)" getpost="<%=etrendingpost.post.slug%>" ><li class="btns-blog"><i id="changelikecolor" class="far fa-hand-peace fa-2x "></i><span class="count"><%=etrendingpost.post.likes%></span></li></button>
@@ -222,7 +216,7 @@
                     <div class="blog-post__info">
                     
                     <h1 class="blog-post__title-1"><%=erecommendedpost.post.title%></h1>
-                    <p class="blog-post__text-1" id="card-text"><%=erecommendedpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-1" ><%=erecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/engineering/<%=erecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button class="make-pop" onclick="like(this)" getpost="<%=erecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=erecommendedpost.post.likes%></span></li></button>
@@ -243,7 +237,7 @@
                 <div class="blog-post__info">
 
                 <h1 class="blog-post__title-1"><%=epopularpost.post.title%></h1>
-                <p class="blog-post__text-1" id="card-text"><%=epopularpost.post.content.substring(0,210)%></p>
+                <p class="blog-post__text-1" ><%=epopularpost.post.content.substring(0,210)%></p>
                 <a href="/posts/engineering/<%=epopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
                     <button class="make-pop"  onclick="like(this)" getpost="<%=epopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=epopularpost.post.likes%></span></li></button>
@@ -317,7 +311,7 @@
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-2"><%=betrendingpost.post.title%></h1>
-                    <p class="blog-post__text-2" id="card-text"><%=betrendingpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-2"><%=betrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=betrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button class="make-pop"  onclick="like(this)" getpost="<%=betrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=betrendingpost.post.likes%></span></li></button>
@@ -337,7 +331,7 @@
                     <div class="blog-post__info">
                    
                     <h1 class="blog-post__title-2"><%=berecommendedpost.post.title%></h1>
-                    <p class="blog-post__text-2" id="card-text"><%=berecommendedpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-2"><%=berecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=berecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button class="make-pop"  onclick="like(this)" getpost="<%=berecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=berecommendedpost.post.likes%></span></li></button>
@@ -358,7 +352,7 @@
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-2"><%=bepopularpost.post.title%></h1>
-                    <p class="blog-post__text-2" id="card-text"><%=bepopularpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-2"><%=bepopularpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=bepopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button  class="make-pop" onclick="like(this)" getpost="<%=bepopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=bepopularpost.post.likes%></span></li></button>
@@ -417,7 +411,7 @@
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-3"><%=ctrendingpost.post.title%></h1>
-                    <p class="blog-post__text-3" id="card-text"><%=ctrendingpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-3"><%=ctrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/commerce/<%=ctrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=ctrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=ctrendingpost.post.likes%></span></li></button>
@@ -438,7 +432,7 @@
                     <div class="blog-post__info">
                    
                     <h1 class="blog-post__title-3"><%=crecommendedpost.post.title%></h1>
-                    <p class="blog-post__text-3" id="card-text"><%=crecommendedpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-3"><%=crecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/commerce/<%=crecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=crecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=crecommendedpost.post.likes%></span></li></button>
@@ -460,7 +454,7 @@
                 <div class="blog-post__info">
 
                 <h1 class="blog-post__title-3"><%=cpopularpost.post.title%></h1>
-                <p class="blog-post__text-3" id="card-text"><%=cpopularpost.post.content.substring(0,210)%></p>
+                <p class="blog-post__text-3"><%=cpopularpost.post.content.substring(0,210)%></p>
                 <a href="/posts/commerce/<%=cpopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
                     <button onclick="like(this)" getpost="<%=cpopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=cpopularpost.post.likes%></span></li></button>
@@ -531,7 +525,7 @@
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-4"><%=pdtrendingpost.post.title%></h1>
-                    <p class="blog-post__text-4" id="card-text"><%=pdtrendingpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-4"><%=pdtrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdtrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=pdtrendingpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdtrendingpost.post.likes%></span></li></button>
@@ -552,7 +546,7 @@
                     <div class="blog-post__info">
                     
                     <h1 class="blog-post__title-4"><%=pdrecommendedpost.post.title%></h1>
-                    <p class="blog-post__text-4" id="card-text"><%=pdrecommendedpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-4"><%=pdrecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdrecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=pdrecommendedpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdrecommendedpost.post.likes%></span></li></button>
@@ -573,7 +567,7 @@
                     <div class="blog-post__info">
 
                     <h1 class="blog-post__title-4"><%=pdpopularpost.post.title%></h1>
-                    <p class="blog-post__text-4" id="card-text"><%=pdpopularpost.post.content.substring(0,210)%></p>
+                    <p class="blog-post__text-4"><%=pdpopularpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdpopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
                         <button onclick="like(this)" getpost="<%=pdpopularpost.post.slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count"><%=pdpopularpost.post.likes%></span></li></button>
@@ -646,7 +640,7 @@
             <div class="left box">
                 <div class="content">
                     <div class="logo-footer-img">
-                    <img src="/images/final_2.png" alt="logo" height="250px" width="250px">
+                    <a href="/" ><img src="/images/final_2.png" alt="logo" height="250px" width="250px"></a>
                 </div>
                     <div class="social">
                         <a href="https://www.facebook.com/BackBenchers-105240558097832" target="_blank"><span class="fab fa-facebook-f"></span></a>
@@ -674,7 +668,7 @@
                 <div class="content">
                     <ul class="links">
                     <li><a href="/aboutus"> > About Us</a></li>
-                    
+                    <li><a href="/query/contactus" id="cu"> > Contact Us</a></li>
                     <li><a href="/termsandconditions"> > Terms and conditions</a></li>
                     <li><a href="/privacypolicy"> > Privacy Policy</a></li>
                     </ul>
@@ -795,7 +789,6 @@
     }, 2500);
 </script>
 
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!-- <script src="/javascripts/prevent_copy_paste.js"></script> -->
 </html>

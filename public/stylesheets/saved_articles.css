@@ -2500,15 +2500,6 @@ border-radius: 25px;
 
        }
 
-       @media screen and (max-width:768px) and (orientation:landscape){
-           .vertical-nav-bar{
-           top: 130%;
-           }
-            .all-engineering-articles{
-                top: 8.5rem;
-           }
-       }
-
        @media screen and (max-width:650px)
        {
 

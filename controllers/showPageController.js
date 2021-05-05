@@ -4,6 +4,8 @@ const Trending = require('../models/trending.js')
 const Popular = require('../models/popular.js')
 const Viewed = require('../models/viewed.js')
 const Recommended = require('../models/recommended.js')
+const Comment = require('../models/comments.js')
+const { resolve } = require('path')
 var showObj = {};
 
 showObj.getRecommendedArticles = async (sub)=>{
@@ -64,14 +66,14 @@ showObj.getSimilarArticles = async (theslug, subject)=>{
             while(cmp[j] != undefined){
                 for(var k=1; k<8; k++){
                 if(ans[k]!=undefined){
-                    console.log("ans[k] : ", ans[k] ,", cmp[j] : ", cmp[j] );
+                    // console.log("ans[k] : ", ans[k] ,", cmp[j] : ", cmp[j] );
                     if(ans[k]!='is' || ans[k]!='are' || ans[k]!='the' || ans[k]!='and' || ans[k]!='in' || ans[k]!='of'){
                     const smallre = new RegExp(('\w*' + cmp[j] + '\w*'));
                     const smallre2 = new RegExp(('\w*' + ans[k] + '\w*'))
                     var sa = smallre.test(ans[k]);
                     var sa2 = smallre2.test(cmp[j]);
                     include = (sa === true || sa2 === true)?true:false;
-                    console.log("include inside : ", include);
+                    // console.log("include inside : ", include);
                     if(include === true){
                         similarArticles.push(beposts[i]);
                     }
@@ -208,7 +210,18 @@ showObj.recordViews = async (req)=>{
 
 
 
+showObj.getComments = async (slug)=>{
 
+
+
+
+  return new Promise((resolve)=>{
+  
+    var comments = Comment.find({post: slug}).sort({timestamp: -1});
+    resolve(comments)
+
+  })
+}
 
 
 
