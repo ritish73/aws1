@@ -6,15 +6,15 @@ var jwt = require('jsonwebtoken');
 var userSchema = new mongoose.Schema({
   
   fb_id: String,
-  fb_username: {type: String,   match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
+  fb_username: {type: String,   match: [/^[a-zA-Z0-9_ ]*$/, 'is invalid']},
   fb_email: {type: String, lowercase: true, unique: true, index: true ,sparse:true, match: [/\S+@\S+\.\S+/, 'is invalid']},
 
   google_id: String,
-  google_username: {type: String,  match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
+  google_username: {type: String,  match: [/^[a-zA-Z0-9_ ]*$/, 'is invalid']},
   google_email: {type: String, lowercase: true, unique: true, index: true ,sparse:true, match: [/\S+@\S+\.\S+/, 'is invalid']},
 
   bb_id: { type: Number },
-  username: {type: String,  index: true,  sparse:true, match: [/^[a-zA-Z0-9]+$/, 'is invalid']},
+  username: {type: String,  index: true,  sparse:true, match: [/^[a-zA-Z0-9_ ]*$/, 'is invalid']},
   email: {type: String, lowercase: true, unique: true, index: true ,sparse:true, match: [/\S+@\S+\.\S+/, 'is invalid']},
   
   password: { 
@@ -27,7 +27,8 @@ var userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   }],
-
+  first_reviewed: {type: Boolean, default: false},
+  first_published: {type: Boolean, default: false},
   last_seen: String,
   createdAt: String,
   deletedAt: String,
@@ -35,6 +36,8 @@ var userSchema = new mongoose.Schema({
   is_prime_member: Boolean,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+  resetUsernameToken: String,
+  resetUsernameExpires: Date,
   newsletterAccess: Boolean,
   gender: String,
   profession: String,

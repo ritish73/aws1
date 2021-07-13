@@ -4683,7 +4683,7 @@ footer
 
 
 
-
+/* 
 
 
 
@@ -4692,13 +4692,14 @@ footer
 
 
 #bg-img{
-    height: 220vh;
+    height: 150vh;
 }
 
 
     .vertical-nav-bar
     {
-        top: 170%;
+        margin-top: 120px;
+
     }
 
     .person-account
@@ -4710,18 +4711,21 @@ footer
 #publish-btn
 {
     top: 16px;
-    margin-bottom: 200px;
+    margin-bottom: 80px;
+    
 }
 
 .back-to-top
 {
     right: 5rem;
     top: 38rem;
+    display: none;
 }
 
 .vision
 {
-    height: 150vh;
+    height: 300vh;
+    margin-bottom: 150px;
     display: none;
 }
 
@@ -4961,6 +4965,7 @@ footer
     position: relative;
     transform: translateY(40%) translateX(1%);
     max-width: 800px;
+    margin-bottom: 95px;
 }
 
 .overall-card-1
@@ -5022,26 +5027,26 @@ footer
 
 .engineering-page
 {
-    /* height: 160vh; */
+    
     height: auto;
-    padding-bottom: 200px;
+    padding-bottom: 150px;
 }
 .business-economics-page
 {
-    /* height: 160vh; */
+    
     height: auto;
-    padding-bottom: 200px;
+    padding-bottom: 150px;
 }
 .commerce-page{
-    /* height: 160vh; */
+    
     height: auto;
-    padding-bottom: 200px;
+    padding-bottom: 150px;
 }
 .personality-dev
 {
-    /* height: 160vh; */
+    
     height: auto;
-    padding-bottom: 200px;
+    padding-bottom: 150px;
 }
 
 
@@ -5050,7 +5055,7 @@ footer
 
 
 
-}
+} */
 
 
 
@@ -6164,7 +6169,7 @@ footer
 
 
 
-
+/* 
 
 
 
@@ -6510,24 +6515,24 @@ footer
 
 .engineering-page
 {
-    /* height: 160vh; */
+   
     height: auto;
     padding-bottom: 200px;
 }
 .business-economics-page
 {
-    /* height: 160vh; */
+   
     height: auto;
     padding-bottom: 200px;
 }
 .commerce-page{
-    /* height: 160vh; */
+   
     height: auto;
     padding-bottom: 200px;
 }
 .personality-dev
 {
-    /* height: 160vh; */
+   
     height: auto;
     padding-bottom: 200px;
 }
@@ -6547,7 +6552,7 @@ footer
 
 
 
-}
+} */
 
 
 @media only  screen and (max-width:768px)

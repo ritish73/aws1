@@ -23,10 +23,21 @@ showObj.getRecommendedArticles = async (sub)=>{
 
 showObj.getTrendingArticles = async (sub)=>{
     return new Promise((resolve)=>{
+      console.log("inside trending posts fetch")
 
         Trending.find({subject: sub}).populate('post').exec( (err,posts)=>{
             if(err) res.send(err);
             else{
+              console.log(posts);
+              console.log(posts.length);
+
+              for(var i=0; i<posts.length; i++){
+                if(!posts[i].post.isReviewedByAdmin){
+                  console.log("splicing this one", posts[i].post.title);
+                  posts.splice(i,1);
+                }
+              }
+              console.log(posts.length);
               resolve(posts);
             }
           });
@@ -37,7 +48,7 @@ showObj.getTrendingArticles = async (sub)=>{
 showObj.getPopularArticles = async (sub)=>{
     return new Promise((resolve)=>{
 
-        Popular.find({subject: sub}).populate('post').exec( (err,posts)=>{
+        Popular.find({subject: sub, }).populate('post').exec( (err,posts)=>{
             if(err) res.send(err);
             else{
               resolve(posts);

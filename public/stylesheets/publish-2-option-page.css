@@ -16,16 +16,6 @@ input {
 
 
 
-
-
-
-
-
-
-
-
-
-
 .pop-alert{
   position: absolute;
   top:170px;
@@ -225,7 +215,7 @@ form.sign-in-form {
 }
 
 .title {
-  font-size: 2.2rem;
+  font-size: 2rem;
   color: #f0f0f0;
   margin-bottom: 10px;
   z-index: 100;
@@ -452,11 +442,11 @@ textarea::placeholder
 @media (max-width: 870px) {
   .container {
     min-height: 800px;
-    height: 100vh;
+    height: 140vh;
   }
   .signin-signup {
-    width: 100%;
-    top: 95%;
+    width: 110%;
+    top: 100%;
     transform: translate(-50%, -100%);
     transition: 1s 0.8s ease-in-out;
   }
@@ -620,3 +610,13 @@ textarea::placeholder
 
 
 }
+
+
+
+/* @media screen and (max-width:1024px) and (orientation: landscape) {
+
+  .container {
+    min-height: 150vh;
+  }
+  
+  } */

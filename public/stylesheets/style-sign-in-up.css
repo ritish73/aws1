@@ -32,7 +32,7 @@ input {
 
 
 
-
+/* 
 .pop-alert{
   position: absolute;
   top:170px;
@@ -129,7 +129,7 @@ color: #3e65e6;
 font-size: 22px;
 line-height: 40px;
 }
-
+ */
 
 
 
@@ -144,6 +144,7 @@ line-height: 40px;
 
 .forms-container {
   position: absolute;
+  background: whitesmoke;
   width: 100%;
   height: 100%;
   top: 0;
@@ -185,17 +186,18 @@ form.sign-in-form {
 
 .title {
   font-size: 2.2rem;
-  color: #444;
+  color: black;
   margin-bottom: 10px;
 }
 
 .input-field {
   max-width: 380px;
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: #f0f0f0c4;
   margin: 10px 0;
   height: 55px;
   border-radius: 55px;
+  border: 2px solid black;
   display: grid;
   grid-template-columns: 15% 85%;
   padding: 0 0.4rem;
@@ -205,7 +207,7 @@ form.sign-in-form {
 .input-field i {
   text-align: center;
   line-height: 55px;
-  color: #acacac;
+  color: black;
   transition: 0.5s;
   font-size: 1.1rem;
 }
@@ -217,11 +219,11 @@ form.sign-in-form {
   line-height: 1;
   font-weight: 400;
   font-size: 1.1rem;
-  color: #333;
+
 }
 
 .input-field input::placeholder {
-  color: #aaa;
+  color: black;
   font-weight: 500;
 }
 
@@ -242,22 +244,24 @@ form.sign-in-form {
   justify-content: center;
   align-items: center;
   margin: 0 0.45rem;
-  color: #333;
+  color: black;
   border-radius: 50%;
-  border: 1px solid #333;
+  border: 1px solid black;
   text-decoration: none;
   font-size: 1.1rem;
   transition: 0.3s;
 }
 
 .social-icon:hover {
-  color: #4481eb;
-  border-color: #4481eb;
+  background-color: #7f53ac;
+    background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);
+    border-color: #7f53ac;
 }
 
 .btn {
   width: 150px;
-  background-color: #5995fd;
+  background-color: #7f53ac;
+    background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);
   border: none;
   outline: none;
   height: 49px;
@@ -271,7 +275,8 @@ form.sign-in-form {
 }
 
 .btn:hover {
-  background-color: #4d84e2;
+  background-color: #7f53ac;
+    background-image: linear-gradient(315deg, #647dee 0%, #7f53ac 74%);
 }
 .panels-container {
   position: absolute;
@@ -289,9 +294,11 @@ form.sign-in-form {
   height: 2000px;
   width: 2000px;
   top: -10%;
-  right: 48%;
+  right: 45%;
   transform: translateY(-50%);
-  background-image: linear-gradient(-45deg, #4481eb 0%, #04befe 100%);
+
+  background-color: #7f53ac;
+background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);
   transition: 1.8s ease-in-out;
   border-radius: 50%;
   z-index: 6;
@@ -357,7 +364,7 @@ form.sign-in-form {
 /* ANIMATION */
 
 .container.sign-up-mode:before {
-  transform: translate(100%, -50%);
+  transform: translate(100%, -30%);
   right: 52%;
 }
 
@@ -526,3 +533,12 @@ form.sign-in-form {
   background-color: rgb(235, 235, 36);
   padding-left: 20px;
 }
+
+
+/* @media screen and (max-width:1024px) and (orientation: landscape) {
+
+.container {
+  min-height: 150vh;
+}
+
+} */

@@ -451,9 +451,20 @@ router.get("/business-economics", check ,async (req,res)=>{
       rc = (posts.length>=3)?3:posts.length;
     }
   })
-  await Popular.find({subject: 'business-economics'}).populate("post").exec(async (err,posts)=>{
+  await Popular.find({subject: 'business-economics'}).populate("post").exec(async (err,popularposts)=>{
     if(err) console.log(err)
     else{
+
+
+      for(var i=0; i<popularposts.length; i++){
+        if(!popularposts[i].post.isReviewedByAdmin){
+          console.log("splicing this one", popularposts[i].post.title);
+          popularposts.splice(i,1);
+        }
+      }
+
+
+
       popularposts = await posts;
       pc = posts.length
       pc = (posts.length>=3)?3:posts.length;
@@ -491,7 +502,12 @@ router.get("/business-economics", check ,async (req,res)=>{
             else {
   
              
-  
+              for(var i=0; i<trendingPosts.length; i++){
+                if(!trendingPosts[i].post.isReviewedByAdmin){
+                  console.log("splicing this one", trendingPosts[i].post.title);
+                  trendingPosts.splice(i,1);
+                }
+              }
   
   
                 tc = trendingPosts.length;
@@ -568,6 +584,18 @@ router.get("/business-economics", check ,async (req,res)=>{
         Trending.find({subject: 'business-economics'}).populate("post").exec(async (err,trendingPosts)=>{
           if(err) console.log(err)
           else {
+
+
+
+            for(var i=0; i<trendingPosts.length; i++){
+              if(!trendingPosts[i].post.isReviewedByAdmin){
+                console.log("splicing this one", trendingPosts[i].post.title);
+                trendingPosts.splice(i,1);
+              }
+            }
+
+
+
             tc = trendingPosts.length;
             tc = (trendingPosts.length>=3)?3:trendingPosts.length;
             // console.log("****************************",popularposts , "*********************************")
@@ -1807,13 +1835,15 @@ router.get('/liked/:slug', check,(req,res)=>{
             })
             res.json({
               count: post.likes,
-              message: "you liked this post"
+              message: "you liked this post",
+              status: 1
                     })
           } else {
             
             res.json({
               count: post.likes,
-              message: "you can only like this post once"
+              message: "you can only like this post once",
+              status: 0
                     })
           }
         }
@@ -1901,9 +1931,9 @@ router.get("/allblogs",(req,res)=>{
 })
 
 
-router.get("*", async (req,res)=>{
-  res.render("errorPage");
-})
+// router.get("*", async (req,res)=>{
+//   res.render("errorPage");
+// })
 
 
 function convertDate(given_date){

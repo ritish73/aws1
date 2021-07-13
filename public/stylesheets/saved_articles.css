@@ -2345,6 +2345,21 @@ border-radius: 25px;
        }
 
 
+       /* @media screen and (max-width:1024px) and (orientation: landscape){
+           .vertical-nav-bar{
+               margin-top: 250px;
+           }
+           .all-engineering-articles{
+               left: 6.75rem;
+               top: 14.5rem;
+           }
+            .main-content
+           {
+               grid-template-columns:repeat(2,1fr) ;
+           }
+
+       } */
+
 
        @media screen and (max-width:1024px)
        {
@@ -2499,6 +2514,15 @@ border-radius: 25px;
            }
 
        }
+
+       /* @media screen and (max-width:768px) and (orientation:landscape){
+           .vertical-nav-bar{
+           top: 130%;
+           }
+            .all-engineering-articles{
+                top: 8.5rem;
+           }
+       } */
 
        @media screen and (max-width:650px)
        {

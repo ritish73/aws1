@@ -1,3 +1,5 @@
+
+
 var httpRequest;     
 var currentUser;
 var messagebox = document.getElementById('messagebox')
@@ -43,7 +45,7 @@ function saveLaterRequest(){
 }
 
 
-async function addFollowerRequest(){
+function addFollowerRequest(){
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200 ) {
             var resJson = JSON.parse(httpRequest.responseText)
@@ -86,24 +88,30 @@ if (httpRequest.readyState === XMLHttpRequest.DONE) {
 }
 
     
-function saveToLater(e){
-    
-    var curPostSlug = e.getAttribute('getpost');    
-    console.log("curpostslug " + curPostSlug)
-    if(currentUser){
-        httpRequest = new XMLHttpRequest();
-    if (!httpRequest) {
-    alert('Giving up :( Cannot create an XMLHTTP instance');
-    return false;
-    }
-    httpRequest.onreadystatechange = saveLaterRequest;
-    httpRequest.open('GET', '/savetolater/' + curPostSlug);        
-    httpRequest.send();
-} else {
-    console.log("You need to login to save this post.")
-    window.location = '/register_or_login?m=0'
-}
-}   
+
+
+
+ 
+      
+   function saveToLater(e){
+     
+     var curPostSlug = e.getAttribute('getpost');    
+     console.log("curpostslug " + curPostSlug)
+     if(currentUser){
+         httpRequest = new XMLHttpRequest();
+     if (!httpRequest) {
+       alert('Giving up :( Cannot create an XMLHTTP instance');
+       return false;
+     }
+     httpRequest.onreadystatechange = saveLaterRequest;
+     httpRequest.open('GET', '/savetolater/' + curPostSlug);        
+     httpRequest.send();
+   } else {
+    window.location = '/register_or_login?m=0' 
+    console.log("you need to login to save this post")
+   }
+ }   
+
 
 function deletePost(e){
 var curPostSlug = e.getAttribute('getpost');   
@@ -121,9 +129,9 @@ if(currentUser){
 }
 }
 
-async function addFollower(e){
+function addFollower(e){
 if(currentUser){
-    var authname = await e.getAttribute('getauthor');
+    var authname = e.getAttribute('getauthor');
     console.log("authname : ", authname);
     httpRequest = new XMLHttpRequest();
     if(!httpRequest){
@@ -140,7 +148,7 @@ if(currentUser){
 }
 }
 
-async function sharePost(e){
+function sharePost(e){
 if(currentUser){
     var curPostSlug = e.getAttribute('getpost');  
     
@@ -159,15 +167,21 @@ if(currentUser){
 }
 
 
-function like(e){
+
+ function like(e){
+
+    console.log("like")
 if(currentUser){
     let curPostSlug = e.getAttribute('getpost');  
+    console.log("curPostSlug : ",curPostSlug)
     httpRequest = new XMLHttpRequest();
     if (!httpRequest) {
         alert('Giving up :( Cannot create an XMLHTTP instance');
         return false;
     }
-    httpRequest.onreadystatechange = likeRequest;
+    httpRequest.onreadystatechange = function(){
+        likeRequest(e)
+    };
     httpRequest.open('GET', '/posts/liked/' + curPostSlug);        
     httpRequest.send();
     
@@ -178,17 +192,56 @@ if(currentUser){
 }
 }
 
-function likeRequest(){
+
+ function likeRequest(ev){
+    console.log(ev)
+    console.log(httpRequest.readyState)
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
     if (httpRequest.status === 200) {
+        
         let respJson = JSON.parse(httpRequest.responseText)
-        console.log(respJson.message)
+        console.log(respJson.status)
         showAlert(respJson.message)
+
+        if(respJson.status){
+
+
+            count(ev)
+        }
+        
     //   document.querySelector('.count').innerText = respJson.message;
     } else {
         alert('There was a problem with the request.');
     }
+    } else{
+        console.log("not ready")
     }
+}
+
+
+
+
+var count = (e)=>{
+    console.log("count : ", e)
+    
+    var post_index = e.getAttribute('post_index');
+    var page_no = e.getAttribute('pageno')
+
+    var ind = post_index - (page_no-1)*10
+
+    console.log("post_index : ", post_index , " and page_no : ", page_no, " and ind : ", ind);
+    var inc = document.querySelectorAll('#likecount')[ind];
+    var val = parseInt(inc.innerText);
+    
+    inc.innerText = val+1;  
+    
+}
+
+
+function sendcookie(e){
+    // cookie to store title of the post he clicked read more of
+    var ptv = e.getAttribute('post_title');
+    document.cookie = "pt="+ptv;
 }
 
 

@@ -42,8 +42,8 @@
 
 
  
-<!-- 
-    <div class="mainnn">
+
+    <!-- <div class="mainnn">
         <div class="souravsingla">
             Welcome
         </div>
@@ -53,8 +53,8 @@
         <div class="barr">
             <div id="filll"></div>
         </div>
-    </div>
- -->
+    </div> -->
+
 
 
     <span id="start"></span>
@@ -161,7 +161,7 @@
                     <div class="boxx">
                         <h2 class="knowledge-fade">KNOWLEDGE POSSESS NO BOUNDARIES</h2>
                         <p>
-                        Knowledge knows no limits. Our collective human wisdom has long been built through the exchange of ideas, from our first navigational knowledge of the seas to our ongoing exploration of the heavens. Backbenchers is an edu-tech startup that aims to overcome prime hurdles in the field of learning and education. Our goal is to make education affordable and add a mode of how it can be imparted. We provide an open-source education blogging platform where all bloggers and content writers from all around the world can share their knowledge and ideas in Business and Economics, 
+                            Backbenchers is an edu-tech startup that helps create the connection between learners with diverse opinions and interests. Our end goal is to make education affordable and to improve the current education system in the best way. We provide an open-source education blogging platform where all bloggers, content writers, and educators from all around the world can share their knowledge and ideas in Business and Economics, Commerce, Engineering, and Personality Development. We are building a community that believes in active learning and promotes education. It is a form of connected learning and is highly effective.
                         </p>
                         <div id="publish-btn">
                             <span class="account-infoo" href="#">
@@ -189,12 +189,14 @@
             </div>
 
             <div class="tech-cards">
+
+                <% if(etrendingpost && etrendingpost.post){ %>
                
                 <div class="overall-card-1" ><a href="/posts/engineering/<%=etrendingpost.post.slug%>" id="oc11">
                     <h1 class="one-1">#trending </h1>
                         <div class="blog-post__info">
 
-                        <h1 class="blog-post__title-1"><%=etrendingpost.post.title%></h1>
+                        <h1 class="blog-post__title-1"><%=etrendingpost.post.title.substr(0,31)%></h1>
                         <p id="testone" class="blog-post__text-1"><%=etrendingpost.post.content.substring(0,210)%></p>
                         <a href="/posts/engineering/<%=etrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                         <ul class="btns-on-blogcard">
@@ -208,14 +210,14 @@
                         </div>
                     </a>
                 </div>
-
+                <% } %>
 
                 <% if(erecommendedpost && erecommendedpost.post){ %>
                 <div class="overall-card-1"><a href="/posts/engineering/<%=erecommendedpost.post.slug%>" id="oc12">
                     <h1 class="one-2">#Recommended</h1>
                     <div class="blog-post__info">
                     
-                    <h1 class="blog-post__title-1"><%=erecommendedpost.post.title%></h1>
+                    <h1 class="blog-post__title-1"><%=erecommendedpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-1" ><%=erecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/engineering/<%=erecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -232,11 +234,13 @@
             <% } %>
 
 
+            <% if(epopularpost && epopularpost.post){ %>
+
             <div class="overall-card-1"><a href="/posts/engineering/<%=epopularpost.post.slug%>" id="oc13">
                 <h1 class="one-3">#Popular</h1>
                 <div class="blog-post__info">
 
-                <h1 class="blog-post__title-1"><%=epopularpost.post.title%></h1>
+                <h1 class="blog-post__title-1"><%=epopularpost.post.title.substr(0,31)%></h1>
                 <p class="blog-post__text-1" ><%=epopularpost.post.content.substring(0,210)%></p>
                 <a href="/posts/engineering/<%=epopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
@@ -249,6 +253,7 @@
                 </div>
                 </a>
             </div>
+        <% } %>
    
             </div>
 
@@ -305,12 +310,12 @@
             <div class="tech-cards">
 
 
-               
+                <% if(betrendingpost && betrendingpost.post){ %>
                 <div class="overall-card-2"><a href="/posts/business-economics/<%=betrendingpost.post.slug%>" id="oc21">
                     <h1 class="one-11">#trending </h1>
                     <div class="blog-post__info">
 
-                    <h1 class="blog-post__title-2"><%=betrendingpost.post.title%></h1>
+                    <h1 class="blog-post__title-2"><%=betrendingpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-2"><%=betrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=betrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -323,6 +328,8 @@
                     </div>
                     </a>
                 </div>
+                
+                <% } %>
 
 
                 <% if(berecommendedpost && berecommendedpost.post){ %>
@@ -330,7 +337,7 @@
                     <h1 class="one-11">#Recommended</h1>
                     <div class="blog-post__info">
                    
-                    <h1 class="blog-post__title-2"><%=berecommendedpost.post.title%></h1>
+                    <h1 class="blog-post__title-2"><%=berecommendedpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-2"><%=berecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=berecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -347,11 +354,12 @@
                 <% } %>
 
 
+                <% if(bepopularpost && bepopularpost.post){ %>
                 <div class="overall-card-2"><a href="/posts/business-economics/<%=bepopularpost.post.slug%>" id="oc23">
                     <h1 class="one-11">#Popular</h1>
                     <div class="blog-post__info">
 
-                    <h1 class="blog-post__title-2"><%=bepopularpost.post.title%></h1>
+                    <h1 class="blog-post__title-2"><%=bepopularpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-2"><%=bepopularpost.post.content.substring(0,210)%></p>
                     <a href="/posts/business-economics/<%=bepopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -364,6 +372,7 @@
                     </div>
                 </a>
             </div>
+            <% } %>
    
             </div>
 
@@ -404,13 +413,14 @@
 
             <div class="tech-cards">
 
+                <% if(ctrendingpost && ctrendingpost.post){ %>
 
                
                 <div class="overall-card-3"><a href="/posts/commerce/<%=ctrendingpost.post.slug%>" id="oc31">
                     <h1 class="one-11">#trending </h1>
                     <div class="blog-post__info">
 
-                    <h1 class="blog-post__title-3"><%=ctrendingpost.post.title%></h1>
+                    <h1 class="blog-post__title-3"><%=ctrendingpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-3"><%=ctrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/commerce/<%=ctrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -423,7 +433,8 @@
                     </div>
                 </a>
                 </div>
-
+                
+                <% } %>
 
                 <% if(crecommendedpost && crecommendedpost.post){ %>
                 <div class="overall-card-3"><a href="/posts/commerce/<%=crecommendedpost.post.slug%>" id="oc32">
@@ -431,7 +442,7 @@
 
                     <div class="blog-post__info">
                    
-                    <h1 class="blog-post__title-3"><%=crecommendedpost.post.title%></h1>
+                    <h1 class="blog-post__title-3"><%=crecommendedpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-3"><%=crecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/commerce/<%=crecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -448,12 +459,13 @@
                 <% } %>
 
 
+                <% if(cpopularpost && cpopularpost.post){ %>
             <div class="overall-card-3"><a href="/posts/commerce/<%=cpopularpost.post.slug%>" id="oc33">
                 <h1 class="one-11">#Popular </h1>
 
                 <div class="blog-post__info">
 
-                <h1 class="blog-post__title-3"><%=cpopularpost.post.title%></h1>
+                <h1 class="blog-post__title-3"><%=cpopularpost.post.title.substr(0,31)%></h1>
                 <p class="blog-post__text-3"><%=cpopularpost.post.content.substring(0,210)%></p>
                 <a href="/posts/commerce/<%=cpopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
@@ -466,6 +478,8 @@
                 </div>
                 </a>
         </div>
+
+        <% } %>
    
             </div>
 
@@ -517,14 +531,14 @@
 
             <div class="tech-cards">
 
-
+                <% if(pdtrendingpost && pdtrendingpost.post){ %>
                
                 <div class="overall-card-4"><a href="/posts/personality-development/<%=pdtrendingpost.post.slug%>" id="oc41">
                     <h1 class="one-11">#trending </h1>
 
                     <div class="blog-post__info">
 
-                    <h1 class="blog-post__title-4"><%=pdtrendingpost.post.title%></h1>
+                    <h1 class="blog-post__title-4"><%=pdtrendingpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-4"><%=pdtrendingpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdtrendingpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -538,6 +552,8 @@
                 </a>
                 </div>
 
+                <% } %>
+
 
                 <% if(pdrecommendedpost && pdrecommendedpost.post){ %>
                 <div class="overall-card-4"><a href="/posts/personality-development/<%=pdrecommendedpost.post.slug%>" id="oc42">
@@ -545,7 +561,7 @@
 
                     <div class="blog-post__info">
                     
-                    <h1 class="blog-post__title-4"><%=pdrecommendedpost.post.title%></h1>
+                    <h1 class="blog-post__title-4"><%=pdrecommendedpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-4"><%=pdrecommendedpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdrecommendedpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -561,12 +577,14 @@
                 <% } %>
 
 
+                <% if(pdpopularpost && pdpopularpost.post){ %>
+
                 <div class="overall-card-4"><a href="/posts/personality-development/<%=pdpopularpost.post.slug%>" id="oc43">
                     <h1 class="one-11">#Popular </h1>
 
                     <div class="blog-post__info">
 
-                    <h1 class="blog-post__title-4"><%=pdpopularpost.post.title%></h1>
+                    <h1 class="blog-post__title-4"><%=pdpopularpost.post.title.substr(0,31)%></h1>
                     <p class="blog-post__text-4"><%=pdpopularpost.post.content.substring(0,210)%></p>
                     <a href="/posts/personality-development/<%=pdpopularpost.post.slug%>" class="blog-post__cta">Read more</a>
                     <ul class="btns-on-blogcard">
@@ -579,6 +597,7 @@
                     </div>
                 </a>
                 </div>
+                <% } %>
             </div>
 
             <a href="/posts/personality-development?page=1" id="underline"><div class="explore-more">

@@ -46,7 +46,7 @@
         <% }) %>
         
       <!-- here we put the operations on these posts by th admins or auditors -->
-      <a href="/posts/<%=posts[i]._id%>/edit">Edit this post</a>
+      <a href="/posts/<%=posts[i].slug%>/edit">Edit this post</a>
       <form action="/<%=posts[i].slug%>?_method=DELETE" method="POST">
         <button type="submit">Delete post</button>
       </form>

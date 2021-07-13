@@ -13,6 +13,11 @@ textarea {
   background: rgba(209, 208, 208, 0.082);
 }
 
+.profile_dd .profile_ul li
+{
+  list-style: none;
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -23,6 +28,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 
 .form {
@@ -31,10 +37,11 @@ textarea {
   background-color: rgba(209, 208, 208, 0.911);
   border-radius: 10px;
   box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 10;
   overflow: hidden;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  margin-top: 80px;
 }
 
 .contact-form {
@@ -352,6 +359,11 @@ background-color: #3b5998;
 }
 
 @media (max-width: 480px) {
+
+  .top-img2-logo
+  {
+    display: none;
+  }
   .container {
     padding: 1.5rem;
   }

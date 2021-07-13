@@ -168,7 +168,7 @@ middlewareObj.trending = async function(){
     else{
       // console.log("deleted posts are ", posts)
       
-  await Post.find({}, async (err,posts)=>{
+  await Post.find({isReviewedByAdmin: true}, async (err,posts)=>{
     if(err){
       res.send(err);
     } else {
@@ -274,7 +274,7 @@ middlewareObj.popular = async function(){
     else{
       // console.log("deleted posts are ", posts)
       
-  await Post.find({}, async (err,posts)=>{
+  await Post.find({isReviewedByAdmin: true}, async (err,posts)=>{
     if(err){
       console.log("error occured while sorting the Popular articles",err);
     } else {
@@ -557,6 +557,8 @@ var getPostsHomePageRecommended = async (obj)=>{
       // console.log(posts.length)
       for(var i=0; i<posts.length; i++){
 
+        
+
         if(posts[i].subject === 'business-economics'){
           if(posts[i].rank < cmp1){
             obj.berecommendedpost = await posts[i];
@@ -584,6 +586,7 @@ var getPostsHomePageRecommended = async (obj)=>{
             cmp4 = await posts[i].rank;
           }
         }
+      
 
       }
       // console.log(obj)
@@ -617,6 +620,8 @@ var getPostsHomePagePopular = async function (obj){
 
       for(var i=0; i<posts.length; i++){
 
+        
+
         if(posts[i].subject === 'business-economics'){
           if(posts[i].rank < cmp1){
             obj.bepopularpost = await posts[i];
@@ -645,6 +650,8 @@ var getPostsHomePagePopular = async function (obj){
           }
         }
 
+      
+
       }
       resolve(obj);
       // console.log("inside popular")
@@ -666,7 +673,6 @@ var getPostsHomePagePopular = async function (obj){
 
 var getPostsHomePageTrending = async (obj)=>{
 
-
   return new Promise((resolve)=>{
 
     var cmp1 = 1000000,cmp2 = 1000000,cmp3 = 1000000,cmp4 = 1000000;
@@ -678,6 +684,10 @@ var getPostsHomePageTrending = async (obj)=>{
       if(err) console.log(err)
       else{
         for(var i=0; i<posts.length; i++){
+
+         
+
+          
 
           if(posts[i].subject === 'business-economics'){
             if(posts[i].rank < cmp1){
@@ -710,6 +720,7 @@ var getPostsHomePageTrending = async (obj)=>{
               cmp4 = await posts[i].rank;
             }
           }
+        
 
         }
         resolve(obj);
@@ -723,6 +734,7 @@ var getPostsHomePageTrending = async (obj)=>{
         // console.log(obj);
         // obj.pdtrendingpost = pdtrendingpost;
         // console.log("................................................................",obj);
+        
         
       }
       
@@ -756,7 +768,6 @@ middlewareObj.countUsers = async function(){
     }
   })
 }
-
 
 
 middlewareObj.helperGoogleAuth = async function(accessToken, refreshToken, profile, done){
@@ -795,6 +806,8 @@ middlewareObj.helperGoogleAuth = async function(accessToken, refreshToken, profi
     })
     // return done(null, profile);
 }
+
+
 
 
 

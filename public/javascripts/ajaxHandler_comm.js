@@ -86,6 +86,8 @@ function findUserRequest(){
         }
     }
 
+
+
       
    function saveToLater(e){
      
@@ -172,28 +174,37 @@ function like(e){
           alert('Giving up :( Cannot create an XMLHTTP instance');
           return false;
         }
-        httpRequest.onreadystatechange = likeRequest;
+        httpRequest.onreadystatechange = function(){
+            likeRequest(e)
+        };
         httpRequest.open('GET', '/posts/liked/' + curPostSlug);        
         httpRequest.send();
       
       }
      else {
-      document.querySelector("#message").innerHTML = "you need to log in to like this post";
-      window.location = '/register_or_login?m=0'
+        window.location = '/register_or_login?m=0'
     }
   }
 
-  function likeRequest(){
+  function likeRequest(ev){
       if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
-          var respJson = JSON.parse(httpRequest.responseText)
-          console.log(respJson)
-          showAlert(respJson.message)
+          
+          let respJson = JSON.parse(httpRequest.responseText)
+        console.log(respJson.status)
+        showAlert(respJson.message)
+
+        if(respJson.status){
+
+
+            count(ev)
+        }
         } else {
           alert('There was a problem with the request.');
         }
       }
     }
+
 
 
 
@@ -218,3 +229,21 @@ var showAlert = async (msg)=>{
 
 }
 
+
+
+
+var count = (e)=>{
+    console.log("count : ", e)
+    
+    var post_index = e.getAttribute('post_index');
+    var page_no = e.getAttribute('pageno')
+
+    var ind = post_index - (page_no-1)*10
+
+    console.log("post_index : ", post_index , " and page_no : ", page_no, " and ind : ", ind);
+    var inc = document.querySelectorAll('#likecount')[ind];
+    var val = parseInt(inc.innerText);
+    
+    inc.innerText = val+1;  
+    
+}

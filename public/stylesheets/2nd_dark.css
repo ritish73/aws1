@@ -873,9 +873,11 @@ html
 .commenterImage img {
     width:100%;
     border-radius:50%;
+    height: 100%;
+    
 }
 .commentText p {
-    margin:0;
+    margin:10px;
     color: black;
     font-size: 1.3rem;
 }
@@ -883,6 +885,7 @@ html
     color:black;
     font-family:'poppins',sans-serif;
     font-size:13px;
+    margin-left: 10px;
 }
 
 .sub-text-1 {
@@ -3360,7 +3363,22 @@ body
 
 
 
-       @media screen and (max-width:1024px)
+       /* @media screen and (max-width:1024px) and (orientation:landscape){
+           .all-engineering-articles{
+               top: 3.5rem;
+           }
+
+           .vertical-nav-bar{
+               top: 120%;
+           }
+           .main-content
+           {
+               grid-template-columns:repeat(2,1fr) ;
+           }
+
+       } */
+
+        @media screen and (max-width:1024px) 
        {
         .detailBox 
         {
@@ -3479,36 +3497,7 @@ body
             display: grid;
             grid-template-columns: repeat(2,1fr);
            }
-    
-           /* .similar-blog
-           {
-               position: relative;
-               width: 270px;
-               height: 150px;  
-              margin-right: 0px;
-           }
-    
-           .similar-article-heading
-           {
-               width:128px;
-               font-size: 0.85em;
-           }
-    
-           .similar-article-image
-           {
-                border-radius: 5px;
-                float: left;
-                height: 100%;
-           }
-    
-          
-    
-           .similar-button button
-           {
-               position: relative;
-               top: 115px;
-               right:10px;
-           } */
+
 
            .similar-blog
            {
@@ -3542,46 +3531,9 @@ body
     
 
 
-        /* .side-box
-           {
-               display: none;
-           }
+       
 
-           .vertical-nav-bar
-           {
-               top: 70%;
-           }
-
-           .blog-post
-           {
-               max-width:28rem ;
-               height: 34rem;
-           }
-
-           .table-all
-           {
-               grid-column-gap: 0rem;
-           }
-
-           .all-engineering-articles
-           {
-               left: 12.5rem;
-               
-           }
-
-           .next-page
-           {
-               margin-left: 0px;
-               width: 800px;
-           }
-
-           .next-page span 
-           {
-               margin-left: 540px;
-           } */
-
-
-       }
+       } 
 
 
        @media screen and (max-width:900px)
@@ -3780,7 +3732,7 @@ body
 
        }
 
-       @media screen and (max-width:830px) and (orientation:landscape){
+       /* @media screen and (max-width:830px) and (orientation:landscape){
            .all-engineering-articles{
                top: 3.5rem;
                
@@ -3803,7 +3755,7 @@ body
 
 
 
-       }
+       } */
 
        @media screen and (max-width:830px)
        {

@@ -212,7 +212,7 @@
                     <button onclick="saveToLater(this)" getpost="<%=posts[i].slug%>"> <li class="save-to-later"><i class="fas fa-plus "></i></li></button>
                 </ul>
             </div>
-            <h1 class="blog-post__title"><%=posts[i].title%></h1>
+            <h1 class="blog-post__title"><%=posts[i].title.substr(0,31)%></h1>
             <p class="blog-post__text"><%= posts[i].content.substring(0,270) %>...</p>
             <% if(currentUser && currentUser.role === "admin"){ %>
                 <form method="POST" action="/updateRecommended/<%=posts[i].slug%>/<%=posts[i].subject%>/<%=page%>">
@@ -232,7 +232,7 @@
             <a href="/posts/personality-development/<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
             <ul class="btns-on-blogcard">
                 <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
-                <button onclick="like(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span onclick="count(this)" class="count" id="likecount" ><%=posts[i].likes%></span></li></button>
+                <button onclick="like(this)" post_index="<%=i%>" pageno="<%=page%>" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count" id="likecount" ><%=posts[i].likes%></span></li></button>
                 <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
          
                 <span></span>
@@ -263,7 +263,7 @@
                         <button onclick="saveToLater(this)" getpost="<%=posts[i+1].slug%>" > <li class="save-to-later"><i class="fas fa-plus "></i></li></button>
                     </ul>
                 </div>
-                <h1 class="blog-post__title"><%=posts[i+1].title%></h1>
+                <h1 class="blog-post__title"><%=posts[i+1].title.substr(0,31)%></h1>
                 <p class="blog-post__text"><%= posts[i+1].content.substring(0,270) %>...</p>
                 <% if(currentUser && currentUser.role == "admin"){ %>
                     <form method="POST" action="/updateRecommended/<%=posts[i].slug%>/<%=posts[i].subject%>/<%=page%>">
@@ -276,14 +276,13 @@
                         <input type="file" placeholder="file upload" name="photo"><BR><br>
                         
                           <input type="submit" value="click here after attaching the image">
-                         
                     </form>
                     <div><button onclick="deletePost(this)" getpost="<%=posts[i+1].slug%>">delete post</button></div>
                 <% } %>
                 <a href="/posts/personality-development/<%=posts[i+1].slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
                     <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
-                    <button onclick="like(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count" id="likecount"><%=posts[i+1].likes%></span></li></button>
+                    <button onclick="like(this)" post_index="<%=i+1%>" pageno="<%=page%>" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count" id="likecount"><%=posts[i+1].likes%></span></li></button>
                 <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/personality-development/<%= posts[i+1].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i+1].shares%></span></li></button></a>
                     <span></span>
                 </ul>

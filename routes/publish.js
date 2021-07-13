@@ -10,6 +10,9 @@ var Recommended = require('../models/recommended.js');
 var middleware = require('../middleware/publish')
 var moment = require('moment');
 var multer = require('multer');
+var nodemailer = require('nodemailer')
+const nodemailerSendgrid = require('nodemailer-sendgrid');
+const {USER, PASS, HOSTNAME, PROTOCOL} = require("../config/index")
 var fs = require('fs');
 var path = require('path');
 
@@ -38,6 +41,20 @@ var upload = multer({
     storage: storage,
     multerFilter: multerFilter
   });
+
+
+
+
+
+  
+const transport = nodemailer.createTransport(
+    nodemailerSendgrid({
+      apiKey: "SG.B1IJJAIJRQaThbsOibOhuw.ITEDqiEbtNvqRqLRTNZNqRAeAXFbDG8NgmAYnJMv2Sw"
+    })
+    )
+  
+
+
 
 router.get("/",(req,res)=>{
     res.render("publish1");
@@ -70,6 +87,8 @@ router.post("/publish-channel", auth, async (req,res)=>{
                 try{
 
                     if(!req.body.channel) throw new Error('Enter a channel name.');
+                    if(!req.body.channel.length > 10) throw new Error('Channel name must be less than 10 characters');
+
                 if(/^\s/.test(req.body.channel)){
                     throw new Error('Channel cannot start with space.')
                 }
@@ -199,13 +218,8 @@ router.post("/additional-info/written" , auth , async (req,res)=>{
             newpost.author = req.user;
             newpost.shares = 0
             newpost.authorLinkedIn = req.user.linkedin;
-            if(req.user.google_username){
-                newpost.authorName = req.user.google_username;
-            } else if(req.user.fb_username){
-                newpost.authorName = req.user.fb_username;
-            } else {
-                newpost.authorName = req.user.username;
-            }
+
+            newpost.authorName = req.user.channel;
             
             newpost.publishDay = moment().format('dddd');
             newpost.postNumber = await countTotalArticles+1;
@@ -213,6 +227,58 @@ router.post("/additional-info/written" , auth , async (req,res)=>{
                 if(err) res.send(err);
                 else{
                     console.log("..................................... : " , savedpost)
+
+                    // now check first_reviewed and send email
+                    User.findById(req.user._id, async (err,userwhoposted)=>{
+
+
+
+
+
+                        if(!userwhoposted.first_reviewed){
+                            userwhoposted.first_reviewed = true;
+                            // send email
+                            var rec;
+                            if(userwhoposted.email){
+                                rec = userwhoposted.email;
+                            } else if(userwhoposted.google_email){
+                                rec = userwhoposted.google_email;
+                            } else {
+                                rec = userwhoposted.fb_email;
+                            }
+    
+                            var mailOptions = {
+                                from: USER,
+                                to: rec,
+                                subject: 'First article sent for review',
+                                html: `<p>Dear User, <p>
+                                <p>Congratulations, your article has been successfully submitted and has gone for review.</p>
+    
+                                <p>We aim to help you produce and promote your content in the best way possible. We want to build a community that believes in active learning and encourages education. It may take up to 72-120 hours for your article to be reviewed and published if all the set rules have been met. If any problem is faced, we will notify you about the same immediately.</p>
+                                <p>Thank you for your contribution!</p>
+                                
+                                <p>Regards,</p>
+                                <p>Team Backbenchers</p> `
+                              }
+                              transport.sendMail(mailOptions,(err)=>{
+                                if(err) {
+                                  console.log(err);
+                                }
+                                console.log('mail sent');
+                                
+                              })
+    
+                            userwhoposted.save()
+                        }
+
+
+
+
+
+
+
+                    });
+                    
                 }
             });
             User.findById(req.user._id).populate("posts").exec(async function(err,user){
@@ -344,6 +410,52 @@ router.post("/additional-info/uploaded", auth , upload.single("document") , asyn
                 console.log("user who just created post is found ");
                 // console.log(user)
                 user.posts.push(post);
+
+
+
+
+
+                
+                    if(!user.first_reviewed){
+                        user.first_reviewed = true;
+                        // send email
+                        var rec;
+                        if(user.email){
+                            rec = user.email;
+                        } else if(user.google_email){
+                            rec = user.google_email;
+                        } else {
+                            rec = user.fb_email;
+                        }
+
+                        var mailOptions = {
+                            from: USER,
+                            to: rec,
+                            subject: 'First article sent for review',
+                            html: `<p>Dear User, <p>
+                            <p>Congratulations, your article has been successfully submitted and has gone for review.</p>
+
+                            <p>We aim to help you produce and promote your content in the best way possible. We want to build a community that believes in active learning and encourages education. It may take up to 72-120 hours for your article to be reviewed and published if all the set rules have been met. If any problem is faced, we will notify you about the same immediately.</p>
+                            <p>Thank you for your contribution!</p>
+                            
+                            <p>Regards,</p>
+                            <p>Team Backbenchers</p> `
+                          }
+                          transport.sendMail(mailOptions,(err)=>{
+                            if(err) {
+                              console.log(err);
+                            }
+                            console.log('mail sent');
+                            
+                          })
+
+                    }
+
+
+
+
+
+
                 user.save((err,user)=>{
                 if(err)  res.send(err)
                 else {

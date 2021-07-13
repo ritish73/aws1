@@ -181,7 +181,7 @@
         <div class="column">
             <div class="blog-post">
             <div class="blog-post__img">
-                <a href="/posts/business-economics/<%=posts[i].slug%>"><img src="/uploads/img/posts/<%=posts[i].imagename%>" alt="<%=posts[i].imagename%>" class="blog-post__article-img"></a>
+                <a  onclick="sendcookie(this)" post_title="<%=posts[i].slug%>" href="/posts/business-economics/<%=posts[i].slug%>"><img src="/uploads/img/posts/<%=posts[i].imagename%>" alt="<%=posts[i].imagename%>" class="blog-post__article-img"></a>
             </div>
             <div class="blog-post__info">
             <div class="blog-post__date">
@@ -194,7 +194,7 @@
                     <button onclick="saveToLater(this)" getpost="<%=posts[i].slug%>" > <li class="save-to-later"><i class="fas fa-plus "></i></li></button>
                 </ul>
             </div>
-            <h1 class="blog-post__title"><%=posts[i].title%></h1>
+            <h1 class="blog-post__title"><%=posts[i].title.substr(0,31)%></h1>
             <p class="blog-post__text"><%= posts[i].content.substring(0,270) %>...</p>
             <% if(currentUser && currentUser.role === "admin"){ %>
                 <form method="POST" action="/updateRecommended/<%=posts[i].slug%>/<%=posts[i].subject%>/<%=page%>">
@@ -211,10 +211,10 @@
                 </form>
                 <div><button onclick="deletePost(this)" getpost="<%=posts[i].slug%>" >delete post</button></div>
             <% } %>
-            <a href="/posts/business-economics/<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
+            <a href="/posts/business-economics/<%=posts[i].slug%>"  onclick="sendcookie(this)" post_title="<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
             <ul class="btns-on-blogcard">
                 <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
-                <button onclick="like(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span onclick="count(this)" class="count" id="likecount" ><%=posts[i].likes%></span></li></button>
+                <button onclick="like(this)" post_index="<%=i%>" pageno="<%=page%>" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count" id="likecount" ><%=posts[i].likes%></span></li></button>
                 <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/business-economics/<%= posts[i].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i].shares%></span></li></button></a>
          
                 <span></span>
@@ -232,7 +232,7 @@
             <div class="column">
                 <div class="blog-post">
                 <div class="blog-post__img">
-                    <a href="/posts/business-economics/<%=posts[i].slug%>"><img src="/uploads/img/posts/<%=posts[i+1].imagename%>" alt="<%=posts[i+1].imagename%>" class="blog-post__article-img"></a>
+                    <a onclick="sendcookie(this)" post_title="<%=posts[i+1].slug%>" href="/posts/business-economics/<%=posts[i+1].slug%>"><img src="/uploads/img/posts/<%=posts[i+1].imagename%>" alt="<%=posts[i+1].imagename%>" class="blog-post__article-img"></a>
                 </div>
                 <div class="blog-post__info">
                 <div class="blog-post__date">
@@ -245,10 +245,10 @@
                         <button onclick="saveToLater(this)" getpost="<%=posts[i+1].slug%>" > <li class="save-to-later"><i class="fas fa-plus "></i></li></button>
                     </ul>
                 </div>
-                <h1 class="blog-post__title"><%=posts[i+1].title%></h1>
+                <h1 class="blog-post__title"><%=posts[i+1].title.substr(0,31)%></h1>
                 <p class="blog-post__text"><%= posts[i+1].content.substring(0,270) %>...</p>
                 <% if(currentUser && currentUser.role == "admin"){ %>
-                    <form method="POST" action="/updateRecommended/<%=posts[i].slug%>/<%=posts[i].subject%>/<%=page%>">
+                    <form method="POST" action="/updateRecommended/<%=posts[i+1].slug%>/<%=posts[i+1].subject%>/<%=page%>">
                         <span>push to recommended at what position: </span><input type="number" name="position">
                         <button type="submit">push</button>
                     </form>
@@ -262,10 +262,10 @@
                     </form>
                     <div><button onclick="deletePost(this)" getpost="<%=posts[i+1].slug%>">delete post</button></div>
                 <% } %>
-                <a href="/posts/business-economics/<%=posts[i+1].slug%>" class="blog-post__cta">Read more</a>
+                <a href="/posts/business-economics/<%=posts[i+1].slug%>" onclick="sendcookie(this)" post_title="<%=posts[i].slug%>" class="blog-post__cta">Read more</a>
                 <ul class="btns-on-blogcard">
                     <!-- <li class="btns-blog"><i class="far fa-eye fa-2x "></i></li> -->
-                    <button onclick="like(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count" id="likecount"><%=posts[i+1].likes%></span></li></button>
+                    <button onclick="like(this)" post_index="<%=i+1%>"  pageno="<%=page%>" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="far fa-hand-peace fa-2x "></i><span class="count" id="likecount"><%=posts[i+1].likes%></span></li></button>
                 <a href="https://api.whatsapp.com/send?text=http://thebackbenchers.co/posts/business-economics/<%= posts[i+1].slug %>" data-action="share/whatsapp/share" target="_blank"><button onclick="sharePost(this)" getpost="<%=posts[i+1].slug%>" ><li class="btns-blog"><i class="fas fa-share fa-2x "></i><span class="count" id="sharecount"><%=posts[i+1].shares%></span></li></button></a>
                     <span></span>
                 </ul>
@@ -323,7 +323,7 @@
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="/javascripts/ajaxHandler_comm.js"></script>  </script>
+<script src="/javascripts/ajaxHandler_be.js"></script>  </script>
 <script src="/javascripts/pop-alert.js">  </script>
 <script src="/javascripts/dropdownicontoggle.js"></script>
 <script src="/javascripts/search_validate.js"></script>

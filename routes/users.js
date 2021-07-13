@@ -97,6 +97,9 @@ router.get('/aboutus',(req,res)=>{
   res.render('aboutus');
 })
 
+router.get('/pprough',(req,res)=>{
+  res.render('privacypolicy');
+})
 
 
 router.get("/" , check ,function(req, res){
@@ -110,7 +113,7 @@ router.get("/" , check ,function(req, res){
   // console.log("req.user and req.is authenticated  : " ,req.isAuthenticated(), req.user )
   var call  = async function(){
     await middlewareObj.getPostsHomePage(obj);
-    // console.log("<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>",obj);
+    console.log("<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>",obj);
       var betrendingpost = obj.betrendingpost
       var ctrendingpost = obj.ctrendingpost
       var etrendingpost = obj.etrendingpost
@@ -205,14 +208,15 @@ router.get('/delete', check ,async (req,res)=>{
       html: ` 
    
       <p>Dear User,</p>
-      <p>If you wish to delete your account, all of your data will be permanently deleted.
-      You will not be able to restore it once you continue to delete your account.
-      In case you want to reactivate your account, kindly mail us your BackBenchers username and BackBenchers email at 
-      teambackbenchers@gmail.com within 45 days
-      from the date of deletion of your account. </p>
+      <p>We’re sorry to see you go. </p>
+      <p>To help us improve our services, please let us know where you found us lacking.</p>
+      <p>In case you happen to change your mind, you can always come back and retrieve the same account
+      within 45 days from date of deletion by dropping us a message on our official mailing id.</p>
+
+      <p>We hope and wish to see you again!!!</p>
       
      
-      <br>
+      <br><br>
       <p>Regards,</p>
       <p>Team Backbenchers</p>
       
@@ -350,6 +354,7 @@ passport.use(new FacebookStrategy(
     profileFields: ['id', 'displayName', 'name', 'gender', 'picture.type(large)', 'email']
   }, 
   function(accessToken, refreshToken, profile, done) {
+    console.log(profile);
     middlewareObj.helperFacebookAuth(accessToken, refreshToken, profile, done);
   }))
 
@@ -382,6 +387,7 @@ passport.use(new GoogleStrategy({
 },
 // api key AIzaSyCn8rZMwbOxiTAU08ObK9dFPuz-p53PbMU
 function(accessToken, refreshToken, profile, done) {
+  console.log("helpergoogleAuth", profile);
   middlewareObj.helperGoogleAuth(accessToken, refreshToken, profile, done);
   })
 );
@@ -392,6 +398,11 @@ router.get('/google',passport.authenticate('google', { scope: ['profile', 'email
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/register_or_login?message=An error occured while authentication with google' }),
   function(req, res) {
+
+    // if the user with google eamil already exists either as simple or googlr user do not authenticate
+
+    console.log("/google/callback")
+
 
     if(req.user){
      if(req.user.fb_id) {
@@ -408,12 +419,6 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 router.get("/failed", (req,res)=>{
   res.send("you failed ass hole!!!!!!");
 })
-
-router.get("/good", isLoggedIn,(req,res)=>{
-
-  res.send("profile")
-})
-  
 
 
 
@@ -541,13 +546,17 @@ router.post("/register",async (req,res)=>{
 
 
                <p>Dear User,</p>
-                <p>Welcome to the BackBenchers community! We strongly believe that every member of the community is an asset helping us 
-                in acheiving our ultimate goal of making education highly affordable and promoting the same irrespective of the field. To
-                help us in a better way and contribute your part, kindly click the link provided below and verify your account. The given link will be
-                active for a period of 30 minutes only.</p>
+                <p>Welcome to the BackBenchers community!<br>
+                Thanks for signing up.<br>
+                We firmly believe that every member of the community is an asset helping us
+                in attaining our ultimate goal of making education highly affordable and
+                promoting the same irrespective of the field. <br>
+                To aid us in a better way and contribute your part, 
+                please confirm that you want to use this email address for your account.<br>
+                The given link will be active for a period of 30 minutes only.<br>
                 <button style="outline:none;border:none;background-color:#5995fd;border:1px solid white;border-radius:3px;padding:7px"><a style="text-decoration:none;color:white;font-size:15px;font-family:'poppins',sans-serif" href="${link}">Verify Account</a></button>
               
-                <br><br><br>
+                <br><br>
                 <p>Regards,</p>
                 <p>Team Backbenchers</p>
               
@@ -633,13 +642,17 @@ router.get("/reVerify", check, async (req,res)=>{
       html: ` 
    
       <p>Dear User,</p>
-      <p>Welcome to the BackBenchers community! We strongly believe that every member of the community is an asset helping us 
-      in acheiving our ultimate goal of making education highly affordable and promoting the same irrespective of the field. To
-      help us in a better way and contribute your part, kindly click the link provided below and verify your account. The given link will be
-      active for a period of 30 minutes only.</p>
+      <p>Welcome to the BackBenchers community!<br>
+      Thanks for signing up.<br>
+      We firmly believe that every member of the community is an asset helping us
+      in attaining our ultimate goal of making education highly affordable and
+      promoting the same irrespective of the field. <br>
+      To aid us in a better way and contribute your part, 
+      please confirm that you want to use this email address for your account.<br>
+      The given link will be active for a period of 30 minutes only.<br>
       <button style="outline:none;border:none;background-color:#5995fd;border:1px solid white;border-radius:3px;padding:7px"><a style="text-decoration:none;color:white;font-size:15px;font-family:'poppins',sans-serif" href="${link}">Verify Account</a></button>
-     
-      <br><br><br>
+    
+      <br><br>
       <p>Regards,</p>
       <p>Team Backbenchers</p>
       
@@ -913,10 +926,7 @@ router.post("/updateUser", auth, async (req,res)=>{
         throw new Error('Channel name cannot end with space.')
     }
 
-    var userfind = await User.findOne({channel: req.body.channel});
-    if(userfind) throw new Error('A user with this channel name already exists.');
-
-    user.channel = req.body.channel
+  
 
   }
 
@@ -1046,11 +1056,12 @@ router.post('/forgot', async (req,res)=>{
           from: USER,
           to: req.body.email,
           subject: 'Request for password reset',
-          html: `<h2>Hello ${req.body.email},</h2>
-          <p>A request has been received to change the password for your BackBenchers account. </p>
-          <p>Please click the link provided below to reset your password. The given link is valid for one hour only.</p>
+          html: `<h2>Hi ${req.body.email},</h2>
+          <p>Need to reset your password?  </p>
+          <p>No problem,  just click the button below and, you'll be on your way.</p>
+          <p>The link for password reset is valid for the next one hour only.</p>
           <button style="outline:none;border:none;background-color:#5995fd;border:1px solid white;border-radius:3px;padding:7px"><a style="text-decoration:none;color:white;font-size:15px;font-family:'poppins',sans-serif" href="${link}">Reset Password</a></button>
-          
+          <p>If you did not make this request, please ignore this mail.</p><br><br>
           <p>Regards,</p>
           <p>Team Backbenchers</p> `
         }
@@ -1134,6 +1145,166 @@ router.post('/reset/:token', function(req, res) {
 
   
 });
+
+
+
+
+
+
+
+// forgot username
+
+
+
+
+router.get('/forgotUsername',(req,res)=>{ 
+  res.render('forgotUsername', {message: req.flash('success')});
+})
+
+router.post('/forgotUsername', async (req,res)=>{
+
+
+  try{
+
+
+    console.log("yes received : " , req.body.email)
+    var token;
+    crypto.randomBytes(20,(err,buf)=>{
+      if(err) console.log(err)
+      token = buf.toString('hex');
+      console.log(token)
+    })
+      
+    User.findOne({email: req.body.email}, async (err,user)=>{
+
+      try{
+
+        if(!user){
+          throw new Error('Please enter correct E-mail');
+        }
+        user.resetUsernameToken = await token;
+        user.resetUsernameExpires =  Date.now() + 3600000; //1 hr
+        await user.save((err)=>{
+          if(err) console.log(err)
+        })
+  
+        var link = PROTOCOL + HOSTNAME + '/resetUsername/' + token
+          
+        var mailOptions = {
+          from: USER,
+          to: req.body.email,
+          subject: 'Request for Username reset',
+          html: `<h2>Hi ${req.body.email},</h2>
+          <p>Need to update your username ? 
+          </p>
+
+          <p>No problem,  just click the button below and, you'll be on your way. </p>
+
+          <p>The link for updating your username is valid for the next one hour only.</p>
+
+          <button style="outline:none;border:none;background-color:#5995fd;border:1px solid white;border-radius:3px;padding:7px"><a style="text-decoration:none;color:white;font-size:15px;font-family:'poppins',sans-serif" href="${link}">Reset Username</a></button>
+          <p>If you did not make this request, please ignore this mail.</p><br><br>
+          <p>Regards,</p>
+          <p>Team Backbenchers</p> `
+        }
+        transport.sendMail(mailOptions,(err)=>{
+          if(err) {
+            throw new Error(err);
+          }
+          console.log('mail sent');
+          req.flash('success' , 'An e-mail has been sent to ' + req.body.email + ' for username reset.');
+          res.redirect('/');
+        })
+
+
+      } catch(err){
+        req.flash('error',err.message);
+        res.redirect('/forgot');
+      }
+      
+    })
+
+
+  } catch(err){
+    
+    req.flash('error',err.message);
+    res.redirect('/forgot');
+
+  }
+
+  
+  })
+
+
+
+router.get('/resetUsername/:token',(req,res)=>{
+  User.findOne({resetUsernameToken: req.params.token, resetUsernameExpires: { $gt: Date.now() } },(err,user)=>{
+    if(!user){
+      req.flash('error', 'Either token is invalid or expired')
+      res.redirect('/forgot')
+    } else{
+      res.render('resetUsername',{token: req.params.token})
+    }
+  })
+})
+
+
+router.post('/resetUsername/:token', function(req, res) {   
+  
+    
+  User.findOne({ resetUsernameToken: req.params.token, resetUsernameExpires: { $gt: Date.now() } },async function(err, user) {
+    if (!user) {
+      req.flash('error', 'The given link is either invalid or has expired.');
+      res.redirect('/forgot');
+    }
+
+    // var validpass = validatePass(req.body.password)
+    // if(validpass.status){
+
+      
+      console.log("new username : ", req.body.username)
+      if(user.username){
+        user.username = await req.body.username;
+      } else if(user.google_username){
+        user.google_username = await req.body.username;
+      } else {
+        user.fb_username = await req.body.username;
+      }
+      
+      await user.save();
+      
+
+    // } else {
+    //   res.redirect('/reset/'+req.params.token)
+    // }
+    
+  });
+  
+  req.flash('success', 'Success! Your Username has been changed.');
+  res.redirect("/")
+  
+  
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 router.get("/sharepost/:slug", (req,res)=>{
@@ -1237,11 +1408,32 @@ router.get("/registerUserValidation/:username/:email", async (req,res)=>{
 
   var emailunique = await User.findOne({email: req.params.email});
   var usernameunique = await User.findOne({username: req.params.username});
+
+  // need to check if someone makes account , there must not be any 
+  // google_email or email and google_username and username in the database
+
+  var gemailunique = await User.findOne({google_email: req.params.email});
+  var gusernameunique = await User.findOne({google_username: req.params.username});
+
+
+
+
   if(emailunique){
     message = 'Email already exists.';
     status = 0; 
   }
+
+  if(gemailunique){
+    message = 'Email already exists.';
+    status = 0; 
+  }
+
   if(usernameunique){
+    message = 'username already exists.';
+    status = 0; 
+  }
+
+  if(gusernameunique){
     message = 'username already exists.';
     status = 0; 
   }

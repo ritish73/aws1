@@ -3,6 +3,8 @@ const sign_in_btn = document.querySelector("#sign-in-btn");
 const sign_up_btn = document.querySelector("#sign-up-btn");
 const container = document.querySelector(".container");
 const pass = document.querySelector('#password')
+
+
 sign_up_btn.addEventListener("click", () => {
   container.classList.add("sign-up-mode");
 });
@@ -103,6 +105,9 @@ function validInputsRequest(){
   }
 
 
+ 
+
+
   
 var showAlert = async (msg)=>{
 
@@ -124,3 +129,5 @@ var showAlert = async (msg)=>{
   })
 
 }
+
+

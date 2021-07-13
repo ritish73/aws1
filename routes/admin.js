@@ -9,6 +9,7 @@ var Popular = require('../models/popular.js');
 var Recommended = require('../models/recommended.js');  
 var deleteObj = require("../controllers/deleteController")
 var moment = require('moment');
+const {USER, PASS, HOSTNAME, PROTOCOL} = require("../config/index")
 var locus = require('locus')
 var middleware = require("../middleware/index");
 const { unwatchFile } = require("fs");
@@ -17,6 +18,11 @@ const Ip = require("../models/ip.js");
 const auth = require("../middleware/auth.js");
 var multer = require('multer');
 const check = require("../controllers/checkAuthcontroller");
+var nodemailer = require('nodemailer')
+const nodemailerSendgrid = require('nodemailer-sendgrid');
+
+
+
 
 
 
@@ -36,6 +42,19 @@ var storage = multer.diskStorage({
 var upload = multer({
   storage: storage,
 });
+
+
+
+
+
+const transport = nodemailer.createTransport(
+  nodemailerSendgrid({
+    apiKey: "SG.B1IJJAIJRQaThbsOibOhuw.ITEDqiEbtNvqRqLRTNZNqRAeAXFbDG8NgmAYnJMv2Sw"
+  })
+  )
+
+
+
 
 router.get('/adminportal', auth , middleware.isAdmin, (req,res)=>{
   var ip = req.headers['x-forwarded-for'] || 
@@ -151,8 +170,8 @@ router.post("/register-user-by-admin", auth,  middleware.isAdmin, async (req,res
 
 })
 
-router.get("/posts/:id/edit", auth, middleware.isAuditor, (req,res)=>{
-  Post.findById(req.params.id, function(err, post){
+router.get("/posts/:slug/edit", auth, middleware.isAuditor, (req,res)=>{
+  Post.findOne({slug: req.params.slug}, function(err, post){
 		res.render("edit", {post: post});
 	});
 })
@@ -208,11 +227,83 @@ router.get('/approvepostbyadmin/:slug',  auth , middleware.isAuditor , async (re
   console.log("entered the route approved post by admin")
   var foundpost = await Post.findOne({slug: req.params.slug});
   foundpost.isReviewedByAdmin = true;
+
+  // authorname is actually the channel name of the author of the post;
+  var auth_channel = foundpost.authorName;
+  Post.findOne({slug: req.params.slug}).populate('author').exec(async(err,postf)=>{
+
+
+
+    
+    if(err) console.log(err);
+    else {
+      console.log("user is found" , postf.author)
+    
+
+    if(!postf.author.first_published){
+
+
+      postf.author.first_published = true;
+      // send email
+      var rec;
+      if(postf.author.email){
+          rec = postf.author.email;
+      } else if(postf.author.google_email){
+          rec = postf.author.google_email;
+      } else {
+          rec = postf.author.fb_email;
+      }
+  
+  
+      var mailOptions = {
+        from: USER,
+        to: rec,
+        subject: 'First article Published!!',
+        html: `<p>Dear User, <p>
+        <p>Congratulations, your first article has been published successfully. You are now one of the people actively sharing, contributing and helping others to grow.</p>
+  
+        <p>Knowledge possesses no boundaries and, it is a source that increases by sharing and not by saving. We want to build a community that believes in active learning and promotes education. So Be ready to get inspired and explore a new world of sharing knowledge.</p>
+  
+        <p>Thank you and, we are excited to have you! Cheers!</p>
+        
+        <p>Regards,</p>
+        <p>Team Backbenchers</p> `
+      }
+      transport.sendMail(mailOptions,(err)=>{
+        if(err) {
+          console.log(err);
+        }
+        console.log('mail sent');
+        
+      })
+  
+  
+      await postf.author.save(()=>{
+        console.log("autor saved");
+      });
+      
+    }
+
+
+
+  }
+
+
+
+
+
+
+
+
+  }) 
+
+
+
   // await foundpost.markModified('isReviewedByAdmin');
   await foundpost.save();
   console.log("foundpost reviewed with title " + foundpost.slug , foundpost.isReviewedByAdmin)
   res.json({reviewed: true, post: foundpost})
-  console.log("................. after : ", foundpost)
+  // console.log("................. after : ", foundpost)
 })
 
 router.get("/sendToAuditor/:name/:postslug",  auth , middleware.isAuditor , (req,res)=>{
@@ -264,7 +355,7 @@ router.get("/reviewedByAuditors", auth, middleware.isAuditor,(req,res)=>{
   Post.find({isReviewedByAuditor: true},(err,posts)=>{
     if(err) console.log(err)
     else{
-      res.render("finalChecking",{posts: posts})
+      res.render("finalchecking",{posts: posts})
     }
   }) 
 })

@@ -386,3 +386,12 @@ form.sign-in-form {
     left: 50%;
   }
 }
+
+
+/* @media screen and (max-width:1024px) and (orientation: landscape) {
+
+  .container {
+    min-height: 150vh;
+  }
+  
+  } */
